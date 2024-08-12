@@ -66,8 +66,8 @@ def modelTrainer(config):
         for step in range(1, config.train_steps + 1):      # Goes through the whole simulation for that epoch   
         
             this_time = begin_time + delta_t * step            
-            value_last = graph.x.detach().clone()
             graph.x[on_boundary] = boundary_value[on_boundary]
+            value_last = graph.x.detach().clone()
             config.graph_modify(graph, value_last=value_last)            
             predicted = model(graph)   
             # hard boundary         
