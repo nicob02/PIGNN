@@ -34,7 +34,7 @@ class Encoder(nn.Module):
         edge_ = self.eb_encoder(edge_attr)
         
         graph.x = node_
-        graph.edge_attr = edge_     // New graphs node, edge attributes
+        graph.edge_attr = edge_     
         return graph
 
 
