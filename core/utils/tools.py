@@ -68,7 +68,7 @@ def modelTrainer(config):
             this_time = begin_time + delta_t * step            
             value_last = graph.x.detach().clone()
             graph.x[on_boundary] = boundary_value[on_boundary]
-            config.graph_modify(graph, value_last)            
+            config.graph_modify(graph, time=this_time)            
             predicted = model(graph)   
             # hard boundary         
             electrode_value = config.bc2(graph.pos, predicted, this_time)
