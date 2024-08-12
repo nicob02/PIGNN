@@ -31,7 +31,7 @@ class ElectroThermalFunc():
         volt = pos[:, 1:2]
         
         temp[:] = 310       # Initial temp value at body temp
-        volt[:] = 0           # Initial volt value of 0
+        volt[:] = 1           # Initial volt value of 0
 
         return  torch.cat((temp,volt),dim=-1) 
 
@@ -40,7 +40,7 @@ class ElectroThermalFunc():
         volt = pos[:, 1:2]
         
         temp[:] = 310      # Temp value at boundary domain
-        volt[:] = 0        # Ground voltage at boundary domain
+        volt[:] = 1        # Ground voltage at boundary domain
 
         return  torch.cat((temp,volt),dim=-1) 
     
