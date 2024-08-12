@@ -246,7 +246,7 @@ def render_temperature(predicteds, graph):
         plt.close()
 
 
-#def plot_error_curve(error, begin_step, config, save_dir):
+def plot_error_curve(error, begin_step, config, save_dir):
 
     delta_t = config.delta_t
     number_len = error.shape[0]
