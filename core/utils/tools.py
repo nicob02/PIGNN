@@ -119,8 +119,8 @@ def modelTester(config):
 
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
-        graph.x[on_boundary] = boundary_value[on_boundary]
         value_last = graph.x.detach().clone()
+        graph.x[on_boundary] = boundary_value[on_boundary]
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
         electrode_value = config.bc2(graph.pos, predicted, this_time)
