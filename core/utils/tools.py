@@ -67,14 +67,14 @@ def modelTrainer(config):
         for step in range(1, config.train_steps + 1):      # Goes through the whole simulation for that epoch   
         
             this_time = begin_time + delta_t * step            
-            graph.x[on_boundary] = boundary_value[on_boundary]
+            #graph.x[on_boundary] = boundary_value[on_boundary]
             value_last = graph.x.detach().clone()
             
             config.graph_modify(graph, value_last=value_last)            
             predicted = model(graph)   
             # hard boundary         
-            electrode_value = config.bc2(graph.pos, predicted, this_time)
             predicted[on_boundary] = boundary_value[on_boundary] 
+            electrode_value = config.bc2(graph.pos, predicted, this_time)
             predicted[on_electrode] = electrode_value[on_electrode]
 
             pde_loss = config.pde(graph, value_last, predicted)
