@@ -11,12 +11,12 @@ import os
 
 delta_t = 0.1 # Mess around with this
 
-func_name = 'rfa'
+#func_name = 'rfa'
 out_ndim = 2
 rfa_params = [1060 , 3600 , 0.512 , 244000 , 310 , 0.33 , 0.02 ]  # Go with Kelvin just in case
 volt = 18
 
-ckptpath = 'checkpoint/simulator_%s.pth' % func_name    #FIGURE THIS OUT
+ckptpath = 'checkpoint/simulator_%s.pth' % Func.func_name    #FIGURE THIS OUT
 device = torch.device(0)
 
 func_main = Func(delta_t=delta_t, params=rfa_params, volt=volt)
@@ -30,7 +30,7 @@ mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 graph = mesh.getGraphData()
 model = msgPassing(message_passing_num=1, node_input_size=4+out_ndim, 
                    edge_input_size=3, ndim=out_ndim, device=device, model_dir=ckptpath)
-model.load_model(ckptpath)
+model.load_model()
 model.to(device)
 model.eval()
 test_steps = 70
@@ -47,7 +47,7 @@ setattr(test_config, 'bc2', bc2)
 setattr(test_config, 'model', model)
 setattr(test_config, 'test_steps', test_steps)
 setattr(test_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref)
-setattr(test_config, 'name', func_name)
+#setattr(test_config, 'name', func_name)
 setattr(test_config, 'ndim', out_ndim)
 setattr(test_config, 'graph_modify', func_main.graph_modify)
 setattr(test_config, 'graph', graph)
