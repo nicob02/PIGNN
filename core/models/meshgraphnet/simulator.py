@@ -34,7 +34,11 @@ class Simulator(nn.Module):
         graph_last = copy_geometric_data(graph)
         node_type = torch.squeeze(graph.node_type).clone()
         one_hot = torch.nn.functional.one_hot(node_type, 3)
+        print("graph.x before")
+        print(graph.x)
         graph.x = torch.cat([graph.x, one_hot], dim=-1)   
+        print("after a todo cumbia gato")
+        print(graph.x)
         predicted_tmp = self.model(graph)        
         v = predicted_tmp[:, :self.ndim] + graph_last.x[:, :self.ndim] # temp + volt values
                 
