@@ -63,11 +63,7 @@ class ElectroThermalFunc():
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
-        print("values_last")
-        print(values_last)
         dvdt = (temp_this-temp_last)/self.delta_t
-        print("dvdt")
-        print(dvdt)
         grad_value = self.gradop(graph, values_this)
         grad_v = grad_value[1]          # Volt Gradient at t+1
         squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
@@ -80,7 +76,10 @@ class ElectroThermalFunc():
         lap_temp = lap_value[:,0:1]
         lap_volt = lap_value[:,1:2]
 
-        
+        print("lap_temp")
+        print(lap_temp)
+        print("q")
+        print(q)
         #abs_lap_v = torch.sqrt(lap_volt ** 2)
         
         loss_volt = sigma*lap_volt
