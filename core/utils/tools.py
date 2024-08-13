@@ -77,7 +77,7 @@ def modelTrainer(config):
             predicted[on_boundary] = boundary_value[on_boundary] 
             predicted[on_electrode] = electrode_value[on_electrode]
 
-            pde_loss = config.pde(graph, value_last, predicted, time=this_time)
+            pde_loss = config.pde(graph, value_last, predicted)
             pde_loss[on_boundary] = 0
             pde_loss[on_electrode] = 0
             loss = torch.norm(pde_loss)/pde_loss.numel()
