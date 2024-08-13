@@ -78,6 +78,8 @@ def modelTrainer(config):
             this_time = begin_time + delta_t * step            
             graph.x[on_boundary] = boundary_value[on_boundary]
             value_last = graph.x.detach().clone()
+            print("value_last")
+            print(value_last)
             config.graph_modify(graph, value_last=value_last)            
             predicted = model(graph)   
             # hard boundary         
