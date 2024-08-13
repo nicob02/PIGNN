@@ -64,7 +64,7 @@ def modelTrainer(config):
         print("Node positions (coordinates):")
         print(graph.pos)
         print("Edge configurations (pairs of node indices):")
-        print(graph.faces)
+        print(graph.face)
         
         begin_time = 0
         total_steps_loss = 0
