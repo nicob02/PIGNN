@@ -78,7 +78,7 @@ class ElectroThermalFunc():
         print("lap_temp")
         print(lap_temp)
         lap_temperature = lap_value[1]
-        print("lap_temperature)
+        print("lap_temperature")
         print(lap_temperature)
         lap_voltage = lap_value[0]
         print("lap_voltage")
