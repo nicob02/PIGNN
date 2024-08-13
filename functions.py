@@ -71,11 +71,26 @@ class ElectroThermalFunc():
         sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
         q = sigma*squared_abs_grad_v    # q at t+1
         lap_value = self.laplacianop(graph,values_this)
+        print("lap_value")
+        print(lap_value)
         lap_temp = lap_value[:,0:1]
         lap_volt = lap_value[:,1:2]
-
-        loss_volt = sigma*lap_volt
-        loss_temp = (a*b*dvdt) -q -(c*lap_temp) -(d*(e-temp_this))
+        print("lap_temp")
+        print(lap_temp)
+        lap_temperature = lap_value[1]
+        print("lap_temperature)
+        print(lap_temperature)
+        lap_voltage = lap_value[0]
+        print("lap_voltage")
+        print(lap_voltage)
+        
+        abs_lap_v = torch.sqrt(torch.sum(lap_voltage ** 2, dim=1, keepdim=True))
+        
+        loss_volt = sigma*abs_lap_v
+        
+        lap_temp_sum = torch.sum(lap_temperature, dim=1, keepdim=True)
+        
+        loss_temp = (a*b*dvdt) -q -(c*lap_temp_sum) -(d*(e-temp_this))
 
         return torch.cat([loss_temp,loss_volt],axis=1)
 
