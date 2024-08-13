@@ -54,10 +54,8 @@ class SolveGradientsLST(object):
         
         if isinstance(data, torch.Tensor):
             data = Data(pos=data)
-        ndim = predicted.shape[1]
-
-        print("ma predicted shape")
-        print(predicted.shape[1])
+        ndim = 2    #predicted.shape[1]
+        
         gradients = []
         for i in range(ndim):
             gradients.append(self.solve_single_varible(data, predicted[:, i:i+1]))
