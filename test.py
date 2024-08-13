@@ -25,7 +25,7 @@ bc1 = func_main.boundary_condition
 bc2 = func_main.electrode_condition
 ic = func_main.init_condition
 
-dens = 800
+dens = 100
 
 
 def get_test_config(graph, **kwargs):     
@@ -50,7 +50,7 @@ def get_test_config(graph, **kwargs):
     return test_config    
 
 #-----------------------------------------
-mesh = ElectrodeMesh(ru=(8, 8), lb=(0, 0), density=800)
+mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 graph = mesh.getGraphData()
 model = msgPassing(message_passing_num=1, node_input_size=4+out_ndim, 
                    edge_input_size=3, ndim=out_ndim, device=device, model_dir=ckptpath)
