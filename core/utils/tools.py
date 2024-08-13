@@ -53,18 +53,8 @@ def modelTrainer(config):
     
     for epcho in range(1, config.epchoes + 1):  # Creates different ic and solves the problem, does this epoch # of times
 
-        print("Node positions (coordinates):")
-        print(graph.pos)
-        
         graph.x = config.ic(graph.pos)
-        print("Node positions (coordinates):")
-        print(graph.pos)
         boundary_value = config.bc1(graph.pos)
-        
-        print("Node positions (coordinates):")
-        print(graph.pos)
-        print("Edge configurations (pairs of node indices):")
-        print(graph.face)
         
         begin_time = 0
         total_steps_loss = 0
@@ -78,8 +68,7 @@ def modelTrainer(config):
             this_time = begin_time + delta_t * step            
             graph.x[on_boundary] = boundary_value[on_boundary]
             value_last = graph.x.detach().clone()
-            print("value_last")
-            print(value_last)
+            
             config.graph_modify(graph, value_last=value_last)            
             predicted = model(graph)   
             # hard boundary         
