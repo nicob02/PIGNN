@@ -43,17 +43,17 @@ def get_node_type(pos, lb_electrode, ru_electrode, radius_ratio=None):
 class ElectrodeMesh():
     
     node_type_ref = NodeType
-    def __init__(self, density=100, lb=(0, 0), ru=(8, 8)) -> None:
+    def __init__(self, density=100, lb=(0, 0), ru=(1, 1)) -> None:
         
         self.transform = T.Compose([
             T.FaceToEdge(remove_faces=False), 
             T.Cartesian(norm=False), 
             T.Distance(norm=False)
             ])
-        random_center_electrode_x = np.random.uniform(0.25,7.75)   #Electrode probe is placed randomly at each training iteration
-        random_center_electrode_y = np.random.uniform(1,7)
-        lb_electrode = [(random_center_electrode_x-0.05),(random_center_electrode_y-0.5)]
-        ru_electrode = [(random_center_electrode_x+0.05),(random_center_electrode_y+0.5)]
+        random_center_electrode_x = np.random.uniform(0.05,0.95)   #Electrode probe is placed randomly at each training iteration
+        random_center_electrode_y = np.random.uniform(0.1,0.9)
+        lb_electrode = [(random_center_electrode_x-0.01),(random_center_electrode_y-0.06)]
+        ru_electrode = [(random_center_electrode_x+0.01),(random_center_electrode_y+0.06)]
         domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain
         electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
         geometry = domain + electrode_probe
