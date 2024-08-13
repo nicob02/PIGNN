@@ -63,7 +63,8 @@ class ElectroThermalFunc():
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
-
+        print("values_last")
+        print(values_last)
         dvdt = (temp_this-temp_last)/self.delta_t
         print("dvdt")
         print(dvdt)
