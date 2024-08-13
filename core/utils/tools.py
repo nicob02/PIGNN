@@ -46,7 +46,7 @@ def modelTrainer(config):
     delta_t = config.delta_t
     model = config.model
     graph = config.graph
-    scheduler = torch.optim.lr_scheduler.StepLR(
+    #scheduler = torch.optim.lr_scheduler.StepLR(
         config.optimizer, step_size=config.lrstep, gamma=0.99)  
     
     best_loss  = np.inf
@@ -97,7 +97,7 @@ def modelTrainer(config):
             model.save_model(config.optimizer)
             print('model saved at loss: %.4e' % best_loss) 
             
-        scheduler.step()       
+        #scheduler.step()       
         
     print('Training completed! Model saved to %s'%config.model.model_dir)
         
