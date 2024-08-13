@@ -20,7 +20,7 @@ class ElectroThermalFunc():
         grad_value = self.gradop(graph, value_last)
         grad_v = grad_value[1]          # Voltage gradient
         print("grad_v")
-        print("grad_v)
+        print(grad_v)
         squared_abs_grad_v = torch.abs(grad_v)**2   
         temp = value_last[:,0:1]        # Temps values at time t
         sigma = f*(1+g*(temp-e))        # Sigma at time t
