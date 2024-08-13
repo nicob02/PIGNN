@@ -53,6 +53,9 @@ def modelTrainer(config):
     
     for epcho in range(1, config.epchoes + 1):  # Creates different ic and solves the problem, does this epoch # of times
 
+        print("Node positions (coordinates):")
+        print(graph.pos)
+        
         graph.x = config.ic(graph.pos)
         boundary_value = config.bc1(graph.pos)
         
