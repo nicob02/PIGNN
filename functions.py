@@ -48,7 +48,7 @@ class ElectroThermalFunc():
     
         return torch.cat((temp, volt), dim=-1)    # Concatenate along the last dimension
     
-    def electrode_condition(self, values_last, t, **argv):
+    def electrode_condition(self, pos, values_last, t):
 
         volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
         temp = values_last[:,0:1]
