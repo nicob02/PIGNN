@@ -47,7 +47,7 @@ def modelTrainer(config):
     model = config.model
     graph = config.graph
     #scheduler = torch.optim.lr_scheduler.StepLR(
-        config.optimizer, step_size=config.lrstep, gamma=0.99)  
+        #config.optimizer, step_size=config.lrstep, gamma=0.99)  
     
     best_loss  = np.inf
     
