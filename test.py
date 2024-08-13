@@ -26,40 +26,36 @@ bc2 = func_main.electrode_condition
 ic = func_main.init_condition
 
 dens = 100
-
-
-def get_test_config(graph, **kwargs):     
-       
-    test_config = parse_config()
-    model = kwargs['model'] # Extracts the model's dictioanry with the weights and biases values
-    setattr(test_config, 'rfa_params', rfa_params)
-    setattr(test_config, 'delta_t', delta_t)
-    setattr(test_config, 'device', device)   
-    setattr(test_config, 'ic', ic)
-    setattr(test_config, 'bc1', bc1)
-    setattr(test_config, 'bc2', bc2)
-    setattr(test_config, 'model', model)
-    setattr(test_config, 'test_steps', test_steps)
-    setattr(test_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref)
-    setattr(test_config, 'name', func_name)
-    setattr(test_config, 'ndim', out_ndim)
-    setattr(test_config, 'graph_modify', func_main.graph_modify)
-    setattr(test_config, 'graph', graph)
-    setattr(test_config, 'density', dens)
-
-    return test_config    
-
-#-----------------------------------------
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 graph = mesh.getGraphData()
 model = msgPassing(message_passing_num=1, node_input_size=4+out_ndim, 
                    edge_input_size=3, ndim=out_ndim, device=device, model_dir=ckptpath)
-model.load_model(ckptpath)
+model.load_model()
 model.to(device)
 model.eval()
 test_steps = 70
 
-test_config  = get_test_config(graph.to(device), model=model)
+test_config = parse_config()
+
+model = kwargs['model'] # Extracts the model's dictioanry with the weights and biases values
+setattr(test_config, 'rfa_params', rfa_params)
+setattr(test_config, 'delta_t', delta_t)
+setattr(test_config, 'device', device)   
+setattr(test_config, 'ic', ic)
+setattr(test_config, 'bc1', bc1)
+setattr(test_config, 'bc2', bc2)
+setattr(test_config, 'model', model)
+setattr(test_config, 'test_steps', test_steps)
+setattr(test_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref)
+setattr(test_config, 'name', func_name)
+setattr(test_config, 'ndim', out_ndim)
+setattr(test_config, 'graph_modify', func_main.graph_modify)
+setattr(test_config, 'graph', graph)
+setattr(test_config, 'density', dens)
+
+      
+
+#-----------------------------------------
 
 print('************* model test starts! ***********************')
 predict_results = modelTester(test_config)
