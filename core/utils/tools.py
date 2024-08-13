@@ -57,6 +57,8 @@ def modelTrainer(config):
         print(graph.pos)
         
         graph.x = config.ic(graph.pos)
+        print("Node positions (coordinates):")
+        print(graph.pos)
         boundary_value = config.bc1(graph.pos)
         
         print("Node positions (coordinates):")
