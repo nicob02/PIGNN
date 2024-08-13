@@ -53,7 +53,7 @@ class Simulator(nn.Module):
         
         torch.save(to_save_dict, self.model_dir)
         
-    def load_model(self, model_dir, optimizer=None):
+    def load_model(self, model_dir=None, optimizer=None):
 
         if model_dir is None:
             model_dir = self.model_dir
