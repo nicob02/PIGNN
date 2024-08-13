@@ -52,7 +52,8 @@ class ElectroThermalFunc():
 
         volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
         temp = values_last[:,0:1]
-
+        print("mavolt")
+        print(self.volt)
         return torch.cat((temp,volt),dim=-1)
     
     @classmethod
