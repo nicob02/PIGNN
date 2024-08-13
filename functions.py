@@ -17,15 +17,12 @@ class ElectroThermalFunc():
 
     def graph_modify(self, graph, value_last, **argv)->None:
         a,b,c,d,e,f,g = self.params
-        print("value_last after")
-        print(value_last)
+
         grad_value = self.gradop(graph, value_last)
-        print("original_g")
-        print(grad_value)
         grad_v = grad_value[1]          # Voltage gradient
-        print("grad_v")
-        print(grad_v)
-        squared_abs_grad_v = torch.abs(grad_v)**2   
+
+        # Calculate the squared magnitude of the gradient: |∇v|^2 = v_x^2 + v_y^2
+        squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
         temp = value_last[:,0:1]        # Temps values at time t
         sigma = f*(1+g*(temp-e))        # Sigma at time t
         print("sigma boi")
@@ -73,8 +70,8 @@ class ElectroThermalFunc():
         dvdt = (temp_this-temp_last)/self.delta_t
         grad_value = self.gradop(graph, values_this)
         grad_v = grad_value[1]          # Volt Gradient at t+1
+        squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
         sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
-        squared_abs_grad_v = torch.abs(grad_v)**2
         q = sigma*squared_abs_grad_v    # q at t+1
         lap_value = self.laplacianop(graph,values_this)
         lap_temp = lap_value[:,0:1]
