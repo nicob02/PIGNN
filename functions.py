@@ -17,6 +17,8 @@ class ElectroThermalFunc():
 
     def graph_modify(self, graph, value_last, **argv)->None:
         a,b,c,d,e,f,g = self.params
+        print("value_last after")
+        print(value_last)
         grad_value = self.gradop(graph, value_last)
         print("original_g")
         print(grad_value)
