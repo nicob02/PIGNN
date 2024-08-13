@@ -55,7 +55,6 @@ def modelTrainer(config):
     for epcho in range(1, config.epchoes + 1):  # Creates different ic and solves the problem, does this epoch # of times
 
         graph.x = config.ic(graph.pos)
-        boundary_value = config.bc1(graph.pos)
         
         begin_time = 0
         total_steps_loss = 0
@@ -73,6 +72,7 @@ def modelTrainer(config):
             config.graph_modify(graph, value_last=value_last)            
             predicted = model(graph)   
             # hard boundary         
+            boundary_value = config.bc1(graph.pos)
             predicted[on_boundary] = boundary_value[on_boundary] 
             electrode_value = config.bc2(graph.pos, predicted, this_time)
             predicted[on_electrode] = electrode_value[on_electrode]
