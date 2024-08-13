@@ -5,6 +5,7 @@ import numpy as np
 
 class ElectroThermalFunc(): 
 
+    func_name = 'rfa'
     def __init__(self, delta_t, params, volt=None) -> None:
         self.delta_t = delta_t
         self.params = params
