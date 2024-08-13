@@ -35,18 +35,16 @@ class ElectroThermalFunc():
 
 
     def boundary_condition(self, pos):
-        temp = pos[:, 0:1]
-        volt = pos[:, 1:2]
         
-        temp[:] = 310      # Temp value at boundary domain
-        volt[:] = 1        # Ground voltage at boundary domain
-
-        return  torch.cat((temp,volt),dim=-1) 
+        temp = torch.full_like(pos[:, 0:1], 310)  # Create a tensor filled with 310s for the temperature
+        volt = torch.full_like(pos[:, 1:2], 1)    # Create a tensor filled with 1s for the voltage
+    
+        return torch.cat((temp, volt), dim=-1)    # Concatenate along the last dimension
     
     def electrode_condition(self, values_last, t, **argv):
+
+        volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
         temp = values_last[:,0:1]
-        volt = values_last[:,1:2]
-        volt[:] = self.volt
 
         return torch.cat((temp,volt),dim=-1)
     
