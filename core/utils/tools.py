@@ -55,7 +55,12 @@ def modelTrainer(config):
 
         graph.x = config.ic(graph.pos)
         boundary_value = config.bc1(graph.pos)
-         
+        
+        print("Node positions (coordinates):")
+        print(graph.pos)
+        print("Edge configurations (pairs of node indices):")
+        print(graph.faces)
+        
         begin_time = 0
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
