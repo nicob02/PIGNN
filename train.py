@@ -9,12 +9,12 @@ device = torch.device(0)
 
 delta_t = 0.1 # Mess around with this
 
-func_name = 'rfa'
+#func_name = 'rfa'
 out_ndim = 2
 rfa_params = [1060 , 3600 , 0.512 , 244000 , 310 , 0.33 , 0.02 ]  # Go with Kelvin just in case
 
 
-ckptpath = 'checkpoint/simulator_%s.pth'%func_name  #Check this out
+ckptpath = 'checkpoint/simulator_%s.pth' % Func.func_name  #Check this out
 
 func_main = Func(delta_t=delta_t, params=rfa_params)
 
@@ -33,7 +33,7 @@ graph = mesh.getGraphData().to(device)
 
     
 train_config = parse_config()
-writer = SummaryWriter('runs/%s'%func_name)   
+writer = SummaryWriter('runs/%s' % Func.func_name)   
  
 setattr(train_config, 'pde', func_main.pde)
 setattr(train_config, 'graph_modify', func_main.graph_modify)        
@@ -48,7 +48,7 @@ setattr(train_config, 'train_steps', 60)    # 1 minute total simulation
 setattr(train_config, 'epchoes', 50)
 setattr(train_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref) 
 setattr(train_config, 'step_times', 1)
-setattr(train_config, 'name', func_name)
+#setattr(train_config, 'name', func_name)
 setattr(train_config, 'ndim', out_ndim)
 setattr(train_config, 'lrstep', 100) #learning rate decay epchoes
 setattr(train_config, 'writer', writer)
