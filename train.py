@@ -69,8 +69,7 @@ plt.triplot(mesh.pos[:, 0], mesh.pos[:, 1], mesh.faces.T, color='lightgray')
 plt.scatter(boundary_positions[:, 0], boundary_positions[:, 1], color='blue', s=10, label='Boundary Nodes')
 
 # Plot the electrode nodes
-if has_electrode:
-    plt.scatter(electrode_positions[:, 0], electrode_positions[:, 1], color='red', s=10, label='Electrode Nodes')
+plt.scatter(electrode_positions[:, 0], electrode_positions[:, 1], color='red', s=10, label='Electrode Nodes')
 
 plt.title('Boundary and Electrode Nodes')
 plt.xlabel('X-axis')
