@@ -61,8 +61,7 @@ class ElectroThermalFunc():
         a,b,c,d,e,f,g = self.params
         values_last = torch.abs(values_last)
         values_this = torch.abs(values_this)
-        #values_this = (values_this - torch.mean(values_this, dim=0)) / torch.std(values_this, dim=0)
-        #values_last = (values_last - torch.mean(values_last, dim=0)) / torch.std(values_last, dim=0)
+
         max_temp = 400  # Maximum realistic temperature
         min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
         min_volt = 0
@@ -88,8 +87,6 @@ class ElectroThermalFunc():
         sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
         q = sigma*squared_abs_grad_v    # q at t+1
        
-        print("squared_abs_grad_v")
-        print(squared_abs_grad_v)
         print("values_this")
         print(values_this)
         print("values_last")
@@ -104,7 +101,7 @@ class ElectroThermalFunc():
 
         print("lap_volt")
         print(lap_volt)
-        loss_volt = -sigma*lap_volt
+        loss_volt = sigma*lap_volt
         print("loss_volt")
         print(loss_volt)
 
