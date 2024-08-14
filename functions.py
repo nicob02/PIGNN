@@ -76,7 +76,9 @@ class ElectroThermalFunc():
         
         temp_this = torch.clamp(temp_this, min_temp, max_temp)
         volt_this = torch.clamp(volt_this, min_volt, max_volt)
-
+        temp_last = torch.clamp(temp_last, min_temp, max_temp)
+        volt_last = torch.clamp(volt_last, min_volt, max_volt)
+        
         values_this = torch.cat((temp_this, volt_this), dim=1)
         
         dvdt = torch.abs((temp_this-temp_last)/self.delta_t)
