@@ -28,8 +28,26 @@ model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
+
 print("mesh")
-print(mesh)
+import matplotlib.pyplot as plt
+
+# Assuming your ElectrodeMesh class has attributes like pos (positions of nodes) and faces (connectivity)
+mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
+
+# Extract node positions and connectivity
+pos = mesh.pos  # Shape (N, 2), where N is the number of nodes
+faces = mesh.faces  # Shape (3, M), where M is the number of triangular elements
+
+# Plot the mesh
+plt.figure(figsize=(8, 8))
+plt.triplot(pos[:, 0], pos[:, 1], faces.T, color='blue')
+plt.scatter(pos[:, 0], pos[:, 1], color='red', s=10)
+plt.title('Mesh Geometry')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.show()
+
 graph = mesh.getGraphData().to(device)
 
 
