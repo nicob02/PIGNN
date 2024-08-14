@@ -79,7 +79,7 @@ class ElectroThermalFunc():
         volt_last = torch.clamp(volt_last, min_volt, max_volt)
         
         values_this = torch.cat((temp_this, volt_this), dim=1)
-        values_last = torch.cat(temp_last, volt_last), dim=1)
+        values_last = torch.cat((temp_last, volt_last), dim=1)
         dvdt = torch.abs((temp_this-temp_last)/self.delta_t)
         grad_value = self.gradop(graph, values_this)
         grad_v = grad_value[1]          # Volt Gradient at t+1
