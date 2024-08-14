@@ -60,10 +60,9 @@ def modelTrainer(config):
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
         on_electrode = torch.squeeze(graph.node_type == config.NodeTypesRef.electrode)  
-        print("on_boundary")
-        print(on_boundary)
-        print("on_electrode")
-        print(on_electrode)
+        #has_electrode = torch.any(on_electrode)
+        #print(f"on_electrode has any True values: {has_electrode}")
+
         config.optimizer.zero_grad()
             
         losses = {}
@@ -81,7 +80,7 @@ def modelTrainer(config):
             electrode_value = config.bc2(graph.pos, predicted, this_time)
             predicted[on_electrode] = electrode_value[on_electrode]
 
-            pde_loss = config.pde(graph, value_last, predicted)
+            pde_loss = config.pde(graph, values_last=value_last, values_this=predicted)
             pde_loss[on_boundary] = 0
             pde_loss[on_electrode] = 0
             loss = torch.norm(pde_loss)/pde_loss.numel()
