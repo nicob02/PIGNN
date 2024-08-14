@@ -26,7 +26,7 @@ bc2 = func_main.electrode_condition
 model = msgPassing(message_passing_num=1, node_input_size=4+out_ndim, edge_input_size=3, 
                    ndim=out_ndim, device=device, model_dir=ckptpath)    # Mess with MPN# to 2 or 3
 model.to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 
