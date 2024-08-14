@@ -59,6 +59,8 @@ class ElectroThermalFunc():
     def pde(self, graph, values_last, values_this, **argv):
 
         a,b,c,d,e,f,g = self.params
+        values_last = torch.abs(values_last)
+        values_this = torch.abs(values_this)
         temp_last = values_last[:,0:1]  # Temp at time t
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
