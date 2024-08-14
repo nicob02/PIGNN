@@ -28,6 +28,8 @@ model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
+print("mesh")
+print(mesh)
 graph = mesh.getGraphData().to(device)
 
 
