@@ -85,14 +85,14 @@ class ElectroThermalFunc():
         
         
         loss_temp = (a*b*dvdt) -q -(c*lap_temp) -(d*(e-temp_this))
-        print("lap_temp")
-        print(lap_temp)
-        print("q")
-        print(q)
+        #print("lap_temp")
+        #print(lap_temp)
+        #print("q")
+        #print(q)
 
         loss_temp = 0.01*loss_temp
-        print("loss_temp")
-        print(loss_temp)
+        #print("loss_temp")
+        #print(loss_temp)
     
         return torch.cat([loss_temp,loss_volt],axis=1)
 
