@@ -33,7 +33,7 @@ class ElectroThermalFunc():
     def init_condition(self, pos):
         
         temp = torch.full_like(pos[:, 0:1], 310)  # Create a tensor filled with 310s for the temperature
-        volt = torch.full_like(pos[:, 1:2], 1)    # Create a tensor filled with 1s for the voltage
+        volt = torch.full_like(pos[:, 1:2], 0)    # Create a tensor filled with 1s for the voltage
     
         return torch.cat((temp, volt), dim=-1)    # Concatenate along the last dimension
 
@@ -41,7 +41,7 @@ class ElectroThermalFunc():
     def boundary_condition(self, pos):
         
         temp = torch.full_like(pos[:, 0:1], 310)  # Create a tensor filled with 310s for the temperature
-        volt = torch.full_like(pos[:, 1:2], 1)    # Create a tensor filled with 1s for the voltage
+        volt = torch.full_like(pos[:, 1:2], 0)    # Create a tensor filled with 1s for the voltage
     
         return torch.cat((temp, volt), dim=-1)    # Concatenate along the last dimension
     
