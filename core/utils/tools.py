@@ -46,8 +46,8 @@ def modelTrainer(config):
     delta_t = config.delta_t
     model = config.model
     graph = config.graph
-    #scheduler = torch.optim.lr_scheduler.StepLR(
-        #config.optimizer, step_size=config.lrstep, gamma=0.99)  
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        config.optimizer, step_size=config.lrstep, gamma=0.99)  
     config.optimizer.zero_grad()
     
     best_loss  = np.inf
@@ -60,8 +60,8 @@ def modelTrainer(config):
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
         on_electrode = torch.squeeze(graph.node_type == config.NodeTypesRef.electrode)  
-        #has_electrode = torch.any(on_electrode)
-        #print(f"on_electrode has any True values: {has_electrode}")
+      
+     
 
         config.optimizer.zero_grad()
             
@@ -101,7 +101,7 @@ def modelTrainer(config):
             model.save_model(config.optimizer)
             print('model saved at loss: %.4e' % best_loss) 
             
-        #scheduler.step()       
+        scheduler.step()       
         
     print('Training completed! Model saved to %s'%config.model.model_dir)
         
