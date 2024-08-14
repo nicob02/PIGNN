@@ -74,7 +74,7 @@ class ElectroThermalFunc():
         print("q")
         print(q)
         print("grad_v")
-        prin(grad_v)
+        print(grad_v)
         print("squared_abs_grad_v")
         print(squared_abs_grad_v)
         print("values_this")
