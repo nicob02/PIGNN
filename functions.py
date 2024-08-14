@@ -76,10 +76,7 @@ class ElectroThermalFunc():
         lap_temp = lap_value[:,0:1]
         lap_volt = lap_value[:,1:2]
 
-        print("lap_temp")
-        print(lap_temp)
-        print("q")
-        print(q)
+ 
         #abs_lap_v = torch.sqrt(lap_volt ** 2)
         
         loss_volt = sigma*lap_volt
@@ -88,6 +85,20 @@ class ElectroThermalFunc():
         
         
         loss_temp = (a*b*dvdt) -q -(c*lap_temp) -(d*(e-temp_this))
+        print("lap_temp")
+        print(lap_temp)
+        print("q")
+        print(q)
+        print("a")
+        print(a)
+        print("b")
+        print(b)
+        print("c")
+        print(c)
+        print("d")
+        print(d)
+        print("d")
+        print(d)
         loss_temp = 0.001*loss_temp
         print("loss_temp")
         print(loss_temp)
