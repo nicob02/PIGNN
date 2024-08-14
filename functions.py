@@ -79,6 +79,8 @@ class ElectroThermalFunc():
         print(squared_abs_grad_v)
         print("values_this")
         print(values_this)
+        print("values_last")
+        print(values_last)
         lap_value = self.laplacianop(graph,values_this)
 
         lap_temp = lap_value[:,0:1]
