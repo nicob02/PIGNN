@@ -73,7 +73,7 @@ class ElectroThermalFunc():
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
 
-        epsilon = 1e-8
+        epsilon = 1e-6
         temp_this = torch.clamp(temp_this + epsilon, min_temp, max_temp)
         volt_this = torch.clamp(volt_this + epsilon, min_volt, max_volt)
 
@@ -110,6 +110,12 @@ class ElectroThermalFunc():
         loss_temp = loss_temp / (torch.max(torch.abs(loss_temp)) + epsilon)
         loss_volt = loss_volt / (torch.max(torch.abs(loss_volt)) + epsilon)
 
+        max_loss_temp = torch.max(torch.abs(loss_temp))
+        max_loss_volt = torch.max(torch.abs(loss_volt))
+
+        print("Max loss_temp:", max_loss_temp)
+        print("Max loss_volt:", max_loss_volt)
+        
         print("loss_volt")
         print(loss_volt)
         print("loss_temp")
