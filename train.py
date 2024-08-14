@@ -54,14 +54,15 @@ on_electrode = torch.squeeze(graph.node_type == ElectrodeMesh.node_type_ref.elec
 has_electrode = torch.any(on_electrode)
 print(f"on_electrode has any True values: {has_electrode}")
 
-electrode_indices = torch.where(on_electrode)[0]
-boundary_indices = torch.where(on_boundary)[0]
+# Get indices and move them to CPU
+electrode_indices = torch.where(on_electrode)[0].cpu()
+boundary_indices = torch.where(on_boundary)[0].cpu()
 
 print(f"Indices of on_electrode nodes: {electrode_indices}")
 print(f"Indices of on_boundary nodes: {boundary_indices}")
 
-electrode_positions = mesh.pos[electrode_indices]
-boundary_positions = mesh.pos[boundary_indices]
+electrode_positions = mesh.pos[electrode_indices.numpy()]
+boundary_positions = mesh.pos[boundary_indices.numpy()]
 
 plt.figure(figsize=(8, 8))
 
