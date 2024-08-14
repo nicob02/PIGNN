@@ -63,10 +63,15 @@ class ElectroThermalFunc():
         values_this = torch.abs(values_this)
         values_this = (values_this - torch.mean(values_this, dim=0)) / torch.std(values_this, dim=0)
         values_last = (values_last - torch.mean(values_last, dim=0)) / torch.std(values_last, dim=0)
+        max_temp = 400  # Maximum realistic temperature
+        min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
+        
+
         temp_last = values_last[:,0:1]  # Temp at time t
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
+        temp_this = torch.clamp(temp_this, min_temp, max_temp)
         dvdt = torch.abs((temp_this-temp_last)/self.delta_t)
         grad_value = self.gradop(graph, values_this)
         grad_v = grad_value[1]          # Volt Gradient at t+1
