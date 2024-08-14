@@ -48,18 +48,14 @@ plt.ylabel('Y-axis')
 plt.savefig('mesh_plot.png')  # Save the figure to a file
 plt.show()
 
+print("bc1 and bc2 nodes")
 
 on_boundary = torch.squeeze(graph.node_type == ElectrodeMesh.node_type_ref.boundary)  
 on_electrode = torch.squeeze(graph.node_type == ElectrodeMesh.node_type_ref.electrode)  
-has_electrode = torch.any(on_electrode)
-print(f"on_electrode has any True values: {has_electrode}")
 
 # Get indices and move them to CPU
 electrode_indices = torch.where(on_electrode)[0].cpu()
 boundary_indices = torch.where(on_boundary)[0].cpu()
-
-print(f"Indices of on_electrode nodes: {electrode_indices}")
-print(f"Indices of on_boundary nodes: {boundary_indices}")
 
 electrode_positions = mesh.pos[electrode_indices.numpy()]
 boundary_positions = mesh.pos[boundary_indices.numpy()]
