@@ -72,12 +72,14 @@ class ElectroThermalFunc():
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
-        
-        temp_this = torch.clamp(temp_this, min_temp, max_temp)
-        volt_this = torch.clamp(volt_this, min_volt, max_volt)
+
+        epsilon = 1e-8
+        temp_this = torch.clamp(temp_this + epsilon, min_temp, max_temp)
+        volt_this = torch.clamp(volt_this + epsilon, min_volt, max_volt)
+
         temp_last = torch.clamp(temp_last, min_temp, max_temp)
         volt_last = torch.clamp(volt_last, min_volt, max_volt)
-        
+
         values_this = torch.cat((temp_this, volt_this), dim=1)
         values_last = torch.cat((temp_last, volt_last), dim=1)
         dvdt = torch.abs((temp_this-temp_last)/self.delta_t)
