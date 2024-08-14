@@ -43,8 +43,8 @@ faces = mesh.faces  # Shape (3, M), where M is the number of triangular elements
 
 # Plot the mesh
 plt.figure(figsize=(8, 8))
-plt.triplot(pos[:, 0], pos[:, 1], faces.T, color='blue')
-plt.scatter(pos[:, 0], pos[:, 1], color='red', s=10)
+plt.triplot(pos[:, 0], pos[:, 1], faces.T, color='blue', linewidth=0.5)
+plt.scatter(pos[:, 0], pos[:, 1], color='red', s=1)  
 plt.title('Mesh Geometry')
 plt.xlabel('X-axis')
 plt.ylabel('Y-axis')
