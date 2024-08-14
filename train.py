@@ -7,7 +7,7 @@ from functions import ElectroThermalFunc as Func
 
 device = torch.device(0)
 
-delta_t = 0.1 # Mess around with this
+delta_t = 0.01 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
