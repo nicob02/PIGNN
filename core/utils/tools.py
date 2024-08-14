@@ -59,7 +59,11 @@ def modelTrainer(config):
         begin_time = 0
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
-        on_electrode = torch.squeeze(graph.node_type == config.NodeTypesRef.electrode)     
+        on_electrode = torch.squeeze(graph.node_type == config.NodeTypesRef.electrode)  
+        print("on_boundary")
+        print(on_boundary)
+        print("on_electrode")
+        print(on_electrode)
         config.optimizer.zero_grad()
             
         losses = {}
