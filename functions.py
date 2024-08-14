@@ -69,8 +69,8 @@ class ElectroThermalFunc():
         squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
         sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
         q = sigma*squared_abs_grad_v    # q at t+1
-        print("values_this")
-        print(values_this)
+        #print("values_this")
+        #print(values_this)
         lap_value = self.laplacianop(graph,values_this)
 
         lap_temp = lap_value[:,0:1]
@@ -80,8 +80,8 @@ class ElectroThermalFunc():
         #abs_lap_v = torch.sqrt(lap_volt ** 2)
         
         loss_volt = sigma*lap_volt
-        print("loss_volt")
-        print(loss_volt)
+        #print("loss_volt")
+        #print(loss_volt)
         
         
         loss_temp = (a*b*dvdt) -q -(c*lap_temp) -(d*(e-temp_this))
