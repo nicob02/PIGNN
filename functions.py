@@ -62,7 +62,7 @@ class ElectroThermalFunc():
         values_last = torch.abs(values_last)
         values_this = torch.abs(values_this)
 
-        max_temp = 400  # Maximum realistic temperature
+        max_temp = 380  # Maximum realistic temperature
         min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
         min_volt = 0
         max_volt = 25
