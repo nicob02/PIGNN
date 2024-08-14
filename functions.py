@@ -83,8 +83,6 @@ class ElectroThermalFunc():
         print("loss_volt")
         print(loss_volt)
 
-        #loss_temp = 0.1 * loss_temp / torch.max(torch.abs(loss_temp))
-        #loss_volt = loss_volt / torch.max(torch.abs(loss_volt))
 
         
         loss_temp = q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt)
@@ -92,8 +90,13 @@ class ElectroThermalFunc():
         #print(lap_temp)
         #print("q")
         #print(q)
+        loss_temp = loss_temp / torch.max(torch.abs(loss_temp))
+        loss_volt = loss_volt / torch.max(torch.abs(loss_volt))
 
-        loss_temp = 0.0001*loss_temp
+        print("loss_volt")
+        print(loss_volt)
+        
+        #loss_temp = 0.0001*loss_temp
         print("loss_temp")
         print(loss_temp)
     
