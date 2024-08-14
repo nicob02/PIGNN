@@ -85,7 +85,7 @@ class ElectroThermalFunc():
 
 
         
-        loss_temp = q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt)
+        loss_temp = -(q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt))
         #print("lap_temp")
         #print(lap_temp)
         #print("q")
