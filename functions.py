@@ -89,17 +89,8 @@ class ElectroThermalFunc():
         print(lap_temp)
         print("q")
         print(q)
-        print("a")
-        print(a)
-        print("b")
-        print(b)
-        print("c")
-        print(c)
-        print("d")
-        print(d)
-        print("e")
-        print(e)
-        loss_temp = 0.001*loss_temp
+
+        loss_temp = 0.1*loss_temp
         print("loss_temp")
         print(loss_temp)
     
