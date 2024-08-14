@@ -98,7 +98,7 @@ class ElectroThermalFunc():
 
         #loss_temp = loss_temp / torch.max(torch.abs(loss_temp))
         
-        #loss_temp = 0.0001*loss_temp
+        loss_temp = 0.0001*loss_temp
         print("loss_temp")
         print(loss_temp)
     
