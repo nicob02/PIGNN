@@ -4,6 +4,7 @@ from core.geometry import ElectrodeMesh
 from torch.utils.tensorboard import SummaryWriter
 from core.utils.tools import parse_config, modelTrainer
 from functions import ElectroThermalFunc as Func
+import matplotlib.pyplot as plt
 
 device = torch.device(0)
 
@@ -30,8 +31,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 
 print("mesh")
-%matplotlib inline
-import matplotlib.pyplot as plt
+
 
 
 # Assuming your ElectrodeMesh class has attributes like pos (positions of nodes) and faces (connectivity)
@@ -48,6 +48,7 @@ plt.scatter(pos[:, 0], pos[:, 1], color='red', s=10)
 plt.title('Mesh Geometry')
 plt.xlabel('X-axis')
 plt.ylabel('Y-axis')
+plt.savefig('mesh_plot.png')  # Save the figure to a file
 plt.show()
 
 graph = mesh.getGraphData().to(device)
