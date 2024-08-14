@@ -50,10 +50,11 @@ class ElectrodeMesh():
             T.Cartesian(norm=False), 
             T.Distance(norm=False)
             ])
-        random_center_electrode_x = np.random.uniform(0.05,0.95)   #Electrode probe is placed randomly at each training iteration
-        random_center_electrode_y = np.random.uniform(0.1,0.9)
-        lb_electrode = [(random_center_electrode_x-0.01),(random_center_electrode_y-0.06)]
-        ru_electrode = [(random_center_electrode_x+0.01),(random_center_electrode_y+0.06)]
+        #random_center_electrode_x = np.random.uniform(0.05,0.95)   #Electrode probe is placed randomly at each training iteration
+        #random_center_electrode_y = np.random.uniform(0.1,0.9)
+        
+        lb_electrode = [(0.48),(0.45)]
+        ru_electrode = [(0.52),(0.55)]
         domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain
         electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
         geometry = domain + electrode_probe
