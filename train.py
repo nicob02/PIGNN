@@ -32,11 +32,6 @@ mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 
 print("mesh")
 
-
-
-# Assuming your ElectrodeMesh class has attributes like pos (positions of nodes) and faces (connectivity)
-mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
-
 # Extract node positions and connectivity
 pos = mesh.pos  # Shape (N, 2), where N is the number of nodes
 faces = mesh.faces  # Shape (3, M), where M is the number of triangular elements
@@ -49,6 +44,40 @@ plt.title('Mesh Geometry')
 plt.xlabel('X-axis')
 plt.ylabel('Y-axis')
 plt.savefig('mesh_plot.png')  # Save the figure to a file
+plt.show()
+
+
+on_boundary = torch.squeeze(graph.node_type == ElectrodeMesh.node_type_ref.boundary)  
+on_electrode = torch.squeeze(graph.node_type == ElectrodeMesh.node_type_ref.electrode)  
+has_electrode = torch.any(on_electrode)
+print(f"on_electrode has any True values: {has_electrode}")
+
+electrode_indices = torch.where(on_electrode)[0]
+boundary_indices = torch.where(on_boundary)[0]
+
+print(f"Indices of on_electrode nodes: {electrode_indices}")
+print(f"Indices of on_boundary nodes: {boundary_indices}")
+
+electrode_positions = mesh.pos[electrode_indices]
+boundary_positions = mesh.pos[boundary_indices]
+
+plt.figure(figsize=(8, 8))
+
+# Plot the entire mesh
+plt.triplot(mesh.pos[:, 0], mesh.pos[:, 1], mesh.faces.T, color='lightgray')
+
+# Plot the boundary nodes
+plt.scatter(boundary_positions[:, 0], boundary_positions[:, 1], color='blue', s=10, label='Boundary Nodes')
+
+# Plot the electrode nodes
+if has_electrode:
+    plt.scatter(electrode_positions[:, 0], electrode_positions[:, 1], color='red', s=10, label='Electrode Nodes')
+
+plt.title('Boundary and Electrode Nodes')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.legend()
+plt.savefig('bc1bc2_plot.png')  # Save the figure to a file
 plt.show()
 
 graph = mesh.getGraphData().to(device)
@@ -77,5 +106,6 @@ setattr(train_config, 'lrstep', 100) #learning rate decay epchoes
 setattr(train_config, 'writer', writer)
 setattr(train_config, 'func_main', func_main)
 
+
 modelTrainer(train_config)
-    
+
