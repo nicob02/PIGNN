@@ -61,6 +61,8 @@ class ElectroThermalFunc():
         a,b,c,d,e,f,g = self.params
         values_last = torch.abs(values_last)
         values_this = torch.abs(values_this)
+        values_this = (values_this - torch.mean(values_this, dim=0)) / torch.std(values_this, dim=0)
+        values_last = (values_last - torch.mean(values_last, dim=0)) / torch.std(values_last, dim=0)
         temp_last = values_last[:,0:1]  # Temp at time t
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
