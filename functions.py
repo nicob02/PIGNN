@@ -93,7 +93,7 @@ class ElectroThermalFunc():
         #print("q")
         #print(q)
 
-        loss_temp = 0.000001*loss_temp
+        loss_temp = 0.0001*loss_temp
         print("loss_temp")
         print(loss_temp)
     
