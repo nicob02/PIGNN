@@ -65,9 +65,11 @@ class ElectroThermalFunc():
         values_last = (values_last - torch.mean(values_last, dim=0)) / torch.std(values_last, dim=0)
         max_temp = 400  # Maximum realistic temperature
         min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
-
+        min_volt = 0
+        max_volt = 25
         #temp_this = torch.clamp(temp_this, min_temp, max_temp)
-
+        #volt_this = torch.clamp(volt_this, min_volt, max_volt)
+        
         temp_last = values_last[:,0:1]  # Temp at time t
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
