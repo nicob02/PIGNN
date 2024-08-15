@@ -82,10 +82,21 @@ class ElectroThermalFunc():
 
         values_this = torch.cat((temp_this, volt_this), dim=1)
         values_last = torch.cat((temp_last, volt_last), dim=1)
+
+        if torch.isnan(values_this).any() or torch.isnan(values_last).any():
+            print("Warning: NaN detected in values_this or values_last after clamping!")
+    
         dvdt = torch.abs((temp_this-temp_last)/self.delta_t)
+        if torch.isnan(dvdt).any():
+            print("Warning: NaN detected in dvdt!")
+            
         grad_value = self.gradop(graph, values_this)
         grad_v = grad_value[1]          # Volt Gradient at t+1
         squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
+
+        if torch.isnan(squared_abs_grad_v).any():
+            print("Warning: NaN detected in squared_abs_grad_v!")
+            
         sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
         q = sigma*squared_abs_grad_v    # q at t+1
        
@@ -94,15 +105,18 @@ class ElectroThermalFunc():
         print("values_last")
         print(values_last)
         lap_value = self.laplacianop(graph,values_this)
-
+    
         lap_temp = lap_value[:,0:1]
         lap_volt = lap_value[:,1:2]
 
- 
+        if torch.isnan(lap_temp).any() or torch.isnan(lap_volt).any():
+            print("Warning: NaN detected in lap_temp or lap_volt!")
+            
         loss_volt = sigma*lap_volt
-
-        
         loss_temp = -0.01*(q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt))
+
+        if torch.isnan(loss_temp).any() or torch.isnan(loss_volt).any():
+            print("Warning: NaN detected in loss_temp or loss_volt!")
 
         combined_max = torch.max(torch.abs(torch.cat((loss_temp.view(-1), loss_volt.view(-1)))))
 
