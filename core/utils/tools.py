@@ -54,7 +54,8 @@ def modelTrainer(config):
     for epcho in range(1, config.epchoes + 1):  # Creates different ic and solves the problem, does this epoch # of times
 
         graph.x = config.ic(graph.pos)
-        
+        print("ic_Graphx")
+        print(graph.x)
         begin_time = 0
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
