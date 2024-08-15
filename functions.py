@@ -73,6 +73,13 @@ class ElectroThermalFunc():
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
 
+        print("Before clamping:")
+        print("temp_this:", temp_this)
+        print("volt_this:", volt_this)
+
+        if torch.isnan(temp_this).any() or torch.isnan(volt_this).any():
+            print("Warning: NaN detected in temp_this or volt_this before clamping!")
+    
         epsilon = 1e-4
         temp_this = torch.clamp(temp_this + epsilon, min_temp, max_temp)
         volt_this = torch.clamp(volt_this + epsilon, min_volt, max_volt)
