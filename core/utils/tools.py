@@ -72,10 +72,7 @@ def modelTrainer(config):
             if torch.isnan(value_last).any():
                 print(f"Warning: NaN detected in value_last at step {step}")
                 
-            config.graph_modify(graph, value_last=value_last)        
-            if torch.isnan(graph.x).any():
-                print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
-            predicted = model(graph)   
+           
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted at step {step}")
             # hard boundary         
@@ -88,7 +85,11 @@ def modelTrainer(config):
             predicted[on_electrode] = electrode_value[on_electrode]
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted after applying electrode conditions at step {step}")
-
+                
+            config.graph_modify(graph, value_last=value_last)        
+            if torch.isnan(graph.x).any():
+                print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
+         
 
             pde_loss = config.pde(graph, values_last=value_last, values_this=predicted)
             if torch.isnan(pde_loss).any():
