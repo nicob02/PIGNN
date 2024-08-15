@@ -31,10 +31,15 @@ class Encoder(nn.Module):
         graph = copy_geometric_data(graph_input)
         node_attr, _, edge_attr, _ = decompose_graph(graph)
         node_ = self.nb_encoder(node_attr)
+        if torch.isnan(node_).any():
+            print("Warning: NaN detected in node_ after node encoding in Encoder")
         edge_ = self.eb_encoder(edge_attr)
-        
+        if torch.isnan(edge_).any():
+            print("Warning: NaN detected in edge_ after edge encoding in Encoder")
         graph.x = node_
-        graph.edge_attr = edge_     
+        graph.edge_attr = edge_  
+        if torch.isnan(graph.x).any():
+            print("Warning: NaN detected in graph.x before returning from Encoder")
         return graph
 
 
