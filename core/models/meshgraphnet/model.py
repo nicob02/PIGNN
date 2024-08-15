@@ -101,7 +101,7 @@ class EncoderProcesserDecoder(nn.Module):
         for model in self.processer_list:
             graph = model(graph)
             if torch.isnan(graph.x).any():
-                print(f"Warning: NaN detected in graph.x after GnBlock {i+1} in EncoderProcesserDecoder")
+                print(f"Warning: NaN detected in graph.x after GnBlock in EncoderProcesserDecoder")
 
         decoded = self.decoder(graph)
         if torch.isnan(decoded).any():
