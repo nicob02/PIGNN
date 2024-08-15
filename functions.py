@@ -27,17 +27,12 @@ class ElectroThermalFunc():
         temp = value_last[:,0:1]        # Temps values at time t
         sigma = f*(1+g*(temp-e))        # Sigma at time t
         q = sigma*squared_abs_grad_v    # Heat at time t
-        print("graph.x_old")
-        print(graph.x)
-        
-        print("q")
-        print(q)
+
         if torch.isnan(q).any():
             print(f"Warning: NaN detected in predicted after q")
 
         graph.x = torch.cat((graph.x,q), dim=-1)    # Append new Q value at t to the input
-        print("graph.xater")
-        print(graph.x)
+
         return graph    
 
     def init_condition(self, pos):
@@ -84,9 +79,6 @@ class ElectroThermalFunc():
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
 
-        print("Before clamping:")
-        print("temp_this:", temp_this)
-        print("volt_this:", volt_this)
 
         if torch.isnan(temp_this).any() or torch.isnan(volt_this).any():
             print("Warning: NaN detected in temp_this or volt_this before clamping!")
@@ -140,13 +132,6 @@ class ElectroThermalFunc():
 
         loss_temp_normalized = loss_temp / (combined_max + epsilon)
         loss_volt_normalized = loss_volt / (combined_max + epsilon)
-
-
-        
-        print("loss_volt")
-        print(loss_volt)
-        print("loss_temp")
-        print(loss_temp)
     
         return torch.cat([loss_temp,loss_volt],axis=1)
 
