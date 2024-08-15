@@ -102,7 +102,7 @@ class ElectroThermalFunc():
         loss_volt = sigma*lap_volt
 
         
-        loss_temp = -0.001*(q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt))
+        loss_temp = -0.0001*(q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt))
 
         combined_max = torch.max(torch.abs(torch.cat((loss_temp.view(-1), loss_volt.view(-1)))))
 
