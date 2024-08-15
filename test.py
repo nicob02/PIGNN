@@ -74,7 +74,7 @@ predict_results = modelTester(test_config)
 
 #-----------------plotting----------------------------
 
-results_root = 'NMGNN_%s_Results/'%(test_config.name)
+#results_root = 'NMGNN_%s_Results/'%(test_config.name)
 
 #aRMSE_Fig_save_dir = results_root + 'aRMSE_Fig/'
 #os.makedirs(aRMSE_Fig_save_dir, exist_ok = True)
