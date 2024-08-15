@@ -32,6 +32,8 @@ class ElectroThermalFunc():
         q_old = graph.x[:,2:3]
         print("q_old")
         print(q_old)
+        print("q")
+        print(q)
         q_old = q
         print("q_oldafter")
         print(q_old)
