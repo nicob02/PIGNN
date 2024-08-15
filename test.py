@@ -25,7 +25,7 @@ bc1 = func_main.boundary_condition
 bc2 = func_main.electrode_condition
 ic = func_main.init_condition
 
-dens = 100
+dens = 70
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 graph = mesh.getGraphData()
 model = msgPassing(message_passing_num=1, node_input_size=3+out_ndim, 
