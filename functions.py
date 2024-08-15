@@ -35,7 +35,7 @@ class ElectroThermalFunc():
 
         graph.x = torch.cat((graph.x,q), dim=-1)    # Append new Q value at t to the input
         print("graph.xater")
-        print("graph.x)
+        print(graph.x)
         return graph    
 
     def init_condition(self, pos):
