@@ -30,7 +30,7 @@ mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 graph = mesh.getGraphData()
 model = msgPassing(message_passing_num=1, node_input_size=3+out_ndim, 
                    edge_input_size=3, ndim=out_ndim, device=device, model_dir=ckptpath)
-model.load_model()
+model.load_model(ckptpath)
 model.to(device)
 model.eval()
 test_steps = 70
