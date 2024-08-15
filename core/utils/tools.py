@@ -74,7 +74,7 @@ def modelTrainer(config):
             # hard boundary         
             boundary_value = config.bc1(graph.pos)
             predicted[on_boundary] = boundary_value[on_boundary] 
-            electrode_value = config.bc2(graph.pos, predicted, this_time)
+            electrode_value = config.bc2(graph.pos, predicted, this_time)    #Check later whether temp_last values is good
             predicted[on_electrode] = electrode_value[on_electrode]
 
             pde_loss = config.pde(graph, values_last=value_last, values_this=predicted)
