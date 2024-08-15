@@ -88,10 +88,7 @@ def modelTrainer(config):
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted after applying electrode conditions at step {step}")
                 
-            config.graph_modify(graph, value_last=predicted)        
-            if torch.isnan(graph.x).any():
-                print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
-         
+
 
             pde_loss = config.pde(graph, values_last=value_last, values_this=predicted)
             if torch.isnan(pde_loss).any():
@@ -102,6 +99,11 @@ def modelTrainer(config):
                 
             loss.backward()
             graph.x = predicted.detach()
+
+            config.graph_modify(graph, value_last=predicted)        
+            if torch.isnan(graph.x).any():
+                print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
+         
             
             losses.update({"step%d" % step: loss.detach()})
             total_steps_loss += loss.item()/config.train_steps
