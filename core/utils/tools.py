@@ -88,7 +88,7 @@ def modelTrainer(config):
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted after applying electrode conditions at step {step}")
                 
-            config.graph_modify(graph, value_last=value_last)        
+            config.graph_modify(graph, value_last=predicted)        
             if torch.isnan(graph.x).any():
                 print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
          
