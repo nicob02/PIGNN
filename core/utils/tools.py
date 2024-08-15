@@ -72,7 +72,8 @@ def modelTrainer(config):
             if torch.isnan(value_last).any():
                 print(f"Warning: NaN detected in value_last at step {step}")
                 
-           
+            predicted = model(graph)  
+            
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted at step {step}")
             # hard boundary         
