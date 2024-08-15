@@ -100,9 +100,9 @@ def modelTrainer(config):
             loss.backward()
             graph.x = predicted.detach()
 
-            config.graph_modify(graph, value_last=graph.x)        
-            if torch.isnan(graph.x).any():
-                print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
+            #config.graph_modify(graph, value_last=graph.x)        
+            #if torch.isnan(graph.x).any():
+                #print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
          
             
             losses.update({"step%d" % step: loss.detach()})
