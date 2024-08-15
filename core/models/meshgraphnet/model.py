@@ -95,10 +95,18 @@ class EncoderProcesserDecoder(nn.Module):
 
     def forward(self, graph_input):
         graph= self.encoder(graph_input)
+        if torch.isnan(graph.x).any():
+            print("Warning: NaN detected in graph.x after encoder in EncoderProcesserDecoder")
+            
         for model in self.processer_list:
             graph = model(graph)
+            if torch.isnan(graph.x).any():
+                print(f"Warning: NaN detected in graph.x after GnBlock {i+1} in EncoderProcesserDecoder")
+
         decoded = self.decoder(graph)
-        
+        if torch.isnan(decoded).any():
+            print("Warning: NaN detected in decoded output in EncoderProcesserDecoder")
+
         return decoded
 
 
