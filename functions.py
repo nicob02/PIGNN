@@ -32,6 +32,8 @@ class ElectroThermalFunc():
         
         print("q")
         print(q)
+        if torch.isnan(q).any():
+            print(f"Warning: NaN detected in predicted after q")
 
         graph.x = torch.cat((graph.x,q), dim=-1)    # Append new Q value at t to the input
         print("graph.xater")
