@@ -35,9 +35,20 @@ class Simulator(nn.Module):
         node_type = torch.squeeze(graph.node_type).clone()
         one_hot = torch.nn.functional.one_hot(node_type, 3)
         graph.x = torch.cat([graph.x, one_hot], dim=-1)   
-        predicted_tmp = self.model(graph)        
+
+        if torch.isnan(graph.x).any():
+            print("Warning: NaN detected in graph.x after concatenation in Simulator")
+            
+        predicted_tmp = self.model(graph)  
+        
+        if torch.isnan(predicted_tmp).any():
+            print("Warning: NaN detected in predicted_tmp in Simulator")
+
         v = predicted_tmp[:, :self.ndim] + graph_last.x[:, :self.ndim] # temp + volt values
-                
+        
+        if torch.isnan(v).any():
+            print("Warning: NaN detected in final output v in Simulator")
+            
         return v
     
     def save_model(self, optimizer=None):
