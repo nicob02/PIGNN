@@ -48,7 +48,6 @@ def modelTrainer(config):
     graph = config.graph
     scheduler = torch.optim.lr_scheduler.StepLR(
         config.optimizer, step_size=config.lrstep, gamma=0.99)  
-    config.optimizer.zero_grad()
     
     best_loss  = np.inf
     
@@ -60,8 +59,6 @@ def modelTrainer(config):
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
         on_electrode = torch.squeeze(graph.node_type == config.NodeTypesRef.electrode)  
-      
-     
 
         config.optimizer.zero_grad()
             
@@ -87,9 +84,10 @@ def modelTrainer(config):
                 
             loss.backward()
             graph.x = predicted.detach()
-
+            
             losses.update({"step%d" % step: loss.detach()})
             total_steps_loss += loss.item()/config.train_steps
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             
         config.writer.add_scalars("loss", losses, epcho)
         config.writer.add_scalar("total_steps_loss", total_steps_loss, epcho)
