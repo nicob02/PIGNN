@@ -27,8 +27,14 @@ class ElectroThermalFunc():
         temp = value_last[:,0:1]        # Temps values at time t
         sigma = f*(1+g*(temp-e))        # Sigma at time t
         q = sigma*squared_abs_grad_v    # Heat at time t
+        print("graph.x")
+        print(graph.x)
         q_old = graph.x[:,2:3]
+        print("q_old")
+        print(q_old)
         q_old = q
+        print("q_oldafter")
+        print(q_old)
         #graph.x = torch.cat((graph.x,q), dim=-1)    # Append new Q value at t to the input
         return graph    
 
