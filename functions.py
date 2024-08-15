@@ -73,7 +73,7 @@ class ElectroThermalFunc():
         temp_this = values_this[:,0:1]  # Temp at time t+1
         volt_this = values_this[:,1:2]  # Volt at time t*1
 
-        epsilon = 1e-6
+        epsilon = 1e-4
         temp_this = torch.clamp(temp_this + epsilon, min_temp, max_temp)
         volt_this = torch.clamp(volt_this + epsilon, min_volt, max_volt)
 
