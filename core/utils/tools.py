@@ -80,9 +80,12 @@ def modelTrainer(config):
             predicted[on_boundary] = boundary_value[on_boundary] 
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted after applying boundary conditions at step {step}")
-                
+            print("predicted")
+            print(predicted[on_electrode]
             electrode_value = config.bc2(graph.pos, predicted, this_time)    #Check later whether temp_last values is good
+            print("predictedafterelec")
             predicted[on_electrode] = electrode_value[on_electrode]
+            print(predicted[on_electrode]
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted after applying electrode conditions at step {step}")
                 
