@@ -106,7 +106,7 @@ def modelTrainer(config):
             
             losses.update({"step%d" % step: loss.detach()})
             total_steps_loss += loss.item()/config.train_steps
-            #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             
         config.writer.add_scalars("loss", losses, epcho)
         config.writer.add_scalar("total_steps_loss", total_steps_loss, epcho)
