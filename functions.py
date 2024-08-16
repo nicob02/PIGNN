@@ -132,7 +132,7 @@ class ElectroThermalFunc():
         loss_temp_normalized = loss_temp / (combined_max + epsilon)
         loss_volt_normalized = loss_volt / (combined_max + epsilon)
     
-        return torch.cat([loss_temp,loss_volt],axis=1)
+        return torch.cat([loss_temp_normalized,loss_volt_normalized],axis=1)
 
     
     
