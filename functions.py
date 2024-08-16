@@ -108,11 +108,7 @@ class ElectroThermalFunc():
             
         sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
         q = sigma*squared_abs_grad_v    # q at t+1
-       
-        print("values_this")
-        print(values_this)
-        print("values_last")
-        print(values_last)
+
         lap_value = self.laplacianop(graph,values_this)
     
         lap_temp = lap_value[:,0:1]
@@ -122,8 +118,8 @@ class ElectroThermalFunc():
             print("Warning: NaN detected in lap_temp or lap_volt!")
             
         loss_volt = sigma*lap_volt
-        loss_temp = 0.01*( c*lap_temp + (d*(e-temp_this)) - (a*b*dvdt)) + q
-        print("losses")
+        loss_temp = -0.01*( c*lap_temp + (d*(e-temp_this)) - (a*b*dvdt)) - q
+        print("losses_tempthen_volt")
         print(loss_temp)
         print(loss_volt)
         if torch.isnan(loss_temp).any() or torch.isnan(loss_volt).any():
@@ -133,9 +129,7 @@ class ElectroThermalFunc():
 
         loss_temp_normalized = loss_temp / (combined_max + epsilon)
         loss_volt_normalized = loss_volt / (combined_max + epsilon)
-        print("losses temp then vol normalized")
-        print(loss_temp_normalized)
-        print(loss_volt_normalized)
+
         return torch.cat([loss_temp_normalized,loss_volt_normalized],axis=1)
 
     
