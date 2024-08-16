@@ -122,7 +122,7 @@ class ElectroThermalFunc():
             print("Warning: NaN detected in lap_temp or lap_volt!")
             
         loss_volt = sigma*lap_volt
-        loss_temp = -0.1*(q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt))
+        loss_temp = -0.05*(q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt))
 
         if torch.isnan(loss_temp).any() or torch.isnan(loss_volt).any():
             print("Warning: NaN detected in loss_temp or loss_volt!")
