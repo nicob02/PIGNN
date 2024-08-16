@@ -123,7 +123,9 @@ class ElectroThermalFunc():
             
         loss_volt = sigma*lap_volt
         loss_temp = -0.1*(q + (c*lap_temp) + (d*(e-temp_this)) - (a*b*dvdt))
-
+        print("losses")
+        print(loss_temp)
+        print(loss_volt)
         if torch.isnan(loss_temp).any() or torch.isnan(loss_volt).any():
             print("Warning: NaN detected in loss_temp or loss_volt!")
 
@@ -131,7 +133,9 @@ class ElectroThermalFunc():
 
         loss_temp_normalized = loss_temp / (combined_max + epsilon)
         loss_volt_normalized = loss_volt / (combined_max + epsilon)
-    
+        print("losses temp then vol normalized")
+        print(loss_temp_normalized)
+        print(loss_volt_normalized)
         return torch.cat([loss_temp_normalized,loss_volt_normalized],axis=1)
 
     
