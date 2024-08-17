@@ -125,10 +125,9 @@ class ElectroThermalFunc():
         if torch.isnan(loss_temp).any() or torch.isnan(loss_volt).any():
             print("Warning: NaN detected in loss_temp or loss_volt!")
 
-        combined_max = torch.max(torch.abs(torch.cat((loss_temp.view(-1), loss_volt.view(-1)))))
+        condition = (volt_this >= 6) & (temp_this < 320)
+        temp_this[condition] = 320
 
-        loss_temp_normalized = loss_temp / (combined_max + epsilon)
-        loss_volt_normalized = loss_volt / (combined_max + epsilon)
 
         return torch.cat([loss_temp,loss_volt],axis=1)
 
