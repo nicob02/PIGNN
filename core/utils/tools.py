@@ -66,7 +66,7 @@ def modelTrainer(config):
         for step in range(1, config.train_steps + 1):      # Goes through the whole simulation for that epoch   
         
             this_time = begin_time + delta_t * step            
-    
+            value_last = graph.x.detach().clone()
             volt_last = graph.x[:,1:2]
             temp_last = graph.x[:,0:1]
             condition = (volt_last >= 6) & (temp_last < 320)
