@@ -69,7 +69,7 @@ def modelTrainer(config):
             value_last = graph.x.detach().clone()
             volt_last = graph.x[:,1:2]
             temp_last = graph.x[:,0:1]
-            condition = (volt_last >= 4) & (temp_last < 314)
+            condition = (volt_last >= 3) & (temp_last < 314)
             temp_last[condition] = 315
 
             
