@@ -71,9 +71,6 @@ def modelTrainer(config):
             temp_last = graph.x[:,0:1]
             condition = (volt_last >= 6) & (temp_last < 320)
             temp_last[condition] = 320
-            
-            if torch.isnan(value_last).any():
-                print(f"Warning: NaN detected in value_last at step {step}")
 
             
             predicted = model(graph)  
