@@ -95,7 +95,7 @@ class ElectroThermalFunc():
         if torch.isnan(values_this).any() or torch.isnan(values_last).any():
             print("Warning: NaN detected in values_this or values_last after clamping!")
             
-            dvdt = torch.abs((temp_this-temp_last)/self.delta_t)           #take this out if not 
+        dvdt = torch.abs((temp_this-temp_last)/self.delta_t)           #take this out if not 
             
         if torch.isnan(dvdt).any():
             print("Warning: NaN detected in dvdt!")
