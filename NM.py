@@ -99,6 +99,14 @@ dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
 
 x =  SpatialCoordinate(Omega.mesh)
 
+bc1 = outer_boundary(x)
+print("bc1")
+print(bc1)
+
+bc2 = electrode_surface(x)
+print("bc2")
+print(bc2)
+
 bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
 bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
@@ -130,8 +138,12 @@ while (t < T):
     custom_solver.solve(problem, u.vector())
     u0.assign(u)
     _Phi, _Te = u.split()
-    print('Temp:' + str(_Te))
-    print('Volt:' + str(_Phi))
+    point = (0.3, 0.3)
+    phi_value = _Phi(point)
+    te_value = _Te(point)
+
+    print('Volt at point {}: {}'.format(point, phi_value))
+    print('Temp at point {}: {}'.format(point, te_value))
     vtkfile_Phi << (_Phi, t)
     vtkfile_Te << (_Te, t)   
     t += dt.dtvalue
