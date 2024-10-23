@@ -130,6 +130,8 @@ while (t < T):
     custom_solver.solve(problem, u.vector())
     u0.assign(u)
     _Phi, _Te = u.split()
+    print('Temp:' + str(_Te))
+    print('Volt:' + str(_Phi))
     vtkfile_Phi << (_Phi, t)
     vtkfile_Te << (_Te, t)   
     t += dt.dtvalue
