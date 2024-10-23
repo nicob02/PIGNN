@@ -107,7 +107,7 @@ print("bc1:", bc1)
 
 # Example: Check if a specific point is on the boundary
 point = (0.49, 0.5)  # Numerical point
-bc2 = outer_boundary(point)  # `on_boundary` is True because we are checking at the boundary
+bc2 = electrode_surface(point)  # `on_boundary` is True because we are checking at the boundary
 print("bc2:", bc2)
 
 bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
