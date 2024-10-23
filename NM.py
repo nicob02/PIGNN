@@ -61,10 +61,10 @@ def electrode_surface(x):
     ru_electrode = [0.51, 0.55]
     tol = 1E-5    # Mess around with this if needed
 
-    #right_electrode = (near(x[0], ru_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
+    right_electrode = (near(x[0], ru_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
     left_electrode  = (near(x[0], lb_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
     up_electrode    = (near(x[1], ru_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
-    #bottom_electrode= (near(x[1], lb_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
+    bottom_electrode= (near(x[1], lb_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
 
     #on_electrode = right_electrode or left_electrode or up_electrode or bottom_electrode
     on_electrode = left_electrode or up_electrode
@@ -96,8 +96,8 @@ Phi0, Te0 = split(u0)
 
 # Starting and final time steps
 t = 0.0
-T = 100
-dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
+T = 120
+dt = Expression('dtvalue', dtvalue = 0.2, degree=1)
 
 x =  SpatialCoordinate(Omega.mesh)
 
@@ -133,7 +133,7 @@ F += ((1060*3600*(Te-Te0)*Te_test)-(dt*Q*Te_test)+(dt*0.512*(inner(grad(Te),grad
 
 
 J = derivative(F, u)
-bcs = [bc_elec_V, bc_Temp]
+bcs = [bc_bound_V, bc_elec_V, bc_Temp]
 problem = Problem(J, F, bcs)   
 custom_solver = CustomSolver()
 
