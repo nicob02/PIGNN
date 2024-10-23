@@ -68,10 +68,10 @@ class ElectroThermalFunc():
         values_last = torch.abs(values_last)
         values_this = torch.abs(values_this)
 
-        max_temp = 3000  # Maximum realistic temperature
+        max_temp = 340  # Maximum realistic temperature
         min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
         min_volt = 0
-        max_volt = 100
+        max_volt = 18
        
         
         temp_last = values_last[:,0:1]  # Temp at time t
@@ -120,7 +120,7 @@ class ElectroThermalFunc():
             
         loss_volt = sigma*lap_volt
         #loss_temp = 0.01*(q + c*lap_temp + (d*(e-temp_this)) + (a*b*dvdt)) # Re-view this residual, a - next to a?, also delete d term and = 0 to have weak formulation
-        loss_temp = 0.01*((a*b*dvdt) - q - c*lap_temp)
+        loss_temp = 0.1*((a*b*dvdt) - q - c*lap_temp)
         print("losses_tempthen_volt")
         print(loss_temp)
         print(loss_volt)
