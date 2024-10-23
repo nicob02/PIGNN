@@ -116,7 +116,7 @@ print(f"Number of nodes on the outer boundary: {num_outer_boundary}")
 print(f"Number of nodes on the electrode surface: {num_electrode_surface}")
 
 
-bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
+#bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
 bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
 
