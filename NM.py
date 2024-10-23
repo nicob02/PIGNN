@@ -59,11 +59,12 @@ def electrode_surface(x):
 
     lb_electrode = [0.49, 0.45]
     ru_electrode = [0.51, 0.55]
+    tol = 1E-14     # Mess around with this if needed
 
-    right_electrode = (near(x[0], ru_electrode[0]) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
-    left_electrode  = (near(x[0], lb_electrode[0]) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
-    up_electrode    = (near(x[1], ru_electrode[1]) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
-    bottom_electrode= (near(x[1], lb_electrode[1]) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
+    right_electrode = (abs(x[0] - ru_electrode[0]) < tol) and (lb_electrode[1] <= x[1] <= ru_electrode[1])
+    left_electrode  = (abs(x[0] - lb_electrode[0]) < tol) and (lb_electrode[1] <= x[1] <= ru_electrode[1])
+    up_electrode    = (abs(x[1] - ru_electrode[1]) < tol) and (lb_electrode[0] <= x[0] <= ru_electrode[0])
+    bottom_electrode= (abs(x[1] - lb_electrode[1]) < tol) and (lb_electrode[0] <= x[0] <= ru_electrode[0])
 
     on_electrode = right_electrode or left_electrode or up_electrode or bottom_electrode
     
