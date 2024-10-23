@@ -1,9 +1,10 @@
 from petsc4py import PETSc
-from fenics import (NonlinearProblem, NewtonSolver, IntervalMesh, FiniteElement,
+from fenics import (NonlinearProblem, NewtonSolver, FiniteElement,
                     MixedElement, assemble, FunctionSpace, TestFunctions, Function,
-                    interpolate, Expression, split, inner, grad, pi, dx, DirichletBC,
-                    Constant, exp, ln, Dx, sqrt, ds, derivative, PETScKrylovSolver,
+                    interpolate, Expression, split, inner, grad, dx, DirichletBC,
+                    Constant, exp, ln,, derivative, PETScKrylovSolver,
                     PETScFactory, near, PETScOptions, assign, File, plot, SpatialCoordinate)
+from ufl import conditional
 import numpy as np
 import sys
 from scipy.constants import (epsilon_0, elementary_charge, m_p, m_e, k)
@@ -122,8 +123,15 @@ bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at 
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
 bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
 
-sigma = 0.33*(1 + 0.02*(Te0-310))
-print(f"Sigma value: {sigma}")
+sigma_electrode = Constant(1e8)  # Electrode conductivity (S/m)
+sigma_liver = Constant(0.33)     # Liver conductivity (S/m)
+
+sigma = conditional(electrode_surface(x),
+                    sigma_electrode,  # If on the electrode surface, use electrode conductivity
+                    sigma_liver * (1 + 0.02 * (Te0 - 310)))  # Otherwise, use liver conductivity adjusted by temperature
+
+#sigma = 0.33*(1 + 0.02*(Te0-310))
+
 F = ((-sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
 
 grad_phi = grad(Phi0)
