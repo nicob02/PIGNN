@@ -100,6 +100,22 @@ dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
 
 x =  SpatialCoordinate(Omega.mesh)
 
+num_outer_boundary = 0
+num_electrode_surface = 0
+
+# Loop over all mesh nodes
+for point in Omega.pos:
+    
+    if outer_boundary(point):
+        num_outer_boundary += 1
+    if electrode_surface(point):
+        num_electrode_surface += 1
+
+# Print the results
+print(f"Number of nodes on the outer boundary: {num_outer_boundary}")
+print(f"Number of nodes on the electrode surface: {num_electrode_surface}")
+
+
 bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
 bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
