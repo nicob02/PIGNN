@@ -69,7 +69,7 @@ def electrode_surface(x):
     
     return on_electrode
 
-self = ElectrodeMesh(ru=(8, 8), lb=(0, 0), density=800)
+self = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 
 T_elem = FiniteElement("CG", self.mesh.ufl_cell(), 1)
 V_elem = FiniteElement("CG", self.mesh.ufl_cell(), 2)       # Order 2 as voltage acts on a finer scale
