@@ -99,13 +99,7 @@ dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
 
 x =  SpatialCoordinate(Omega.mesh)
 
-bc1 = outer_boundary(x)
-print("bc1")
-print(bc1)
 
-bc2 = electrode_surface(x)
-print("bc2")
-print(bc2)
 
 bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
