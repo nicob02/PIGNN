@@ -2,12 +2,11 @@ from petsc4py import PETSc
 from fenics import (NonlinearProblem, NewtonSolver, FiniteElement,
                     MixedElement, assemble, FunctionSpace, TestFunctions, Function,
                     interpolate, Expression, split, inner, grad, dx, DirichletBC,
-                    Constant, exp, ln,, derivative, PETScKrylovSolver,
+                    Constant, exp, ln, derivative, PETScKrylovSolver,
                     PETScFactory, near, PETScOptions, assign, File, plot, SpatialCoordinate)
 from ufl import conditional
 import numpy as np
 import sys
-from scipy.constants import (epsilon_0, elementary_charge, m_p, m_e, k)
 import matplotlib.pyplot as plt
 from core.geometry import ElectrodeMesh
 
@@ -101,7 +100,7 @@ t = 0.0
 T = 120
 dt = Expression('dtvalue', dtvalue = 0.2, degree=1)
 
-x =  SpatialCoordinate(Omega.mesh)
+x = SpatialCoordinate(Omega.mesh)
 
 num_outer_boundary = 0
 num_electrode_surface = 0
