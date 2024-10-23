@@ -45,7 +45,7 @@ def outer_boundary(x):
     min_x = 0.0  
     min_y = 0.0  
 
-    tol = 1E-14     # Mess around with this if needed
+    tol = 1E-16     # Mess around with this if needed
 
     right = near(x[0], max_x, tol)
     left = near(x[0], min_x, tol)
@@ -59,7 +59,7 @@ def electrode_surface(x):
 
     lb_electrode = [0.49, 0.45]
     ru_electrode = [0.51, 0.55]
-    tol = 1E-6    # Mess around with this if needed
+    tol = 1E-5    # Mess around with this if needed
 
     right_electrode = (near(x[0], ru_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
     left_electrode  = (near(x[0], lb_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
@@ -95,8 +95,8 @@ Phi0, Te0 = split(u0)
 
 # Starting and final time steps
 t = 0.0
-T = 120
-dt = Expression('dtvalue', dtvalue = 0.2, degree=1)
+T = 100
+dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
 
 x =  SpatialCoordinate(Omega.mesh)
 
@@ -105,6 +105,7 @@ bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310
 bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
 
 sigma = 0.33*(1 + 0.02*(Te0-310))
+print(f"Sigma value: {sigma}")
 F = ((-sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
 
 grad_phi = grad(Phi0)
