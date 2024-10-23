@@ -83,12 +83,13 @@ Phi_test, Te_test = TestFunctions(ET)   # Test variables
 u = Function(ET)                        # Solution variables
 u0 = Function(ET)                       # Previous time step solutions
 
-Phi, Te = split(u)
-Phi0, Te0 = split(u0)
 
 # Initial values
 u  = interpolate(Constant((0, 310)), ET)
 u0 = interpolate(Constant((0, 310)), ET)
+
+Phi, Te = split(u)
+Phi0, Te0 = split(u0)
 
 # Starting and final time steps
 t = 0.0
