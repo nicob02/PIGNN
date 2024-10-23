@@ -52,7 +52,8 @@ def outer_boundary(x):
     up = near(x[1], max_y, tol)
     bottom = near(x[1], min_y, tol)
 
-    on_boundary = right or left or up or bottom
+    #on_boundary = right or left or up or bottom
+    on_boundary = right or up 
     return on_boundary
 
 def electrode_surface(x):
@@ -66,8 +67,8 @@ def electrode_surface(x):
     up_electrode    = (near(x[1], ru_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
     bottom_electrode= (near(x[1], lb_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
 
-    #on_electrode = right_electrode or left_electrode or up_electrode or bottom_electrode
-    on_electrode = left_electrode or up_electrode
+    on_electrode = right_electrode or left_electrode or up_electrode or bottom_electrode
+    
 
     return on_electrode
 
