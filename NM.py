@@ -30,7 +30,7 @@ class Problem(NonlinearProblem):
 
 class CustomSolver(NewtonSolver):
     def __init__(self):
-        NewtonSolver.__init__(self, self.mesh.mpi_comm(),
+        NewtonSolver.__init__(self, Omega.mesh.mpi_comm(),
                               PETScKrylovSolver(), PETScFactory.instance())
 
     def solver_setup(self, A, P, problem, iteration):
@@ -69,13 +69,13 @@ def electrode_surface(x):
     
     return on_electrode
 
-self = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
+Omega = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
 
-T_elem = FiniteElement("CG", self.mesh.ufl_cell(), 1)
-V_elem = FiniteElement("CG", self.mesh.ufl_cell(), 2)       # Order 2 as voltage acts on a finer scale
+T_elem = FiniteElement("CG", Omega.mesh.ufl_cell(), 1)
+V_elem = FiniteElement("CG", Omega.mesh.ufl_cell(), 2)       # Order 2 as voltage acts on a finer scale
 
 ET_elem = MixedElement([V_elem, T_elem])
-ET = FunctionSpace(self.mesh, ET_elem)
+ET = FunctionSpace(Omega.mesh, ET_elem)
 
 # Parameters 
 rfa_params = [1060 , 3600 , 0.512 , 244000 , 310 , 0.33 , 0.02]  
@@ -97,7 +97,7 @@ t = 0.0
 T = 60
 dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
 
-x =  SpatialCoordinate(self.mesh)
+x =  SpatialCoordinate(Omega.mesh)
 
 bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
