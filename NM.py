@@ -61,13 +61,14 @@ def electrode_surface(x):
     ru_electrode = [0.51, 0.55]
     tol = 1E-5    # Mess around with this if needed
 
-    right_electrode = (near(x[0], ru_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
+    #right_electrode = (near(x[0], ru_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
     left_electrode  = (near(x[0], lb_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
     up_electrode    = (near(x[1], ru_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
-    bottom_electrode= (near(x[1], lb_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
+    #bottom_electrode= (near(x[1], lb_electrode[1], tol) and (x[0] >= lb_electrode[0]) and (x[0] <= ru_electrode[0]))
 
-    on_electrode = right_electrode or left_electrode or up_electrode or bottom_electrode
-    
+    #on_electrode = right_electrode or left_electrode or up_electrode or bottom_electrode
+    on_electrode = left_electrode or up_electrode
+
     return on_electrode
 
 Omega = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=100)
@@ -116,7 +117,7 @@ print(f"Number of nodes on the outer boundary: {num_outer_boundary}")
 print(f"Number of nodes on the electrode surface: {num_electrode_surface}")
 
 
-#bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
+bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at ground
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
 bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
 
