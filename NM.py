@@ -100,6 +100,21 @@ dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
 
 x =  SpatialCoordinate(Omega.mesh)
 
+num_outer_boundary = 0
+num_electrode_surface = 0
+
+# Loop over all mesh nodes
+for point in Omega.pos:
+    
+    if outer_boundary(point):
+        num_outer_boundary += 1
+    if electrode_surface(point):
+        num_electrode_surface += 1
+
+# Print the results
+print(f"Number of nodes on the outer boundary: {num_outer_boundary}")
+print(f"Number of nodes on the electrode surface: {num_electrode_surface}")
+
 # Example: Check if a specific point is on the boundary
 point = (1.0, 0.5)  # Numerical point
 bc1 = outer_boundary(point)  # `on_boundary` is True because we are checking at the boundary
