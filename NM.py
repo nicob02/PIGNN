@@ -59,7 +59,7 @@ def electrode_surface(x):
 
     lb_electrode = [0.49, 0.45]
     ru_electrode = [0.51, 0.55]
-    tol = 1E-14     # Mess around with this if needed
+    tol = 1E-6    # Mess around with this if needed
 
     right_electrode = (near(x[0], ru_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
     left_electrode  = (near(x[0], lb_electrode[0], tol) and (x[1] >= lb_electrode[1]) and (x[1] <= ru_electrode[1]))
@@ -109,6 +109,7 @@ for point in Omega.pos:
     if outer_boundary(point):
         num_outer_boundary += 1
     if electrode_surface(point):
+        print(f"Node near electrode surface: {point}")
         num_electrode_surface += 1
 
 # Print the results
