@@ -95,8 +95,8 @@ Phi0, Te0 = split(u0)
 
 # Starting and final time steps
 t = 0.0
-T = 60
-dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
+T = 120
+dt = Expression('dtvalue', dtvalue = 0.2, degree=1)
 
 x =  SpatialCoordinate(Omega.mesh)
 
