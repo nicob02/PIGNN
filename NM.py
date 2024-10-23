@@ -132,7 +132,7 @@ F += ((1060*3600*(Te-Te0)*Te_test)-(dt*Q*Te_test)+(dt*0.512*(inner(grad(Te),grad
 
 
 J = derivative(F, u)
-bcs = [bc_bound_V, bc_elec_V, bc_Temp]
+bcs = [bc_elec_V, bc_Temp]
 problem = Problem(J, F, bcs)   
 custom_solver = CustomSolver()
 
