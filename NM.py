@@ -106,7 +106,7 @@ bc_bound_V = DirichletBC(ET.sub(0), Constant(0), outer_boundary)  # Volt = 0 at 
 bc_Temp = DirichletBC(ET.sub(1), Constant(310), outer_boundary)     # Temp = 310 at ground
 bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
 
-sigma = 0.33*(1 + 0.02(Te0-310))
+sigma = 0.33*(1 + 0.02*(Te0-310))
 F = ((-sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
 
 grad_phi = grad(Phi0)
