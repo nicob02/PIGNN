@@ -52,8 +52,8 @@ def outer_boundary(x):
     up = near(x[1], max_y, tol)
     bottom = near(x[1], min_y, tol)
 
-    #on_boundary = right or left or up or bottom
-    on_boundary = right or up 
+    on_boundary = right or left or up or bottom
+ 
     return on_boundary
 
 def electrode_surface(x):
@@ -125,11 +125,11 @@ bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
 sigma_electrode = Constant(1e8)  # Electrode conductivity (S/m)
 sigma_liver = Constant(0.33)     # Liver conductivity (S/m)
 
-sigma = 0.33*(1 + 0.02*(Te-309))
+sigma = 0.33*(1 + 0.02*(Te0-310))
 
 F = ((-sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
 
-grad_phi = grad(Phi)
+grad_phi = grad(Phi0)
 squared_grad_v = dot(grad_phi, grad_phi)
 
 Q = sigma*squared_grad_v
