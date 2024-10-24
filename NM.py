@@ -125,9 +125,9 @@ bc_elec_V = DirichletBC(ET.sub(0), Constant(18), electrode_surface) # Volt = 18
 sigma_electrode = Constant(1e8)  # Electrode conductivity (S/m)
 sigma_liver = Constant(0.33)     # Liver conductivity (S/m)
 
-sigma = 50*(1 + 0.02*(Te0-309))
+sigma = 0.33*(1 + 0.02*(Te0-309))
 
-F = ((-sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
+F = ((sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
 
 grad_phi = grad(Phi0)
 squared_grad_v = inner(grad_phi, grad_phi)
