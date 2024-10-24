@@ -1,7 +1,7 @@
 from petsc4py import PETSc
 from fenics import (NonlinearProblem, NewtonSolver, FiniteElement,
                     MixedElement, assemble, FunctionSpace, TestFunctions, Function,
-                    interpolate, Expression, split, inner, grad, dx, DirichletBC,
+                    interpolate, Expression, split, dot, inner, grad, dx, DirichletBC,
                     Constant, exp, ln, derivative, PETScKrylovSolver,
                     PETScFactory, near, PETScOptions, assign, File, plot, SpatialCoordinate)
 from ufl import conditional
@@ -97,8 +97,8 @@ Phi0, Te0 = split(u0)
 
 # Starting and final time steps
 t = 0.0
-T = 120
-dt = Expression('dtvalue', dtvalue = 0.2, degree=1)
+T = 80
+dt = Expression('dtvalue', dtvalue = 0.1, degree=1)
 
 x = SpatialCoordinate(Omega.mesh)
 
@@ -127,10 +127,10 @@ sigma_liver = Constant(0.33)     # Liver conductivity (S/m)
 
 sigma = 0.33*(1 + 0.02*(Te0-309))
 
-F = ((sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
+F = ((-sigma)*(inner(grad(Phi),grad(Phi_test))))*dx             # Voltage residual
 
 grad_phi = grad(Phi0)
-squared_grad_v = inner(grad_phi, grad_phi)
+squared_grad_v = dot(grad_phi, grad_phi)
 
 Q = sigma*squared_grad_v
 F += ((1060*3600*(Te-Te0)*Te_test)-(dt*Q*Te_test)+(dt*0.512*(inner(grad(Te),grad(Te_test)))))*dx    #Pennes model residual
