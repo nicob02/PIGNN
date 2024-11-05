@@ -65,9 +65,10 @@ class ElectroThermalFunc():
     def pde(self, graph, values_last, values_this, **argv):
 
         a,b,c,d,e,f,g = self.params
-        values_last = torch.abs(values_last)
-        values_this = torch.abs(values_this)
 
+ #       values_last = torch.abs(values_last)
+ #       values_this = torch.abs(values_this)
+        
         max_temp = 340  # Maximum realistic temperature
         min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
         min_volt = 0
