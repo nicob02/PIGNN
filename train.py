@@ -92,7 +92,7 @@ setattr(train_config, 'bc2', bc2)
 setattr(train_config, 'graph', graph)
 setattr(train_config, 'model', model)
 setattr(train_config, 'optimizer', optimizer)
-setattr(train_config, 'train_steps', 600)    # 1 minute total simulation
+setattr(train_config, 'train_steps', 2000)    # 1 minute total simulation
 setattr(train_config, 'epchoes', 40)
 setattr(train_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref) 
 setattr(train_config, 'step_times', 1)
