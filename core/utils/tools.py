@@ -99,8 +99,8 @@ def modelTrainer(config):
             #loss_scalar = torch.norm(pde_loss)/pde_loss.numel()
             #loss_scalar = torch.sum(pde_loss)/pde_loss.numel()
          
-            loss[:, 0].backward(torch.ones_like(pde_loss[:, 0]), retain_graph=True)  # Heat loss
-            loss[:, 1].backward(torch.ones_like(pde_loss[:, 1]))  # Voltage loss
+            loss[:, 0].backward(torch.ones_like(loss[:, 0]), retain_graph=True)  # Heat loss
+            loss[:, 1].backward(torch.ones_like(loss[:, 1]))  # Voltage loss
 
             print("lossfinal")
             print(loss)
