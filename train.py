@@ -12,7 +12,9 @@ delta_t = 0.2 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
-rfa_params = [1060 , 3600 , 0.512 , 244000 , 310 , 0.33 , 0.02 ]  # Go with Kelvin just in case
+rfa_params = [1060 , 3600 , 0.512 , 244000 , 310 , 0.33 , 0.02 ]  
+# Liver density ρti, Liver Heat Capacity dti, liver thermal conductivity dti, convective
+transfer coefficient H, Blood/Ground Temp Tbl, liver electrical conductivity σti, σ(T) increases linearly by 2%
 
 
 ckptpath = 'checkpoint/simulator_%s.pth' % Func.func_name  #Check this out
