@@ -113,7 +113,7 @@ def modelTrainer(config):
                 #print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
          
             
-            losses.update({"step%d" % step: loss.detach()})
+            #losses.update({"step%d" % step: loss.detach()})
             total_steps_loss += loss.item()/config.train_steps
             #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             
