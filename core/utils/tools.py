@@ -108,18 +108,19 @@ def modelTrainer(config):
             #loss.backward()
             graph.x = predicted.detach()
 
+            #config.optimizer.step()
+
             #config.graph_modify(graph, value_last=graph.x)        
             #if torch.isnan(graph.x).any():
                 #print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
-         
             
             #losses.update({"step%d" % step: loss.detach()})
-            total_steps_loss += loss.item()/config.train_steps
+            #total_steps_loss += loss.item()/config.train_steps
             #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             
-        config.writer.add_scalars("loss", losses, epcho)
-        config.writer.add_scalar("total_steps_loss", total_steps_loss, epcho)
-        config.writer.flush()
+        #config.writer.add_scalars("loss", losses, epcho)
+        #config.writer.add_scalar("total_steps_loss", total_steps_loss, epcho)
+        #config.writer.flush()
         config.optimizer.step()       # Updates the state's model paramaters
         
         if total_steps_loss < best_loss:
