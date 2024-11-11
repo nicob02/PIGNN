@@ -65,9 +65,6 @@ class ElectroThermalFunc():
     def pde(self, graph, values_last, values_this, **argv):
 
         a,b,c,d,e,f,g = self.params
-
- #       values_last = torch.abs(values_last)
- #       values_this = torch.abs(values_this)
         
         max_temp = 340  # Maximum realistic temperature
         min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
@@ -97,7 +94,6 @@ class ElectroThermalFunc():
             print("Warning: NaN detected in values_this or values_last after clamping!")
 
         dvdt = (temp_this-temp_last)/self.delta_t
-        #dvdt = torch.abs((temp_this-temp_last)/self.delta_t)           #take this out if not 
             
         if torch.isnan(dvdt).any():
             print("Warning: NaN detected in dvdt!")
@@ -119,18 +115,20 @@ class ElectroThermalFunc():
 
         if torch.isnan(lap_temp).any() or torch.isnan(lap_volt).any():
             print("Warning: NaN detected in lap_temp or lap_volt!")
-            
+
+        #∇ · (σ(T)∇v) = 0
         loss_volt = -sigma*lap_volt
-        #loss_temp = 0.01*(q + c*lap_temp + (d*(e-temp_this)) + (a*b*dvdt)) # Re-view this residual, a - next to a?, also delete d term and = 0 to have weak formulation
-        loss_temp = -(0.01*((a*b*dvdt) - q - c*lap_temp))
+      
+        #ρticti*∂T/∂t = Q + ∇ · (d∇T) + H(Tbl − T), when H=0 we have the weak-formulation
+        #loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this))
+        loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp)
+                     
         #print("losses_tempthen_volt")
         #print(loss_temp)
         #print(loss_volt)
         if torch.isnan(loss_temp).any() or torch.isnan(loss_volt).any():
             print("Warning: NaN detected in loss_temp or loss_volt!")
 
-    #    condition = (volt_this >= 6) & (temp_this < 320)
-    #    temp_this[condition] = 320
 
 
         return torch.cat([loss_temp,loss_volt],axis=1)
