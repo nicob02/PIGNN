@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 device = torch.device(0)
 
-delta_t = 0.2 # Mess around with this
+delta_t = 1 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
@@ -94,7 +94,7 @@ setattr(train_config, 'bc2', bc2)
 setattr(train_config, 'graph', graph)
 setattr(train_config, 'model', model)
 setattr(train_config, 'optimizer', optimizer)
-setattr(train_config, 'train_steps', 10)    # 1 minute total simulation
+setattr(train_config, 'train_steps', 20)    # 1 minute total simulation
 setattr(train_config, 'epchoes', 5000)
 setattr(train_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref) 
 setattr(train_config, 'step_times', 1)
