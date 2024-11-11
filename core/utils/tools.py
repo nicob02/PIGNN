@@ -94,8 +94,8 @@ def modelTrainer(config):
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
             if torch.isnan(loss).any():
                 print(f"Warning: NaN detected in pde_loss at step {step}")
-            #loss[on_boundary] = 0
-            #loss[on_electrode] = 0
+            loss[on_boundary] = 0
+            loss[on_electrode] = 0
             #loss_scalar = torch.norm(pde_loss)/pde_loss.numel()
             #loss_scalar = torch.sum(pde_loss)/pde_loss.numel()
          
