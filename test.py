@@ -9,7 +9,7 @@ import os
 
 
 
-delta_t = 0.2 # Mess around with this
+delta_t = 0.5 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
@@ -33,7 +33,7 @@ model = msgPassing(message_passing_num=2, node_input_size=3+out_ndim,
 model.load_model(ckptpath)
 model.to(device)
 model.eval()
-test_steps = 620
+test_steps = 120
 
 test_config = parse_config()
 
