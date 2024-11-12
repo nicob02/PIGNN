@@ -33,7 +33,7 @@ model = msgPassing(message_passing_num=2, node_input_size=3+out_ndim,
 model.load_model(ckptpath)
 model.to(device)
 model.eval()
-test_steps = 120
+test_steps = 124
 
 test_config = parse_config()
 
