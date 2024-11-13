@@ -118,7 +118,8 @@ class ElectroThermalFunc():
 
         #∇ · (σ(T)∇v) = 0
         loss_volt = -sigma*lap_volt
-      
+        print("lap_volt")
+        print(lap_volt)
         #ρticti*∂T/∂t = Q + ∇ · (d∇T) + H(Tbl − T), when H=0 we have the weak-formulation
         print("dvdt")
         print(dvdt)
