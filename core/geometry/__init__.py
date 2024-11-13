@@ -60,6 +60,8 @@ class ElectrodeMesh():
         electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
         geometry = domain - electrode_probe
         initial_mesh = generate_mesh(geometry, density)
+        tdim = initial_mesh.topology().dim()
+        initial_mesh.init(tdim-1, tdim)
         boundary_markers = MeshFunction("size_t", initial_mesh, initial_mesh.topology().dim() - 1, 0)
         for facet in facets(initial_mesh):
             if facet.midpoint().distance(Point(lb_electrode[0], lb_electrode[1])) < 0.1:
@@ -70,7 +72,7 @@ class ElectrodeMesh():
                boundary_markers[facet] = 1  # Mark region near electrode
             if facet.midpoint().distance(Point(ru_electrode[0], lb_electrode[1])) < 0.1:
                 boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.on_boundary():  # Check if the facet is on the boundary
+            if facet.exterior():  # Check if the facet is on the boundary
                 boundary_markers[facet] = 1
         
         # Refine mesh selectively around electrode and boundary
