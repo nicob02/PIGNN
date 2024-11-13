@@ -65,13 +65,7 @@ class ElectroThermalFunc():
     def pde(self, graph, values_last, values_this, **argv):
 
         a,b,c,d,e,f,g = self.params
-        
-        max_temp = 340  # Maximum realistic temperature
-        min_temp = 310  # Minimum realistic temperature (e.g., absolute zero)
-        min_volt = 0
-        max_volt = 18
-       
-        
+              
         temp_last = values_last[:,0:1]  # Temp at time t
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
@@ -82,14 +76,7 @@ class ElectroThermalFunc():
             print("Warning: NaN detected in temp_this or volt_this before clamping!")
     
         epsilon = 1e-4
-        #temp_this = torch.clamp(temp_this + epsilon, min_temp, max_temp)
-        #volt_this = torch.clamp(volt_this + epsilon, min_volt, max_volt)
-
-        #temp_last = torch.clamp(temp_last, min_temp, max_temp)
-        #volt_last = torch.clamp(volt_last, min_volt, max_volt)
-
   
-
         if torch.isnan(values_this).any() or torch.isnan(values_last).any():
             print("Warning: NaN detected in values_this or values_last after clamping!")
 
@@ -125,7 +112,7 @@ class ElectroThermalFunc():
         print(dvdt)
         print("lap_temp")
         print(lap_temp)
-        loss_temp = -(0.01*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
+        loss_temp = -(0.0001*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
         #loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp))
                      
         #print("losses_tempthen_volt")
