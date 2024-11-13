@@ -25,12 +25,12 @@ ic = func_main.init_condition
 bc1 = func_main.boundary_condition
 bc2 = func_main.electrode_condition
 
-model = msgPassing(message_passing_num=5, node_input_size=3+out_ndim, edge_input_size=3, 
+model = msgPassing(message_passing_num=1, node_input_size=3+out_ndim, edge_input_size=3, 
                    ndim=out_ndim, device=device, model_dir=ckptpath)    # Mess with MPN# to 2 or 3
 model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 
-mesh = ElectrodeMesh(ru=(0.7, 0.7), lb=(0, 0), density=30)
+mesh = ElectrodeMesh(ru=(0.8, 0.8), lb=(0.2, 0.2), density=30)
 
 graph = mesh.getGraphData().to(device)
 
