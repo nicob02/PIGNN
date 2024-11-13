@@ -120,7 +120,10 @@ class ElectroThermalFunc():
         loss_volt = -sigma*lap_volt
       
         #ρticti*∂T/∂t = Q + ∇ · (d∇T) + H(Tbl − T), when H=0 we have the weak-formulation
-        
+        print("dvdt")
+        print(dvdt)
+        print("lap_temp")
+        print(lap_temp)
         loss_temp = -(0.01*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
         #loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp))
                      
