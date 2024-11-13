@@ -70,7 +70,7 @@ class ElectrodeMesh():
                boundary_markers[facet] = 1  # Mark region near electrode
             if facet.midpoint().distance(Point(ru_electrode[0], lb_electrode[1])) < 0.1:
                 boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.exterior():  # Check if the facet is on the boundary
+            if facet.on_boundary():  # Check if the facet is on the boundary
                 boundary_markers[facet] = 1
         
         # Refine mesh selectively around electrode and boundary
