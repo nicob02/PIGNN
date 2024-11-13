@@ -62,7 +62,7 @@ class ElectrodeMesh():
         initial_mesh = generate_mesh(geometry, density)
         boundary_markers = MeshFunction("size_t", initial_mesh, initial_mesh.topology().dim() - 1, 0)
         for facet in facets(initial_mesh):
-            if facet.midpoint().distance(Point(0.5, 0.5) < 0.15:
+            if facet.midpoint().distance(Point(0.5, 0.5)) < 0.15:
                 boundary_markers[facet] = 1  # Mark region near electrode
         #    if facet.midpoint().distance(Point(ru_electrode[0], ru_electrode[1])) < 0.1:
         #       boundary_markers[facet] = 1  # Mark region near electrode
