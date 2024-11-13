@@ -43,7 +43,7 @@ def get_node_type(pos, lb_electrode, ru_electrode, radius_ratio=None):
 class ElectrodeMesh():
     
     node_type_ref = NodeType
-    def __init__(self, density=50, lb=(0, 0), ru=(1, 1)) -> None:
+    def __init__(self, density=40, lb=(0, 0), ru=(1, 1)) -> None:
         
         self.transform = T.Compose([
             T.FaceToEdge(remove_faces=False), 
@@ -58,7 +58,24 @@ class ElectrodeMesh():
         domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain
         electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
         geometry = domain - electrode_probe
-        self.mesh = generate_mesh(geometry, density)
+        initial_mesh = generate_mesh(geometry, density)
+        boundary_markers = MeshFunction("size_t", initial_mesh, initial_mesh.topology().dim() - 1, 0)
+        for facet in facets(initial_mesh):
+            if facet.distance(Point(lb_electrode[0], lb_electrode[1])) < 0.1:
+                boundary_markers[facet] = 1  # Mark region near electrode
+        
+        # Refine mesh selectively around electrode
+        #for i in range(3):  # Number of refinements
+        cell_markers = MeshFunction("bool", initial_mesh, initial_mesh.topology().dim())
+        cell_markers.set_all(False)
+        for cell in cells(initial_mesh):
+            for facet in facets(cell):
+                if boundary_markers[facet] == 1:
+                    cell_markers[cell] = True  # Mark cells for refinement around electrode
+    
+        # Refine the mesh around marked cells
+        initial_mesh = refine(initial_mesh, cell_markers)
+        self.mesh = initial_mesh
         self.pos = self.mesh.coordinates().astype(np.float32)
         self.faces = self.mesh.cells().astype(np.int64).T        
         self.node_type = get_node_type(self.pos, lb_electrode, ru_electrode).astype(np.int64)
