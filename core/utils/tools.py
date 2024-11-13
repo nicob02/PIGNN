@@ -60,11 +60,13 @@ def modelTrainer(config):
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
         on_electrode = torch.squeeze(graph.node_type == config.NodeTypesRef.electrode)  
 
-        config.optimizer.zero_grad()
+        #config.optimizer.zero_grad()
             
         losses = {}
         for step in range(1, config.train_steps + 1):      # Goes through the whole simulation for that epoch   
-        
+
+            config.optimizer.zero_grad()
+            
             this_time = begin_time + delta_t * step            
             value_last = graph.x.detach().clone()
             #volt_last = graph.x[:,1:2]
@@ -105,14 +107,13 @@ def modelTrainer(config):
             print("lossfinal")
             print(loss)
                 
-            #loss.backward()
             graph.x = predicted.detach()
 
-            #config.optimizer.step()
+            config.optimizer.step()
 
-            #config.graph_modify(graph, value_last=graph.x)        
-            #if torch.isnan(graph.x).any():
-                #print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
+     
+            if torch.isnan(graph.x).any():
+                print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
             
             #losses.update({"step%d" % step: loss.detach()})
             #total_steps_loss += loss.item()/config.train_steps
@@ -121,7 +122,7 @@ def modelTrainer(config):
         #config.writer.add_scalars("loss", losses, epcho)
         #config.writer.add_scalar("total_steps_loss", total_steps_loss, epcho)
         #config.writer.flush()
-        config.optimizer.step()       # Updates the state's model paramaters
+        #config.optimizer.step()       # Updates the state's model paramaters
         
         if total_steps_loss < best_loss:
             best_loss  = total_steps_loss
