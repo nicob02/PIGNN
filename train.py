@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 device = torch.device(0)
 
-delta_t = 1e-2 # Mess around with this
+delta_t = 1e-1 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
