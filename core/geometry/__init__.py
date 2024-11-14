@@ -54,8 +54,8 @@ class ElectrodeMesh():
         #random_center_electrode_x = np.random.uniform(0.05,0.95)   #Electrode probe is placed randomly at each training iteration
         #random_center_electrode_y = np.random.uniform(0.1,0.9)
         
-        lb_electrode = [(0.48),(0.45)]
-        ru_electrode = [(0.52),(0.55)]
+        lb_electrode = [(0.49),(0.46)]
+        ru_electrode = [(0.51),(0.54)]
         domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain
         electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
         geometry = domain - electrode_probe
