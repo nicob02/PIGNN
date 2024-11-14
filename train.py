@@ -30,7 +30,7 @@ model = msgPassing(message_passing_num=1, node_input_size=3+out_ndim, edge_input
 model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 
-mesh = ElectrodeMesh(ru=(0.8, 0.8), lb=(0.2, 0.2), density=30)
+mesh = ElectrodeMesh(ru=(0.75, 0.75), lb=(0.25, 0.25), density=35)
 
 graph = mesh.getGraphData().to(device)
 
