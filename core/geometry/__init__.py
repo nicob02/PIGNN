@@ -64,13 +64,13 @@ class ElectrodeMesh():
         initial_mesh.init(tdim-1, tdim)
         boundary_markers = MeshFunction("size_t", initial_mesh, initial_mesh.topology().dim() - 1, 0)
         for facet in facets(initial_mesh):
-            if facet.midpoint().distance(Point(lb_electrode[0], lb_electrode[1])) < 0.06:
+            if facet.midpoint().distance(Point(lb_electrode[0], lb_electrode[1])) < 0.05:
                 boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(ru_electrode[0], ru_electrode[1])) < 0.06:
+            if facet.midpoint().distance(Point(ru_electrode[0], ru_electrode[1])) < 0.05:
                boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(lb_electrode[0], ru_electrode[1])) < 0.06:
+            if facet.midpoint().distance(Point(lb_electrode[0], ru_electrode[1])) < 0.05:
                boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(ru_electrode[0], lb_electrode[1])) < 0.06:
+            if facet.midpoint().distance(Point(ru_electrode[0], lb_electrode[1])) < 0.05:
                 boundary_markers[facet] = 1  # Mark region near electrode
             if facet.exterior():  # Check if the facet is on the boundary
                 boundary_markers[facet] = 1
