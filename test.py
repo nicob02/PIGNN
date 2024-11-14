@@ -26,7 +26,7 @@ bc2 = func_main.electrode_condition
 ic = func_main.init_condition
 
 dens = 70
-mesh = ElectrodeMesh(ru=(0.75, 0.75), lb=(0.25, 0.25), density=35)
+mesh = ElectrodeMesh(ru=(0.7, 0.7), lb=(0.3, 0.3), density=35)
 graph = mesh.getGraphData()
 model = msgPassing(message_passing_num=7, node_input_size=3+out_ndim, 
                    edge_input_size=3, ndim=out_ndim, device=device, model_dir=ckptpath)
