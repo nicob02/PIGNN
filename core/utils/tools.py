@@ -69,12 +69,8 @@ def modelTrainer(config):
             
             this_time = begin_time + delta_t * step            
             value_last = graph.x.detach().clone()
-            #volt_last = graph.x[:,1:2]
-            #temp_last = graph.x[:,0:1]
-            #condition = (volt_last >= 2) & (temp_last < 314)
-            #temp_last[condition] = 335
 
-            
+     
             predicted = model(graph)  
             
             if torch.isnan(predicted).any():
