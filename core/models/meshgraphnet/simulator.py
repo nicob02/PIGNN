@@ -47,9 +47,7 @@ class Simulator(nn.Module):
             print("Warning: NaN detected in graph.x after concatenation in Simulator")
             
         predicted = self.model(graph)  
-        
-        if torch.isnan(predicted_tmp).any():
-            print("Warning: NaN detected in predicted_tmp in Simulator")
+    
 
         v = predicted[:, :self.ndim] + graph_last.x[:, :self.ndim] # temp and volt values corresponds to the first two columns of predicted matrix.
         
