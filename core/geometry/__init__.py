@@ -54,8 +54,8 @@ class ElectrodeMesh():
         #random_center_electrode_x = np.random.uniform(0.05,0.95)   #Electrode probe is placed randomly at each training iteration
         #random_center_electrode_y = np.random.uniform(0.1,0.9)
         
-        lb_electrode = [(0.495),(0.48)]
-        ru_electrode = [(0.505),(0.52)]
+        lb_electrode = [(0.49),(0.47)]
+        ru_electrode = [(0.51),(0.53)]
         domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain
         electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
         geometry = domain - electrode_probe
@@ -64,16 +64,16 @@ class ElectrodeMesh():
         initial_mesh.init(tdim-1, tdim)
         boundary_markers = MeshFunction("size_t", initial_mesh, initial_mesh.topology().dim() - 1, 0)
         for facet in facets(initial_mesh):
-            if facet.midpoint().distance(Point(lb_electrode[0], lb_electrode[1])) < 0.03:
+            if facet.midpoint().distance(Point(lb_electrode[0], lb_electrode[1])) < 0.06:
                 boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(ru_electrode[0], ru_electrode[1])) < 0.03:
+            if facet.midpoint().distance(Point(ru_electrode[0], ru_electrode[1])) < 0.06:
                boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(lb_electrode[0], ru_electrode[1])) < 0.03:
+            if facet.midpoint().distance(Point(lb_electrode[0], ru_electrode[1])) < 0.06:
                boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(ru_electrode[0], lb_electrode[1])) < 0.03:
+            if facet.midpoint().distance(Point(ru_electrode[0], lb_electrode[1])) < 0.06:
                 boundary_markers[facet] = 1  # Mark region near electrode
                 
-            if facet.midpoint().distance(Point(0.5, 0.5)) < 0.04:
+            if facet.midpoint().distance(Point(0.5, 0.5)) < 0.08:
                 boundary_markers[facet] = 1  # Mark region near electrode
             if facet.exterior():  # Check if the facet is on the boundary
                 boundary_markers[facet] = 1
