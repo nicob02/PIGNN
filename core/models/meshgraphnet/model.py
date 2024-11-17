@@ -9,7 +9,7 @@ def build_mlp(in_size, hidden_size, out_size, lay_norm=False):
     module = nn.Sequential(
         nn.Linear(in_size, hidden_size), nn.ReLU(),  
         nn.Linear(hidden_size, hidden_size), nn.ReLU(), 
-       nn.Linear(hidden_size, hidden_size), nn.ReLU(), 
+        nn.Linear(hidden_size, hidden_size), nn.ReLU(), 
         nn.Linear(hidden_size, out_size))
 
     if lay_norm: return nn.Sequential(module,  nn.LayerNorm(normalized_shape=out_size))
