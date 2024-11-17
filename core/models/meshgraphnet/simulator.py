@@ -31,13 +31,6 @@ class Simulator(nn.Module):
 
     def forward(self, graph:Data, **argv):
 
-        # Create noise tensors for temperature and voltage
-        temp_noise = torch.normal(mean=0.0, std=0.2, size=(graph.x.shape[0], 1), device=graph.x.device)  # Noise ~ N(0, 1)
-        volt_noise = torch.normal(mean=0.0, std=0.1, size=(graph.x.shape[0], 1), device=graph.x.device)  # Noise ~ N(0, 0.5)
-
-        # Add noise to the temperature (1st column) and voltage (2nd column)
-        graph.x[:, 0:1] += temp_noise 
-        graph.x[:, 1:2] += volt_noise  
         graph_last = copy_geometric_data(graph)
         node_type = torch.squeeze(graph.node_type).clone()
         one_hot = torch.nn.functional.one_hot(node_type, 3)
