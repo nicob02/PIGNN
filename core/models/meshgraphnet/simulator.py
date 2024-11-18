@@ -33,7 +33,7 @@ class Simulator(nn.Module):
         
         
         # Create noise tensors for temperature and voltage
-        temp_noise = torch.normal(mean=0.5, std=0.1, size=(graph.x.shape[0], 1), device=graph.x.device)  # Noise ~ N(0, 1)
+        temp_noise = torch.normal(mean=0.2, std=0.1, size=(graph.x.shape[0], 1), device=graph.x.device)  # Noise ~ N(0, 1)
         volt_noise = torch.normal(mean=0.1, std=0.05, size=(graph.x.shape[0], 1), device=graph.x.device)  # Noise ~ N(0, 0.5)
 
         # Add noise to the temperature (1st column) and voltage (2nd column)
