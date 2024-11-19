@@ -58,9 +58,26 @@ class ElectroThermalFunc():
         
         return torch.cat((temp,volt),dim=-1)
     
-    @classmethod
-    def exact_solution(cls, pos, t):
-        return cls.boundary_condition(pos, t)   #THIS I HAVE TO CHANGE WHEN I KNOW HOW TO GET THE ANSWER NUMERICALLY
+    def compute_gradient(self, field, positions):
+
+        grad = torch.autograd.grad(
+            outputs=field,  # Scalar field
+            inputs=positions,  # Positions of the nodes
+            grad_outputs=torch.ones_like(field),  # Vector of ones for chain rule
+            create_graph=True,  # Enable higher-order gradients
+        )[0]
+        
+        return grad
+
+    def compute_laplacian(self, grad, positions):
+ 
+        laplacian = torch.autograd.grad(
+            outputs=grad,  # Gradient field
+            inputs=positions,  # Positions of the nodes
+            grad_outputs=torch.ones_like(grad),  # Vector of ones for chain rule
+            create_graph=True,  # Enable higher-order gradients
+        )[0]
+        return laplacian.sum(dim=-1, keepdim=True)  # Sum over spatial dimensions
     
     def pde(self, graph, values_last, values_this, **argv):
 
@@ -85,8 +102,9 @@ class ElectroThermalFunc():
         if torch.isnan(dvdt).any():
             print("Warning: NaN detected in dvdt!")
             
-        grad_value = self.gradop(graph, values_this)
-        grad_v = grad_value[1]          # Volt Gradient at t+1
+        #grad_value = self.gradop(graph, values_this)
+        #grad_v = grad_value[1]          # Volt Gradient at t+1
+        grad_v = self.compute_gradient(volt_this, graph.pos)
         squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
 
         if torch.isnan(squared_abs_grad_v).any():
@@ -95,11 +113,14 @@ class ElectroThermalFunc():
         sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
         q = sigma*squared_abs_grad_v    # q at t+1
 
-        lap_value = self.laplacianop(graph,values_this)
+        #lap_value = self.laplacianop(graph,values_this)
     
-        lap_temp = lap_value[:,0:1]
-        lap_volt = lap_value[:,1:2]
-
+        #lap_temp = lap_value[:,0:1]
+        #lap_volt = lap_value[:,1:2]
+        grad_t = self.compute_gradient(temp_this, graph.pos)
+        lap_temp = self.compute_laplacian(grad_t, graph.pos)  # ∇ · ∇T
+        lap_volt = self.compute_laplacian(grad_v, graph.pos)  # ∇ · ∇v
+        
         if torch.isnan(lap_temp).any() or torch.isnan(lap_volt).any():
             print("Warning: NaN detected in lap_temp or lap_volt!")
 
