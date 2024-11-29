@@ -86,7 +86,7 @@ class ElectroThermalFunc():
         temp_last = values_last[:,0:1]  # Temp at time t
         volt_last = values_last[:,1:2]  # Volt at time t
         temp_this = values_this[:,0:1]  # Temp at time t+1
-        volt_this = values_this[:,1:2]  # Volt at time t*1
+        volt_this = values_this[:,1:2].requires_grad_()  # Volt at time t*1
 
 
         if torch.isnan(temp_this).any() or torch.isnan(volt_this).any():
