@@ -90,13 +90,13 @@ class ElectrodeMesh():
         # Refine the mesh around marked cells
         initial_mesh = refine(initial_mesh, cell_markers)
         self.mesh = initial_mesh
-        self.pos = self.mesh.coordinates().astype(np.float32).requires_grad_()
+        self.pos = self.mesh.coordinates().astype(np.float32)
         self.faces = self.mesh.cells().astype(np.int64).T        
         self.node_type = get_node_type(self.pos, lb_electrode, ru_electrode).astype(np.int64)
         print("Node numbers: %d"%self.pos.shape[0])
         
     def getGraphData(self):
-        graph = Data(pos=torch.as_tensor(self.pos), 
+        graph = Data(pos=torch.as_tensor(self.pos).requires_grad_(), 
                     face=torch.as_tensor(self.faces))
         graph = self.transform(graph)
         graph.num_nodes = graph.pos.shape[0]
