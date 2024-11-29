@@ -71,7 +71,8 @@ def modelTrainer(config):
             
             
             value_last = graph.x.detach().clone()
-            predicted = model(graph)  
+            predicted = model(graph)
+            predicted.requires_grad_()
             
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted at step {step}")
