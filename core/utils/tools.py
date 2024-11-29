@@ -53,7 +53,7 @@ def modelTrainer(config):
     
     for epcho in range(1, config.epchoes + 1):  # Creates different ic and solves the problem, does this epoch # of times
 
-        graph.x = config.ic(graph.pos)
+        graph.x = config.ic(graph.pos).requires_grad_()
  
         begin_time = 0
         total_steps_loss = 0
