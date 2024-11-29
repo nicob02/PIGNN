@@ -104,6 +104,10 @@ class ElectroThermalFunc():
             
         #grad_value = self.gradop(graph, values_this)
         #grad_v = grad_value[1]          # Volt Gradient at t+1
+        print("graph.pos")
+        print(graph.pos)
+        print("graph.x")
+        print(graph.x)
         grad_v = self.compute_gradient(volt_this, graph.pos)
         squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
 
