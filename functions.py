@@ -110,7 +110,7 @@ class ElectroThermalFunc():
         print(graph.pos)
         print("graph.x")
         print(graph.x)
-        grad_v = self.compute_gradient(volt_this, graph.pos).requires_grad_()
+        grad_v = self.compute_gradient(volt_this, graph.pos)
         squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
 
         if torch.isnan(squared_abs_grad_v).any():
@@ -123,7 +123,7 @@ class ElectroThermalFunc():
     
         #lap_temp = lap_value[:,0:1]
         #lap_volt = lap_value[:,1:2]
-        grad_t = self.compute_gradient(temp_this, graph.pos).requires_grad_()
+        grad_t = self.compute_gradient(temp_this, graph.pos)
         print(f"temp_this.requires_grad: {temp_this.requires_grad}")
         print(f"grad_t.requires_grad: {grad_t.requires_grad}")
     
