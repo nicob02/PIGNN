@@ -124,6 +124,10 @@ class ElectroThermalFunc():
         #lap_temp = lap_value[:,0:1]
         #lap_volt = lap_value[:,1:2]
         grad_t = self.compute_gradient(temp_this, graph.pos).requires_grad_()
+        print(f"temp_this.requires_grad: {temp_this.requires_grad}")
+        print(f"grad_t.requires_grad: {grad_t.requires_grad}")
+    
+
         lap_temp = self.compute_laplacian(grad_t, graph.pos).requires_grad_()  # ∇ · ∇T
         lap_volt = self.compute_laplacian(grad_v, graph.pos).requires_grad_()  # ∇ · ∇v
         
