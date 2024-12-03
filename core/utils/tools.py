@@ -72,7 +72,7 @@ def modelTrainer(config):
             
             value_last = graph.x.detach().clone()
             predicted = model(graph)
-            predicted.requires_grad_()
+           
             
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted at step {step}")
@@ -99,7 +99,7 @@ def modelTrainer(config):
             #loss_scalar = torch.sum(pde_loss)/pde_loss.numel()
          
             loss[:, 0].backward(torch.ones_like(loss[:, 0]), retain_graph=True)  # Heat loss
-            loss[:, 1].backward(torch.ones_like(loss[:, 1]))  # Voltage loss
+            #loss[:, 1].backward(torch.ones_like(loss[:, 1]))  # Voltage loss
 
             print("lossfinal")
             print(loss)
