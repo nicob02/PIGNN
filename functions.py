@@ -68,7 +68,7 @@ class ElectroThermalFunc():
             retain_graph=True   # Retain graph for further computations
         )[0]
         
-        return grad
+        return grad.requires_grad_()
 
     def compute_laplacian(self, grad, positions):
  
