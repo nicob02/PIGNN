@@ -77,7 +77,7 @@ class ElectroThermalFunc():
             inputs=positions,  # Positions of the nodes
             grad_outputs=torch.ones_like(grad),  # Vector of ones for chain rule
             create_graph=True,  # Enable higher-order gradients
-            retain_graph=True   # Retain graph for further computations
+            allow_unused=True 
         )[0]
         return laplacian.sum(dim=-1, keepdim=True)  # Sum over spatial dimensions
     
