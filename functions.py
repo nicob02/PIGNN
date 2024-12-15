@@ -157,15 +157,12 @@ class ElectroThermalFunc():
         #ρticti*∂T/∂t = Q + ∇ · (d∇T) + H(Tbl − T), when H=0 we have the weak-formulation
         print("lap_temp")
         print(lap_temp)
-        loss_temp = (0.0001*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
+        loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
         
-        #print("losses_tempthen_volt")
-        #print(loss_temp)
-        #print(loss_volt)
+        print("losses_tempthen_volt")
+        print(loss_temp)
+        print(loss_volt)
             
-
-
-        #return loss_temp
         return torch.cat([loss_temp,loss_volt],axis=1)
 
     
