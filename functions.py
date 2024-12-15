@@ -57,7 +57,7 @@ class ElectroThermalFunc():
         rf_frequency = 500e3
 
         # Voltage: V(t) = V0 * sin(2 * pi * f * t)
-        time_var_volt = self.volt * torch.sin(2 * torch.pi * rf_frequency * t)
+        time_var_volt = self.volt * math.sin(2 * torch.pi * rf_frequency * t)
         time_var_volt = time_var_volt.expand_as(pos[:, 1:2])  # match shape
         
         temp = values_last[:,0:1]
