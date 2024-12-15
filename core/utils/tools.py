@@ -101,8 +101,8 @@ def modelTrainer(config):
             #loss[:, 0].backward(torch.ones_like(loss[:, 0]), retain_graph=True)  # Heat loss
             loss[:, 1].backward(torch.ones_like(loss[:, 1]))  # Voltage loss
 
-            print("lossfinal")
-            print(loss)
+            #print("lossfinal")
+            #print(loss)
                 
             graph.x = predicted.detach()
 
@@ -114,7 +114,6 @@ def modelTrainer(config):
             
             #losses.update({"step%d" % step: loss.detach()})
             #total_steps_loss += loss.item()/config.train_steps
-            #torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             
         #config.writer.add_scalars("loss", losses, epcho)
         #config.writer.add_scalar("total_steps_loss", total_steps_loss, epcho)
