@@ -58,7 +58,7 @@ class ElectrodeMesh():
         ru_electrode = [(0.51),(0.53)]
         domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain
         electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
-        geometry = domain + electrode_probe            
+        geometry = domain - electrode_probe            
         initial_mesh = generate_mesh(geometry, density)
         tdim = initial_mesh.topology().dim()
         initial_mesh.init(tdim-1, tdim)
