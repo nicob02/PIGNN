@@ -156,8 +156,8 @@ class ElectroThermalFunc():
             
 
 
-        #return loss_temp
-        return torch.cat([loss_temp,loss_volt],axis=1)
+        return loss_volt
+        #return torch.cat([loss_temp,loss_volt],axis=1)
 
     
     
