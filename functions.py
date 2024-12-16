@@ -55,7 +55,7 @@ class ElectroThermalFunc():
     def electrode_condition(self, pos, values_last, t):
         # Introduce a time-varying sinusoidal voltage source
         # Frequency = 500 kHz
-        rf_frequency = 500e3
+        rf_frequency = 200
 
         # Voltage: V(t) = V0 * sin(2 * pi * f * t)
         time_var_volt = self.volt * math.sin(2 * torch.pi * rf_frequency * t)
