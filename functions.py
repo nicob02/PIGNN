@@ -2,7 +2,7 @@
 import torch
 from core.pde import laplacian, grad
 import numpy as np
-
+import math
 
 class ElectroThermalFunc(): 
 
@@ -53,12 +53,18 @@ class ElectroThermalFunc():
         return torch.cat((temp, volt), dim=-1)    # Concatenate along the last dimension
     
     def electrode_condition(self, pos, values_last, t):
+        # Introduce a time-varying sinusoidal voltage source
+        # Frequency = 500 kHz
+        rf_frequency = 500e3
 
-        volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
+        # Voltage: V(t) = V0 * sin(2 * pi * f * t)
+        time_var_volt = self.volt * math.sin(2 * torch.pi * rf_frequency * t)
+       
         temp = values_last[:,0:1]
+        volt = torch.full_like(pos[:, 1:2], time_var_volt)    # Create a tensor filled with input voltage source
+        #volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
+        return torch.cat((temp, volt), dim=-1)
         
-        return torch.cat((temp,volt),dim=-1)
-    
     def compute_gradient(self, field, positions):
 
         grad = torch.autograd.grad(
