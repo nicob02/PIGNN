@@ -9,7 +9,7 @@ import os
 
 
 
-delta_t = 0.4e-6 # Mess around with this
+delta_t = 0.5e-6 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
