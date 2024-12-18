@@ -7,38 +7,42 @@ class SolveWeightLST2d(object):
     '''
     Laplacian weights calculation via a local least-squares approach.
 
-    Changes made:
+    Changes:
     - Removed the cross term x*y from the basis to reduce potential ill-conditioning.
-    - Added condition number checks for each local system.
-    - Added a small Tikhonov regularization term if the condition number is too high.
+    - Added condition number checks.
+    - Implemented dynamic Tikhonov regularization increase if the system is ill-conditioned.
+    - If still ill-conditioned, fallback to a simpler linear approximation (no second order terms),
+      thus setting Laplacian approximation to zero at that node.
     '''
 
-    def __init__(self, regularization=1e-10, cond_warning=1e7):
+    def __init__(self, regularization=1e-10, cond_warning=1e7, max_reg_increase=1e5):
         """
         Parameters:
             regularization: float
-                A small Tikhonov regularization parameter to add to AᵀA if needed.
+                Initial small Tikhonov regularization parameter.
             cond_warning: float
                 Condition number threshold above which a warning is printed.
+            max_reg_increase: float
+                Maximum factor by which we can increase the regularization
+                before falling back to a simpler approximation.
         """
         self.regularization = regularization
         self.cond_warning = cond_warning
+        self.max_reg_increase = max_reg_increase
 
         def func(pos):
-            # New simpler polynomial basis: [x, y, x², y²]
+            # Basis: [x, y, x², y²]
             x = pos[:, 0:1]
             y = pos[:, 1:2]
-            # v: [x, y, x², y²]
             v = torch.cat([x, y, x*x, y*y], dim=-1)
             return v
 
         def laplacian_func(pos):
-            # The Laplacian of [x, y, x², y²]:
-            # ∆x = 0
-            # ∆y = 0
-            # ∆(x²) = 2
-            # ∆(y²) = 2
-            # So we have 4 basis functions, the last two correspond to second order terms.
+            # Laplacian of [x, y, x², y²]:
+            # x -> ∆x = 0
+            # y -> ∆y = 0
+            # x² -> ∆x² = 2
+            # y² -> ∆y² = 2
             v = torch.zeros((pos.shape[0], 4), dtype=pos.dtype, device=pos.device)
             v[:, 2] = 2.0
             v[:, 3] = 2.0
@@ -55,7 +59,7 @@ class SolveWeightLST2d(object):
         weights = torch.zeros_like(edges[1], dtype=torch.float)
 
         lap = self.laplacian_func(pos)
-        diff_ = self.func(pos[edges[1]] - pos[edges[0]])  # Removed '-0' (no effect)
+        diff_ = self.func(pos[edges[1]] - pos[edges[0]])
 
         all_A_dict = defaultdict(list)
         all_B_dict = defaultdict(list)
@@ -63,23 +67,23 @@ class SolveWeightLST2d(object):
 
         # Build local systems
         for i in tqdm(range(number_nodes)):
-            diff = diff_[edges[1] == i]       # shape [#neighbors, #basis=4]
-            laplacian_value = lap[i:i+1]      # shape [1,4]
+            diff = diff_[edges[1] == i]       # shape: [#neighbors, 4]
+            laplacian_value = lap[i:i+1]      # shape: [1,4]
 
             A = diff.t()  # A: [4, #neighbors]
             B = laplacian_value.t()  # B: [4,1]
-
             neibor = A.shape[1]
 
-            # Condition number check:
-            # Compute condition number of A using SVD
-            # If #neighbors < 4 (less equations than unknowns), we can't solve stablely anyway
             if neibor < 4:
-                # Not enough neighbors - consider skipping or adding neighbors
-                # We'll skip this node (no update to weights)
-                print(f"<4 Neighbours for node")
+                # Not enough neighbors to solve for a 4-term system
+                # We'll skip or fallback to zero (no meaningful Laplacian)
+                print("<4 Neighbours for node")
+                # Set all weights for this node to zero (fallback)
+                # edges[1] == i gives the edges connected to this node
+                weights[edges[1] == i] = 0.0
                 continue
 
+            # Check condition number
             try:
                 U, S, Vt = torch.linalg.svd(A, full_matrices=False)
                 cond_number = (S[0] / (S[-1] + 1e-14)).item()
@@ -87,59 +91,80 @@ class SolveWeightLST2d(object):
                     print(f"Warning: High condition number {cond_number} at node {i} with {neibor} neighbors.")
             except RuntimeError as e:
                 print(f"SVD failed for node {i}: {e}")
+                # Fallback to zero Laplacian
+                weights[edges[1] == i] = 0.0
                 continue
 
             all_A_dict[neibor].append((A, B, i))
 
         # Solve local systems by group of same neighbor count
         for n in all_A_dict.keys():
-            # Stack all A and B
             A_list = [item[0] for item in all_A_dict[n]]
             B_list = [item[1] for item in all_A_dict[n]]
             index_list = [item[2] for item in all_A_dict[n]]
 
-            A_block = torch.stack(A_list, dim=0) # shape [batch, 4, n]
-            B_block = torch.stack(B_list, dim=0) # shape [batch, 4, 1]
-
-            # Solve with least squares: 
-            # Normally: X = A⁺ B = (AᵀA)⁻¹AᵀB
-            # Add Tikhonov regularization if needed:
-            # Instead of directly calling lstsq, we can do:
-            # (AᵀA + λI)x = AᵀB
-            # We'll try lstsq first. If too ill-conditioned, we can do a manual regularized solve.
-
+            A_block = torch.stack(A_list, dim=0) # [batch, 4, n]
+            B_block = torch.stack(B_list, dim=0) # [batch, 4, 1]
             batch_size = A_block.shape[0]
-            X = torch.empty((batch_size, n, 1), dtype=A_block.dtype, device=A_block.device)
 
+            X = torch.empty((batch_size, n, 1), dtype=A_block.dtype, device=A_block.device)
             for b in range(batch_size):
                 A_b = A_block[b]
                 B_b = B_block[b]
 
-                # Regularization step:
-                # Compute AᵀA and AᵀB
-                At = A_b.transpose(0,1) # shape [n,4]
-                AtA = At.mm(A_b)        # shape [n,n]
-                AtB = At.mm(B_b)        # shape [n,1]
+                # Solve the system with the current regularization
+                X_b = self.solve_with_regularization(A_b, B_b, n)
+                if X_b is None:
+                    # If we still can't solve it properly, fallback:
+                    # Set Laplacian to zero
+                    receiver = index_list[b]
+                    weights[edges[1] == receiver] = 0.0
+                else:
+                    X[b] = X_b
 
-                # Add small lambda * I to AtA
-                AtA_reg = AtA + self.regularization * torch.eye(n, device=AtA.device)
-
-                # Solve the regularized normal equations:
-                # X_b = (AtA_reg)⁻¹ AtB
-                # Using torch.linalg.solve:
-                try:
-                    X_b = torch.linalg.solve(AtA_reg, AtB)
-                except RuntimeError:
-                    # Fallback: use lstsq
-                    X_b = torch.linalg.lstsq(AtA_reg, AtB).solution
-
-                X[b] = X_b
-
-            # Assign weights
-            for i_node, w in enumerate(X):
-                receiver = index_list[i_node]
-                w = w.squeeze()
+            # Assign weights if we got a solution
+            for i_node, receiver in enumerate(index_list):
+                # If we fell back to zero, we already assigned weights
+                # Otherwise, assign computed weights
+                if torch.all(weights[edges[1] == receiver] == 0.0):
+                    # Already set to zero (fallback)
+                    continue
+                w = X[i_node].squeeze()
                 weights[edges[1] == receiver] = w
 
         weights = weights.detach()
         return weights
+
+    def solve_with_regularization(self, A_b, B_b, n):
+        """
+        Attempt to solve the normal equations with increasing regularization if necessary.
+        If after several attempts condition number remains too high or solution fails,
+        return None to indicate fallback should occur.
+        """
+        reg = self.regularization
+        max_reg = self.regularization * self.max_reg_increase
+
+        At = A_b.transpose(0,1) # [n,4]
+        AtA = At.mm(A_b)        # [n,n]
+        AtB = At.mm(B_b)        # [n,1]
+
+        while reg <= max_reg:
+            AtA_reg = AtA + reg * torch.eye(n, device=AtA.device)
+            # Attempt to solve
+            try:
+                X_b = torch.linalg.solve(AtA_reg, AtB)
+                # Check condition number again after adding reg
+                # Use SVD on AtA_reg:
+                U, S, Vt = torch.linalg.svd(AtA_reg, full_matrices=False)
+                cond_number = (S[0] / (S[-1] + 1e-14)).item()
+                if cond_number > self.cond_warning:
+                    # Increase regularization and try again
+                    reg *= 10
+                    continue
+                return X_b
+            except RuntimeError:
+                # Increase reg and try again
+                reg *= 10
+
+        # If we reached here, even with increased regularization we failed
+        return None
