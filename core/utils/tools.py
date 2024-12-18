@@ -242,7 +242,7 @@ def render_temperature(predicteds, graph):
     y = pos[:, 1]
 
     for index_ in tqdm(range(total_test_steps)):
-        if index_ % 20 != 0:
+        if index_ % 5 != 0:
             continue
         predicted = predicteds[index_]
 
