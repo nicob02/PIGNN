@@ -77,7 +77,7 @@ class SolveWeightLST2d(object):
             if neibor < 4:
                 # Not enough neighbors - consider skipping or adding neighbors
                 # We'll skip this node (no update to weights)
-                print(f">4 Neighbours for node {i}: {e}")
+                print(f">4 Neighbours for node")
                 continue
 
             try:
