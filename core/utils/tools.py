@@ -99,7 +99,7 @@ def modelTrainer(config):
             #loss_scalar = torch.sum(pde_loss)/pde_loss.numel()
          
             loss[:, 0].backward(torch.ones_like(loss[:, 0]), retain_graph=True)  
-            #loss[:, 1].backward(torch.ones_like(loss[:, 1]))  
+            loss[:, 1].backward(torch.ones_like(loss[:, 1]))  
 
             print("lossfinal")
             print(loss)
