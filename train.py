@@ -95,7 +95,7 @@ setattr(train_config, 'graph', graph)
 setattr(train_config, 'model', model)
 setattr(train_config, 'optimizer', optimizer)
 setattr(train_config, 'train_steps', 20)    # 1 minute total simulation
-setattr(train_config, 'epchoes', 100)
+setattr(train_config, 'epchoes', 10)
 setattr(train_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref) 
 setattr(train_config, 'step_times', 1)
 #setattr(train_config, 'name', func_name)
