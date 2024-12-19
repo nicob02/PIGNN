@@ -1,5 +1,5 @@
 from fenics import Point
-from mshr import generate_mesh, Rectangle
+from mshr import generate_mesh, Rectangle, Circle
 import numpy as np
 from enum import IntEnum
 import torch_geometric.transforms as T
