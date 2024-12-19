@@ -1,6 +1,6 @@
 
 import torch
-from core.pde import laplacian, grad
+from core.pde import laplacian, grad, 
 import numpy as np
 import math
 
@@ -139,7 +139,8 @@ class ElectroThermalFunc():
             print("Warning: NaN detected in lap_temp or lap_volt!")
 
         #∇ · (σ(T)∇v) = 0
-        loss_volt = sigma*lap_volt
+        "loss_volt = sigma*lap_volt
+        loss_volt = f*lap_volt
         print("lap_volt")
         print(lap_volt)
         #ρticti*∂T/∂t = Q + ∇ · (d∇T) + H(Tbl − T), when H=0 we have the weak-formulation
