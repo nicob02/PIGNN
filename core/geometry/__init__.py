@@ -22,7 +22,7 @@ def get_node_type(pos, lb_electrode, ru_electrode, radius_ratio=None):
     left = np.isclose(pos[:, 0], min_x)
     up = np.isclose(pos[:, 1], max_y)
     bottom = np.isclose(pos[:, 1], min_y)    
-    
+    radius = (max_x - min_x)/2
    # on_boundary = np.logical_or(np.logical_or(right, left),np.logical_or(up, bottom))
     dist = np.linalg.norm(pos, axis=-1)
     on_boundary = np.isclose(dist, radius, atol=1e-4)
