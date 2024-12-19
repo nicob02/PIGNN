@@ -102,10 +102,6 @@ def modelTrainer(config):
             loss = torch.norm(loss)/loss.numel()
 
             loss.backward()
-
-
-            print("lossfinal")
-            print(loss)
                 
             graph.x = predicted.detach()
 
