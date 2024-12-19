@@ -98,8 +98,12 @@ def modelTrainer(config):
             #loss_scalar = torch.norm(pde_loss)/pde_loss.numel()
             #loss_scalar = torch.sum(pde_loss)/pde_loss.numel()
          
-            loss[:, 0].backward(torch.ones_like(loss[:, 0]), retain_graph=True)  
-            loss[:, 1].backward(torch.ones_like(loss[:, 1]))  
+            # Aggregate the loss components
+            loss = torch.mean(loss[:, 0]) + torch.mean(loss[:, 1])
+
+            # Perform a single backward pass
+            loss.backward()
+
 
             print("lossfinal")
             print(loss)
