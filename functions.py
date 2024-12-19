@@ -61,8 +61,8 @@ class ElectroThermalFunc():
         time_var_volt = self.volt * math.sin(2 * torch.pi * rf_frequency * t)
        
         temp = values_last[:,0:1]
-        volt = torch.full_like(pos[:, 1:2], time_var_volt)    # Create a tensor filled with input voltage source
-        #volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
+        #volt = torch.full_like(pos[:, 1:2], time_var_volt)    # Create a tensor filled with input voltage source
+        volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
         return torch.cat((temp, volt), dim=-1)
         
     def compute_gradient(self, field, positions):
