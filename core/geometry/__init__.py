@@ -34,7 +34,14 @@ def get_node_type(pos, lb_electrode, ru_electrode, radius_ratio=None):
     up_electrode = np.logical_and(np.isclose(pos[:, 1], ru_electrode[1]), np.logical_and(pos[:, 0] >= lb_electrode[0], pos[:, 0] <= ru_electrode[0]))
     bottom_electrode = np.logical_and(np.isclose(pos[:, 1], lb_electrode[1]), np.logical_and(pos[:, 0] >= lb_electrode[0], pos[:, 0] <= ru_electrode[0]))
 
-    on_electrode = np.logical_or(np.logical_or(right_electrode, left_electrode), np.logical_or(up_electrode, bottom_electrode))
+    #on_electrode = np.logical_or(np.logical_or(right_electrode, left_electrode), np.logical_or(up_electrode, bottom_electrode))
+    # Mark nodes inside or on the boundary of the electrode
+    on_electrode = np.logical_and(
+        np.logical_and(pos[:, 0] >= lb_electrode[0], pos[:, 0] <= ru_electrode[0]),
+        np.logical_and(pos[:, 1] >= lb_electrode[1], pos[:, 1] <= ru_electrode[1])
+    )
+    
+    # 'on_electrode' now marks all nodes (surface and interior) of the electrode
 
     node_type = np.ones((pos.shape[0], 1))
     node_type[on_boundary] = NodeType.boundary
