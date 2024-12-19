@@ -1,6 +1,6 @@
 
 import torch
-from core.pde import laplacian, grad, 
+from core.pde import laplacian, grad
 import numpy as np
 import math
 
