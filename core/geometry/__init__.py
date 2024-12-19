@@ -89,8 +89,9 @@ class ElectrodeMesh():
     
         # Refine the mesh around marked cells
     #    initial_mesh = refine(initial_mesh, cell_markers)
-        
-        self.mesh = initial_mesh
+        domain = Rectangle(Point(0, 0), Point(1, 1))
+        self.mesh = generate_mesh(domain, 70)
+        #self.mesh = initial_mesh
         self.pos = self.mesh.coordinates().astype(np.float32)
         self.faces = self.mesh.cells().astype(np.int64).T        
         self.node_type = get_node_type(self.pos, lb_electrode, ru_electrode).astype(np.int64)
