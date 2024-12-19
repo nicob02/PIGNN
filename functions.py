@@ -139,7 +139,7 @@ class ElectroThermalFunc():
             print("Warning: NaN detected in lap_temp or lap_volt!")
 
         #∇ · (σ(T)∇v) = 0
-        "loss_volt = sigma*lap_volt
+        #loss_volt = sigma*lap_volt
         loss_volt = f*lap_volt
         print("lap_volt")
         print(lap_volt)
