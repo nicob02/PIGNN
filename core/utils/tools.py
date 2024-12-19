@@ -99,7 +99,7 @@ def modelTrainer(config):
             #loss_scalar = torch.sum(pde_loss)/pde_loss.numel()
          
             # Aggregate the loss components
-            loss = torch.norm(pde_loss)/pde_loss.numel()
+            loss = torch.norm(loss)/loss.numel()
 
             loss.backward()
 
