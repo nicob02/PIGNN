@@ -19,7 +19,7 @@ rfa_params = [1060 , 3600 , 0.512 , 5 , 310 , 0.33 , 0.02 ]
 
 ckptpath = 'checkpoint/simulator_%s.pth' % Func.func_name  #Check this out
 
-func_main = Func(delta_t=delta_t, params=rfa_params, volt=16)
+func_main = Func(delta_t=delta_t, params=rfa_params, volt=1.6)
 
 ic = func_main.init_condition
 bc1 = func_main.boundary_condition
