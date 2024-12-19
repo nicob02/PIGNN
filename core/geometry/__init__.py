@@ -110,7 +110,7 @@ class ElectrodeMesh():
         print("Node numbers: %d"%self.pos.shape[0])
         
     def getGraphData(self):
-        graph = Data(pos=torch.as_tensor(self.pos).requires_grad_(), 
+        graph = Data(pos=torch.as_tensor(self.pos), 
                     face=torch.as_tensor(self.faces))
         graph = self.transform(graph)
         graph.num_nodes = graph.pos.shape[0]
