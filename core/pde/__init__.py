@@ -8,7 +8,7 @@ from .cotangent_laplacian import CotangentLaplacian
 class laplacian():
     def __init__(self) -> None:
         self.L_matrix_dict = {}
-        "self.solver2d = SolveWeightLST2d()
+        #self.solver2d = SolveWeightLST2d()
         self.cotlap = CotangentLaplacian()
         
     def __call__(self, graph, values):
