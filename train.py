@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 
 device = torch.device(0)
 
-delta_t = 0.1 # Mess around with this
+delta_t = 1e-3 # Mess around with this
 
 #func_name = 'rfa'
-out_ndim = 2
+out_ndim = 1
 rfa_params = [1060 , 3600 , 0.512 , 5 , 37 , 0.33 , 0.02 ]  # e = 310
 # Liver density ρti, Liver Heat Capacity dti, liver thermal conductivity dti, Convective
 # Transfer coefficient H, Blood/Ground Temp Tbl, Liver Electrical Conductivity σti(T) increases linearly by 2%
@@ -95,7 +95,7 @@ setattr(train_config, 'graph', graph)
 setattr(train_config, 'model', model)
 setattr(train_config, 'optimizer', optimizer)
 setattr(train_config, 'train_steps', 20)    # 1 minute total simulation
-setattr(train_config, 'epchoes', 600)
+setattr(train_config, 'epchoes', 30)
 setattr(train_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref) 
 setattr(train_config, 'step_times', 1)
 #setattr(train_config, 'name', func_name)
