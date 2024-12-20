@@ -87,9 +87,9 @@ def modelTrainer(config):
             loss[on_electrode] = 0
          
             # Aggregate the loss components
-            #loss = torch.norm(loss)/loss.numel()
-            #loss.backward()
-            loss.backward(torch.ones_like(loss))
+            loss = torch.norm(loss)/loss.numel()
+            loss.backward()
+            #loss.backward(torch.ones_like(loss))
                 
             graph.x = predicted.detach()
 
