@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 device = torch.device(0)
 
-delta_t = 0.1 # Mess around with this
+delta_t = 1e-3 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
@@ -25,7 +25,7 @@ ic = func_main.init_condition
 bc1 = func_main.boundary_condition
 bc2 = func_main.electrode_condition
 
-model = msgPassing(message_passing_num=1, node_input_size=out_ndim, edge_input_size=3, 
+model = msgPassing(message_passing_num=1, node_input_size=out_ndim+3, edge_input_size=3, 
                    ndim=out_ndim, device=device, model_dir=ckptpath)    # Mess with MPN# to 2 or 3
 model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
