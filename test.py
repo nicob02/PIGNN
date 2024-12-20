@@ -14,7 +14,7 @@ delta_t = 0.1 # Mess around with this
 #func_name = 'rfa'
 out_ndim = 2
 rfa_params = [1060 , 3600 , 0.512 , 244000 , 310 , 0.33 , 0.02 ]  # Go with Kelvin just in case
-volt = 16
+volt = 25
 
 ckptpath = 'checkpoint/simulator_%s.pth' % Func.func_name    #FIGURE THIS OUT
 device = torch.device(0)
