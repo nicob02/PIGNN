@@ -9,10 +9,10 @@ import os
 
 
 
-delta_t = 0.1 # Mess around with this
+delta_t = 1e-3 # Mess around with this
 
 #func_name = 'rfa'
-out_ndim = 2
+out_ndim = 1
 rfa_params = [1060 , 3600 , 0.512 , 244000 , 37 , 0.33 , 0.02 ]  # Go with Kelvin just in case
 volt = 15
 
