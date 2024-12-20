@@ -53,7 +53,7 @@ def modelTrainer(config):
     
     for epcho in range(1, config.epchoes + 1):  # Creates different ic and solves the problem, does this epoch # of times
 
-        graph.x = config.ic(graph.pos).requires_grad_()
+        graph.x = config.ic(graph.pos)
  
         begin_time = 0
         total_steps_loss = 0
@@ -77,7 +77,7 @@ def modelTrainer(config):
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted at step {step}")
             # hard boundary         
-            boundary_value = config.bc1(graph.pos)
+            #boundary_value = config.bc1(graph.pos)
             #predicted[on_boundary] = boundary_value[on_boundary] 
             if torch.isnan(predicted).any():
                 print(f"Warning: NaN detected in predicted after applying boundary conditions at step {step}")
@@ -149,7 +149,7 @@ def modelTester(config):
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
         value_last = graph.x.detach().clone()
-        graph.x[on_boundary] = boundary_value[on_boundary]
+        #graph.x[on_boundary] = boundary_value[on_boundary]
         #config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
         electrode_value = config.bc2(graph.pos, predicted, this_time)
