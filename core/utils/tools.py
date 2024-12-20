@@ -73,43 +73,28 @@ def modelTrainer(config):
             value_last = graph.x.detach().clone()
             predicted = model(graph)
            
-            
-            if torch.isnan(predicted).any():
-                print(f"Warning: NaN detected in predicted at step {step}")
             # hard boundary         
             boundary_value = config.bc1(graph.pos)
             predicted[on_boundary] = boundary_value[on_boundary] 
-            if torch.isnan(predicted).any():
-                print(f"Warning: NaN detected in predicted after applying boundary conditions at step {step}")
       
             electrode_value = config.bc2(graph.pos, predicted, this_time)    #Check later whether temp_last values is good
             predicted[on_electrode] = electrode_value[on_electrode]
 
-            if torch.isnan(predicted).any():
-                print(f"Warning: NaN detected in predicted after applying electrode conditions at step {step}")
-                
-
 
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
-            if torch.isnan(loss).any():
-                print(f"Warning: NaN detected in pde_loss at step {step}")
+
             loss[on_boundary] = 0
             loss[on_electrode] = 0
-            #loss_scalar = torch.norm(pde_loss)/pde_loss.numel()
-            #loss_scalar = torch.sum(pde_loss)/pde_loss.numel()
          
             # Aggregate the loss components
-            loss = torch.norm(loss)/loss.numel()
-
-            loss.backward()
+            #loss = torch.norm(loss)/loss.numel()
+            #loss.backward()
+            loss.backward(torch.ones_like(loss))
                 
             graph.x = predicted.detach()
 
             config.optimizer.step()
 
-     
-            if torch.isnan(graph.x).any():
-                print(f"Warning: NaN detected in graph.x after graph_modify at step {step}")
             
             #losses.update({"step%d" % step: loss.detach()})
             #total_steps_loss += loss.item()/config.train_steps
