@@ -12,7 +12,7 @@ delta_t = 0.1 # Mess around with this
 
 #func_name = 'rfa'
 out_ndim = 2
-rfa_params = [1060 , 3600 , 0.512 , 5 , 310 , 0.33 , 0.02 ]  
+rfa_params = [1060 , 3600 , 0.512 , 5 , 0 , 0.33 , 0.02 ]  # e = 310
 # Liver density ρti, Liver Heat Capacity dti, liver thermal conductivity dti, Convective
 # Transfer coefficient H, Blood/Ground Temp Tbl, Liver Electrical Conductivity σti(T) increases linearly by 2%
 
