@@ -218,33 +218,16 @@ def render_temperature(predicteds, graph):
     total_test_steps = predicteds.shape[0]
     pos = graph.pos.cpu().numpy()
 
-    temp_max = np.max(predicteds[:, :, 0])
-    temp_min = np.min(predicteds[:, :, 0])
-
     os.makedirs('images', exist_ok=True)
     x = pos[:, 0]
     y = pos[:, 1]
 
     for index_ in tqdm(range(total_test_steps)):
-        if index_ % 5 != 0:
+        if index_ % 3 != 0:
             continue
         predicted = predicteds[index_]
-
-        data_index = 0  #index representing temp
-
-        c = predicted[:, data_index:data_index+1]
-
-        fig, axes = plt.subplots(1, 1, figsize=(5, 4))
-        b = axes.scatter(x, y, c=c,  vmin=temp_min, vmax=temp_max, cmap="plasma")
-        fig.colorbar(b, ax=axes)
-        axes.set_xticks([])
-        axes.set_yticks([])
-        plt.savefig('images/result%dtemp_predict.png' %
-                    (test_begin_step+index_), bbox_inches='tight')
-        plt.close()
-
-
-        data_index = 1  #volt index
+        
+        data_index = 0  #volt index
 
         v_max = np.max(predicted[:,  data_index])
         v_min = np.min(predicted[:,  data_index])
