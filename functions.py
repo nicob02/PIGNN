@@ -148,7 +148,7 @@ class ElectroThermalFunc():
         print(dvdt)
         print("lap_temp")
         print(lap_temp)
-        loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
+        loss_temp = (0.1*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
         #loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp))
                      
         print("losses_tempthen_volt")
