@@ -38,7 +38,7 @@ class ElectroThermalFunc():
 
     def init_condition(self, pos):
         
-        temp = torch.full_like(pos[:, 0:1], 310)  # Create a tensor filled with 310s for the temperature
+        temp = torch.full_like(pos[:, 0:1], 31.0)  # Create a tensor filled with 310s for the temperature
         volt = torch.full_like(pos[:, 1:2], 0)    # Create a tensor filled with 1s for the voltage
         #q =  torch.full_like(pos[:, 1:2], 0)      #q
         
@@ -47,7 +47,7 @@ class ElectroThermalFunc():
 
     def boundary_condition(self, pos):
         
-        temp = torch.full_like(pos[:, 0:1], 310)  # Create a tensor filled with 310s for the temperature
+        temp = torch.full_like(pos[:, 0:1], 31.0)  # Create a tensor filled with 310s for the temperature
         volt = torch.full_like(pos[:, 1:2], 0)    # Create a tensor filled with 1s for the voltage
     
         return torch.cat((temp, volt), dim=-1)    # Concatenate along the last dimension
@@ -106,7 +106,7 @@ class ElectroThermalFunc():
         if torch.isnan(values_this).any() or torch.isnan(values_last).any():
             print("Warning: NaN detected in values_this or values_last after clamping!")
 
-        dvdt = (temp_this-temp_last)/self.delta_t
+        dvdt = (temp_this-temp_last)*10/self.delta_t
             
         if torch.isnan(dvdt).any():
             print("Warning: NaN detected in dvdt!")
@@ -123,7 +123,7 @@ class ElectroThermalFunc():
         if torch.isnan(squared_abs_grad_v).any():
             print("Warning: NaN detected in squared_abs_grad_v!")
             
-        sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
+        sigma = f*(1+g*(temp_this*10 - e)) # Sigma at t+1
         q = sigma*squared_abs_grad_v    # q at t+1
 
         lap_value = self.laplacianop(graph,values_this)
@@ -148,7 +148,7 @@ class ElectroThermalFunc():
         print(dvdt)
         print("lap_temp")
         print(lap_temp)
-        loss_temp = (0.1*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this)))
+        loss_temp = (0.1*((a*b*dvdt) - q - c*lap_temp -d*(e-temp_this*10)))
         #loss_temp = (0.01*((a*b*dvdt) - q - c*lap_temp))
                      
         print("losses_tempthen_volt")
