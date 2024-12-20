@@ -105,7 +105,7 @@ class ElectroThermalFunc():
     
         squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
             
-        sigma = f*(1+g*(temp_this - e)) # Sigma at t+1
+        sigma = f
 
         lap_value = self.laplacianop(graph,volt_this)
     
