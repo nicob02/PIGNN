@@ -41,14 +41,14 @@ class ElectroThermalFunc():
         volt = torch.full_like(pos[:, 0:1], 0.5)    # Create a tensor filled with 1s for the voltage
         #q =  torch.full_like(pos[:, 1:2], 0)      #q
         
-        return torch.cat((volt), dim=-1)    # Concatenate along the last dimension
+        return volt # Concatenate along the last dimension
 
 
     def boundary_condition(self, pos):
         
         volt = torch.full_like(pos[:, 0:1], 0.2)  # Create a tensor filled with 310s for the temperature
 
-        return torch.cat((volt), dim=-1)    # Concatenate along the last dimension
+        return volt    # Concatenate along the last dimension
     
     def electrode_condition(self, pos, values_last, t):
         # Introduce a time-varying sinusoidal voltage source
@@ -60,7 +60,7 @@ class ElectroThermalFunc():
        
         volt = torch.full_like(pos[:, 0:1], time_var_volt)    # Create a tensor filled with input voltage source
         #volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
-        return torch.cat((volt), dim=-1)
+        return volt
         
     def compute_gradient(self, field, positions):
 
