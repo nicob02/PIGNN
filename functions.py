@@ -97,7 +97,7 @@ class ElectroThermalFunc():
 
             
         grad_value = self.gradop(graph, values_this)
-        grad_v = grad_value[1]          # Volt Gradient at t+1
+        grad_v = grad_value[0]          # Volt Gradient at t+1
         print("graph.pos")
         print(graph.pos)
         print("graph.x")
