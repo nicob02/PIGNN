@@ -46,7 +46,7 @@ class ElectrodeMesh():
         self.mesh = generate_mesh(domain, density)
         self.pos = self.mesh.coordinates().astype(np.float32)
         self.faces = self.mesh.cells().astype(np.int64).T        
-        self.node_type = get_node_type(self.pos, lb_electrode, ru_electrode).astype(np.int64)
+        self.node_type = get_node_type(self.pos).astype(np.int64)
         print("Node numbers: %d"%self.pos.shape[0])
         
     def getGraphData(self):
