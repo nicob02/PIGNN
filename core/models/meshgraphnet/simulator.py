@@ -43,7 +43,7 @@ class Simulator(nn.Module):
         graph_last = copy_geometric_data(graph)
         node_type = torch.squeeze(graph.node_type).clone()
         one_hot = torch.nn.functional.one_hot(node_type, 2)
-        graph.x = torch.cat([graph.x, one_hot], dim=-1)   
+        #graph.x = torch.cat([graph.x, one_hot], dim=-1)   
 
         if torch.isnan(graph.x).any():
             print("Warning: NaN detected in graph.x after concatenation in Simulator")
