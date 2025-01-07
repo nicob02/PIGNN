@@ -21,7 +21,7 @@ func_main = Func(delta_t=delta_t, params=poisson_params)
 ic = func_main.init_condition
 bc1 = func_main.boundary_condition
 
-model = msgPassing(message_passing_num=1, node_input_size=out_ndim+3, edge_input_size=3, 
+model = msgPassing(message_passing_num=1, node_input_size=out_ndim+1, edge_input_size=3, 
                    ndim=out_ndim, device=device, model_dir=ckptpath)    # Mess with MPN# to 2 or 3, +3 comes from source + BC
 model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
