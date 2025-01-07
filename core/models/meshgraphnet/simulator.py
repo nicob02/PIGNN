@@ -42,7 +42,7 @@ class Simulator(nn.Module):
     
         graph_last = copy_geometric_data(graph)
         node_type = torch.squeeze(graph.node_type).clone()
-        one_hot = torch.nn.functional.one_hot(node_type, 3)
+        one_hot = torch.nn.functional.one_hot(node_type, 2)
         graph.x = torch.cat([graph.x, one_hot], dim=-1)   
 
         if torch.isnan(graph.x).any():
