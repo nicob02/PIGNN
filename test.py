@@ -10,7 +10,7 @@ import os
 
 
 delta_t = 1 # Mess around with this
-poisson_params = [6.28318]
+poisson_params = 6.28318
 
 #func_name = 'rfa'
 out_ndim = 1
