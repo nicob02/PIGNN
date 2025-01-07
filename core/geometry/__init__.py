@@ -10,9 +10,8 @@ from dolfin import *
 class NodeType(IntEnum):
     inner=0
     boundary=1
-    electrode=2
 
-def get_node_type(pos, lb_electrode, ru_electrode, radius_ratio=None):
+def get_node_type(pos, radius_ratio=None):
     max_x = np.max(pos[:, 0])
     max_y = np.max(pos[:, 1])
     min_x = np.min(pos[:, 0])
@@ -22,32 +21,12 @@ def get_node_type(pos, lb_electrode, ru_electrode, radius_ratio=None):
     left = np.isclose(pos[:, 0], min_x)
     up = np.isclose(pos[:, 1], max_y)
     bottom = np.isclose(pos[:, 1], min_y)    
-    radius = (max_x - min_x)/2
-    center = np.array([0.5, 0.5])
-    #on_boundary = np.logical_or(np.logical_or(right, left),np.logical_or(up, bottom))
-    dist = np.linalg.norm(pos-center, axis=-1)
-    on_boundary = np.isclose(dist, radius, atol=1e-4)
-    #on_boundary = np.isclose(dist, 2, atol=1e-4)
-
     
-    right_electrode = np.logical_and(np.isclose(pos[:, 0], ru_electrode[0]), np.logical_and(pos[:, 1] >= lb_electrode[1], pos[:, 1] <= ru_electrode[1]))
-    left_electrode = np.logical_and(np.isclose(pos[:, 0], lb_electrode[0]), np.logical_and(pos[:, 1] >= lb_electrode[1], pos[:, 1] <= ru_electrode[1]))
-    up_electrode = np.logical_and(np.isclose(pos[:, 1], ru_electrode[1]), np.logical_and(pos[:, 0] >= lb_electrode[0], pos[:, 0] <= ru_electrode[0]))
-    bottom_electrode = np.logical_and(np.isclose(pos[:, 1], lb_electrode[1]), np.logical_and(pos[:, 0] >= lb_electrode[0], pos[:, 0] <= ru_electrode[0]))
-
-    #on_electrode = np.logical_or(np.logical_or(right_electrode, left_electrode), np.logical_or(up_electrode, bottom_electrode))
-    # Mark nodes inside or on the boundary of the electrode
-    on_electrode = np.logical_and(
-        np.logical_and(pos[:, 0] >= lb_electrode[0], pos[:, 0] <= ru_electrode[0]),
-        np.logical_and(pos[:, 1] >= lb_electrode[1], pos[:, 1] <= ru_electrode[1])
-    )
+    on_boundary = np.logical_or(np.logical_or(right, left),np.logical_or(up, bottom))
     
-    # 'on_electrode' now marks all nodes (surface and interior) of the electrode
-
     node_type = np.ones((pos.shape[0], 1))
     node_type[on_boundary] = NodeType.boundary
-    node_type[on_electrode] = NodeType.electrode
-    node_type[np.logical_not(np.logical_or(on_boundary, on_electrode))] = NodeType.inner
+    node_type[np.logical_not(on_boundary)] = NodeType.inner
         
     return np.squeeze(node_type)
     
@@ -55,55 +34,16 @@ def get_node_type(pos, lb_electrode, ru_electrode, radius_ratio=None):
 class ElectrodeMesh():
     
     node_type_ref = NodeType
-    def __init__(self, density=30, lb=(0, 0), ru=(0.7, 0.7)) -> None:
+    def __init__(self, density=65, lb=(0, 0), ru=(1, 1)) -> None:
         
         self.transform = T.Compose([
             T.FaceToEdge(remove_faces=False), 
             T.Cartesian(norm=False), 
             T.Distance(norm=False)
             ])
-        #random_center_electrode_x = np.random.uniform(0.05,0.95)   #Electrode probe is placed randomly at each training iteration
-        #random_center_electrode_y = np.random.uniform(0.1,0.9)
-        
-        lb_electrode = [(0.49),(0.47)]
-        ru_electrode = [(0.51),(0.53)]
-        #domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain
-        domain = Circle(Point(0.5, 0.5), 0.4)
-        electrode_probe = Rectangle(Point(lb_electrode[0], lb_electrode[1]), Point(ru_electrode[0], ru_electrode[1]))
-        geometry = domain - electrode_probe            
-        initial_mesh = generate_mesh(geometry, density)
-        tdim = initial_mesh.topology().dim()
-        initial_mesh.init(tdim-1, tdim)
-        boundary_markers = MeshFunction("size_t", initial_mesh, initial_mesh.topology().dim() - 1, 0)
-        for facet in facets(initial_mesh):
-            if facet.midpoint().distance(Point(lb_electrode[0], lb_electrode[1])) < 0.05:
-                boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(ru_electrode[0], ru_electrode[1])) < 0.05:
-               boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(lb_electrode[0], ru_electrode[1])) < 0.05:
-               boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.midpoint().distance(Point(ru_electrode[0], lb_electrode[1])) < 0.05:
-                boundary_markers[facet] = 1  # Mark region near electrode
-                
-            if facet.midpoint().distance(Point(0.5, 0.5)) < 0.065:
-                boundary_markers[facet] = 1  # Mark region near electrode
-            if facet.exterior():  # Check if the facet is on the boundary
-                boundary_markers[facet] = 1
-        
-        # Refine mesh selectively around electrode and boundary
-        #for i in range(3):  # Number of refinements
-        cell_markers = MeshFunction("bool", initial_mesh, initial_mesh.topology().dim())
-        cell_markers.set_all(False)
-        for cell in cells(initial_mesh):
-            for facet in facets(cell):
-                if boundary_markers[facet] == 1:
-                    cell_markers[cell] = True  # Mark cells for refinement around electrode
     
-        # Refine the mesh around marked cells
-        initial_mesh = refine(initial_mesh, cell_markers)
-        
-        self.mesh = generate_mesh(geometry, 70)
-        #self.mesh = initial_mesh
+        domain = Rectangle(Point(lb[0],lb[1]), Point(ru[0], ru[1]))  # Geometry Domain 
+        self.mesh = generate_mesh(domain, density)
         self.pos = self.mesh.coordinates().astype(np.float32)
         self.faces = self.mesh.cells().astype(np.int64).T        
         self.node_type = get_node_type(self.pos, lb_electrode, ru_electrode).astype(np.int64)
