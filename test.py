@@ -15,7 +15,7 @@ poisson_params = 6.28318
 #func_name = 'rfa'
 out_ndim = 1
 
-
+dens=65
 ckptpath = 'checkpoint/simulator_%s.pth' % Func.func_name    #FIGURE THIS OUT
 device = torch.device(0)
 
