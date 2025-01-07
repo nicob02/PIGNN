@@ -58,42 +58,40 @@ def modelTrainer(config):
         begin_time = 0
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
-        on_electrode = torch.squeeze(graph.node_type == config.NodeTypesRef.electrode)  
+    
 
-        #config.optimizer.zero_grad()
+        config.optimizer.zero_grad()
             
         losses = {}
         for step in range(1, config.train_steps + 1):      # Goes through the whole simulation for that epoch   
 
-            config.optimizer.zero_grad()
             
             this_time = begin_time + delta_t * step            
             
-            
+    
             value_last = graph.x.detach().clone()
+            boundary_value = config.bc1(graph.pos)
+            
+            graph.x[on_boundary] = boundary_value[on_boundary]
+            config.graph_modify(config.graph, value_last=value_last)
+            
             predicted = model(graph)
            
-            # hard boundary         
-            boundary_value = config.bc1(graph.pos)
+            # hard enforced boundary         
             predicted[on_boundary] = boundary_value[on_boundary] 
-      
-            electrode_value = config.bc2(graph.pos, predicted, this_time)    #Check later whether temp_last values is good
-            predicted[on_electrode] = electrode_value[on_electrode]
 
 
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
 
-            loss[on_boundary] = 0
-            loss[on_electrode] = 0
+            loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
          
             # Aggregate the loss components
-            loss = torch.norm(loss)/loss.numel()
-            loss.backward()
-            #loss.backward(torch.ones_like(loss))
+            loss = torch.norm(pde_loss)/pde_loss.numel()
                 
+            loss.backward()
             graph.x = predicted.detach()
 
-            config.optimizer.step()
+        config.optimizer.step()
 
             
             #losses.update({"step%d" % step: loss.detach()})
@@ -128,18 +126,15 @@ def modelTester(config):
     begin_time = 0
     test_results = []
     on_boundary = torch.squeeze(config.graph.node_type==config.NodeTypesRef.boundary)
-    on_electrode = torch.squeeze(config.graph.node_type == config.NodeTypesRef.electrode)
     boundary_value = config.bc1(config.graph.pos)     
 
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
         value_last = graph.x.detach().clone()
         graph.x[on_boundary] = boundary_value[on_boundary]
-        #config.graph_modify(config.graph, value_last=value_last)
+        config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
-        electrode_value = config.bc2(graph.pos, predicted, this_time)
         predicted[on_boundary] = boundary_value[on_boundary]
-        predicted[on_electrode] = electrode_value[on_electrode]
 
         return predicted
 
