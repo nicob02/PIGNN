@@ -72,13 +72,13 @@ def modelTrainer(config):
             value_last = graph.x.detach().clone()
             boundary_value = config.bc1(graph.pos)
             
-            graph.x[on_boundary] = boundary_value[on_boundary]
+            #graph.x[on_boundary] = boundary_value[on_boundary]
             config.graph_modify(config.graph, value_last=value_last)
             
             predicted = model(graph)
            
             # hard enforced boundary         
-            predicted[on_boundary] = boundary_value[on_boundary] 
+            #predicted[on_boundary] = boundary_value[on_boundary] 
 
 
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
@@ -131,10 +131,10 @@ def modelTester(config):
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
         value_last = graph.x.detach().clone()
-        graph.x[on_boundary] = boundary_value[on_boundary]
+        #graph.x[on_boundary] = boundary_value[on_boundary]
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
-        predicted[on_boundary] = boundary_value[on_boundary]
+        #predicted[on_boundary] = boundary_value[on_boundary]
 
         return predicted
 
