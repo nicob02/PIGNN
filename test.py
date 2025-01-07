@@ -26,7 +26,7 @@ ic = func_main.init_condition
 
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=65)
 graph = mesh.getGraphData()
-model = msgPassing(message_passing_num=1, node_input_size=out_ndim+3, 
+model = msgPassing(message_passing_num=1, node_input_size=out_ndim+1, 
                    edge_input_size=3, ndim=out_ndim, device=device, model_dir=ckptpath)
 model.load_model(ckptpath)
 model.to(device)
