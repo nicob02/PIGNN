@@ -12,27 +12,16 @@ class ElectroThermalFunc():
         self.params = params
         self.laplacianop = laplacian()
         self.gradop = grad()
-        if volt is None:
-            self.volt = np.random.randint(15,25)        #Training with a random voltage source input
-        else:
-            self.volt = volt                                # Case where voltage is given for evaluation
+                    
 
     def graph_modify(self, graph, value_last, **argv)->None:
-        a,b,c,d,e,f,g = self.params
+        
+        x = graph.pos[:, 0:1]
+        y = graph.pos[:, 1:2]
+        freq = self.params
 
-        grad_value = self.gradop(graph, value_last)
-        grad_v = grad_value[1]          # Voltage gradient
-
-        # Calculate the squared magnitude of the gradient: |∇v|^2 = v_x^2 + v_y^2
-        squared_abs_grad_v = torch.sum(grad_v ** 2, dim=1, keepdim=True)  # Shape (N, 1)
-        temp = value_last[:,0:1]        # Temps values at time t
-        sigma = f*(1+g*(temp-e))        # Sigma at time t
-        q = sigma*squared_abs_grad_v    # Heat at time t
-
-        if torch.isnan(q).any():
-            print(f"Warning: NaN detected in predicted after q")
-
-        graph.x = torch.cat((graph.x,q), dim=-1)    # Append new Q value at t to the input
+        f = -2*freq*torch.sin(freq*x)*torch.sin(freq*y)
+        graph.x = torch.cat((graph.x,f), dim=-1)    # Append new Q value at t to the input
 
         return graph    
 
@@ -50,41 +39,7 @@ class ElectroThermalFunc():
 
         return volt    # Concatenate along the last dimension
     
-    def electrode_condition(self, pos, values_last, t):
-        # Introduce a time-varying sinusoidal voltage source
-        # Frequency = 500 kHz
-        rf_frequency = 200
 
-        # Voltage: V(t) = V0 * sin(2 * pi * f * t)
-        time_var_volt = self.volt * math.sin(2 * torch.pi * rf_frequency * t)
-       
-        #volt = torch.full_like(pos[:, 0:1], time_var_volt)    # Create a tensor filled with input voltage source
-        volt = torch.full_like(pos[:, 1:2], self.volt)    # Create a tensor filled with input voltage source
-        return volt
-        
-    def compute_gradient(self, field, positions):
-
-        grad = torch.autograd.grad(
-            outputs=field,  # Scalar field
-            inputs=positions,  # Positions of the nodes
-            grad_outputs=torch.ones_like(field),  # Vector of ones for chain rule
-            create_graph=True,  # Enable higher-order gradients
-            retain_graph=True   # Retain graph for further computations
-        )[0]
-        
-        return grad.requires_grad_()
-
-    def compute_laplacian(self, grad, positions):
- 
-        laplacian = torch.autograd.grad(
-            outputs=grad,  # Gradient field
-            inputs=positions,  # Positions of the nodes
-            grad_outputs=torch.ones_like(grad),  # Vector of ones for chain rule
-            create_graph=True,  # Enable higher-order gradients
-            allow_unused=True 
-        )[0]
-        return laplacian.sum(dim=-1, keepdim=True)  # Sum over spatial dimensions
-    
     def pde(self, graph, values_last, values_this, **argv):
 
         a,b,c,d,e,f,g = self.params
@@ -118,7 +73,7 @@ class ElectroThermalFunc():
         print(lap_volt)
       
                      
-        print("losses_tempthen_volt")
+        print("losses_volt")
         print(loss_volt)
             
         return loss_volt
