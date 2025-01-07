@@ -86,7 +86,7 @@ def modelTrainer(config):
             loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
          
             # Aggregate the loss components
-            loss = torch.norm(pde_loss)/pde_loss.numel()
+            loss = torch.norm(loss)/loss.numel()
                 
             loss.backward()
             graph.x = predicted.detach()
