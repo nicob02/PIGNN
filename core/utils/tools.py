@@ -218,8 +218,8 @@ def render_temperature(predicteds, graph):
     y = pos[:, 1]
 
     for index_ in tqdm(range(total_test_steps)):
-        if index_ % 3 != 0:
-            continue
+        #if index_ % 3 != 0:
+        #   continue
         predicted = predicteds[index_]
         
         data_index = 0  #volt index
