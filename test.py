@@ -36,7 +36,7 @@ test_steps = 20
 test_config = parse_config()
 
 #model = kwargs['model'] # Extracts the model's dictioanry with the weights and biases values
-setattr(test_config, 'rfa_params', rfa_params)
+setattr(test_config, 'poisson_params', poisson_params)
 setattr(test_config, 'delta_t', delta_t)
 setattr(test_config, 'device', device)   
 setattr(test_config, 'ic', ic)
