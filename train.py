@@ -12,8 +12,8 @@ delta_t = 1 # Mess around with this
 
 
 out_ndim = 1
-#poisson_params = 6.28318  #2pi, initial test case, change later.
-poisson_params = 12.56637  #4pi, initial test case, change later.
+poisson_params = 6.28318  #2pi, initial test case, change later.
+#poisson_params = 12.56637  #4pi, initial test case, change later.
 ckptpath = 'checkpoint/simulator_%s.pth' % Func.func_name  
 
 func_main = Func(delta_t=delta_t, params=poisson_params)
