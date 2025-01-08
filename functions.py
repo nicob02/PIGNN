@@ -61,7 +61,7 @@ class ElectroThermalFunc():
         #f = 4*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
         
         #-2w^2*sin(w*x)*sin(wy) + ∇ · (∇v) = 0
-        loss_volt = f + lap_volt
+        loss_volt = -f - lap_volt
  
         print("lap_volt")
         print(lap_volt)
