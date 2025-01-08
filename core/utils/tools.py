@@ -78,12 +78,12 @@ def modelTrainer(config):
             predicted = model(graph)
            
             # hard enforced boundary         
-            #predicted[on_boundary] = boundary_value[on_boundary] 
+            predicted[on_boundary] = boundary_value[on_boundary] 
 
 
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
 
- #           loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
+            loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
          
             # Aggregate the loss components
             loss = torch.norm(loss)/loss.numel()
