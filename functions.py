@@ -20,7 +20,8 @@ class ElectroThermalFunc():
         y = graph.pos[:, 1:2]
         freq = self.params
 
-        f = -2*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
+        #f = -2*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
+        f = 4*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
         graph.x = torch.cat((graph.x,f), dim=-1)    # Append source f(x,y) value to the input
 
         return graph    
@@ -56,7 +57,8 @@ class ElectroThermalFunc():
     
         lap_volt = lap_value[:,0:1]
 
-        f = -2*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
+        #f = -2*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
+        f = 4*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
         
         #-2w^2*sin(w*x)*sin(wy) + ∇ · (∇v) = 0
         loss_volt = f + lap_volt
