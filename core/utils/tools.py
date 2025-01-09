@@ -127,8 +127,8 @@ def modelTester(config):
     
     begin_time = 0
     test_results = []
-    on_boundary = torch.squeeze(config.graph.node_type==config.NodeTypesRef.boundary)
-    boundary_value = config.bc1(config.graph.pos)     
+    #on_boundary = torch.squeeze(config.graph.node_type==config.NodeTypesRef.boundary)
+    #boundary_value = config.bc1(config.graph.pos)     
 
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
