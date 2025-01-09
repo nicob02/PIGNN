@@ -70,7 +70,7 @@ def modelTrainer(config):
             
     
             value_last = graph.x.detach().clone()
-            boundary_value = config.bc1(graph.pos)
+            #boundary_value = config.bc1(graph.pos)
             
             #graph.x[on_boundary] = boundary_value[on_boundary]
             config.graph_modify(config.graph, value_last=value_last)
@@ -78,12 +78,12 @@ def modelTrainer(config):
             predicted = model(graph)
            
             # hard enforced boundary         
-            predicted[on_boundary] = boundary_value[on_boundary] 
+            #predicted[on_boundary] = boundary_value[on_boundary] 
 
-
+            predicted = config.bc1(config.graph, predicted = predicted)
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
 
-            loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
+            #loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
          
             # Aggregate the loss components
             #loss = torch.norm(loss)/loss.numel()
@@ -136,6 +136,7 @@ def modelTester(config):
         #graph.x[on_boundary] = boundary_value[on_boundary]
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
+        predicted = config.bc1(config.graph, predicted = predicted)
         #predicted[on_boundary] = boundary_value[on_boundary]
 
         return predicted
