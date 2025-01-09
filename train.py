@@ -83,8 +83,8 @@ setattr(train_config, 'bc1', bc1)
 setattr(train_config, 'graph', graph)
 setattr(train_config, 'model', model)
 setattr(train_config, 'optimizer', optimizer)
-setattr(train_config, 'train_steps', 1)    # 1 train step, extend this in the future to a dynamic source function that changes with time.
-setattr(train_config, 'epchoes', 60000)
+setattr(train_config, 'train_steps', 10)    # 1 train step, extend this in the future to a dynamic source function that changes with time.
+setattr(train_config, 'epchoes', 6000)
 setattr(train_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref) 
 setattr(train_config, 'step_times', 1)
 #setattr(train_config, 'name', func_name)
