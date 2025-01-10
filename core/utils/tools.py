@@ -70,7 +70,7 @@ def modelTrainer(config):
             
     
             value_last = graph.x.detach().clone()
-            boundary_value = config.bc1(config.graph)
+            boundary_value = config.bc1(config.graph, predicted = None)
             
             graph.x[on_boundary] = boundary_value[on_boundary]
             config.graph_modify(config.graph, value_last=value_last)
@@ -128,7 +128,7 @@ def modelTester(config):
     begin_time = 0
     test_results = []
     on_boundary = torch.squeeze(config.graph.node_type==config.NodeTypesRef.boundary)
-    boundary_value = config.bc1(config.graph)     
+    boundary_value = config.bc1(config.graph, predicted = None)    
 
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
