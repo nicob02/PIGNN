@@ -47,7 +47,14 @@ class ElectroThermalFunc():
         volt = torch.full_like(graph.pos[:, 0:1], 0)  # Create a tensor filled with 0s for the B.C. voltage
         return volt   
 
-    
+    def exact_solution(self, graph):
+        x = graph.pos[:, 0:1]
+        y = graph.pos[:, 1:2]
+        
+        # Compute (x + y) * sin(pi*x) * sin(pi*y)
+        u = (x + y) * torch.sin(math.pi * x) * torch.sin(math.pi * y)
+        
+        return u
 
     def pde(self, graph, values_last, values_this, **argv):
 
