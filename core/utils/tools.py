@@ -70,17 +70,17 @@ def modelTrainer(config):
             
     
             value_last = graph.x.detach().clone()
-           # boundary_value = config.bc1(graph.pos)
+            boundary_value = config.bc1(config.graph)
             
-        #    graph.x[on_boundary] = boundary_value[on_boundary]
+            graph.x[on_boundary] = boundary_value[on_boundary]
             config.graph_modify(config.graph, value_last=value_last)
             
             predicted = model(graph)
            
             # hard enforced boundary         
-      #      predicted[on_boundary] = boundary_value[on_boundary] 
+            predicted[on_boundary] = boundary_value[on_boundary] 
 
-            predicted = config.bc1(config.graph, predicted = predicted)
+     #       predicted = config.bc1(config.graph, predicted = predicted)
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
 
             loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
@@ -127,17 +127,17 @@ def modelTester(config):
     
     begin_time = 0
     test_results = []
-    #on_boundary = torch.squeeze(config.graph.node_type==config.NodeTypesRef.boundary)
-    #boundary_value = config.bc1(config.graph.pos)     
+    on_boundary = torch.squeeze(config.graph.node_type==config.NodeTypesRef.boundary)
+    boundary_value = config.bc1(config.graph)     
 
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
         value_last = graph.x.detach().clone()
-        #graph.x[on_boundary] = boundary_value[on_boundary]
+        graph.x[on_boundary] = boundary_value[on_boundary]
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
-        predicted = config.bc1(config.graph, predicted = predicted)
-        #predicted[on_boundary] = boundary_value[on_boundary]
+        #predicted = config.bc1(config.graph, predicted = predicted)
+        predicted[on_boundary] = boundary_value[on_boundary]
 
         return predicted
 
