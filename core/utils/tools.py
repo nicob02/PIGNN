@@ -58,8 +58,6 @@ def modelTrainer(config):
         begin_time = 0
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
-    
-
         config.optimizer.zero_grad()
             
         losses = {}
@@ -68,23 +66,20 @@ def modelTrainer(config):
             
             this_time = begin_time + delta_t * step            
             
-    
             value_last = graph.x.detach().clone()
-   
-            
             
             config.graph_modify(config.graph, value_last=value_last)
             
             predicted = model(graph)
            
             # hard enforced boundary  
-            boundary_value = config.bc1(config.graph, predicted = predicted)
-            predicted[on_boundary] = boundary_value[on_boundary] 
+            #boundary_value = config.bc1(config.graph, predicted = predicted)
+            #predicted[on_boundary] = boundary_value[on_boundary] 
 
 
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
 
-            loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
+            #loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
          
             # Aggregate the loss components
             #loss = torch.norm(loss)/loss.numel()
@@ -129,16 +124,17 @@ def modelTester(config):
     begin_time = 0
     test_results = []
     on_boundary = torch.squeeze(config.graph.node_type==config.NodeTypesRef.boundary)
-    boundary_value = config.bc1(config.graph, predicted = None)    
+      
 
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
         value_last = graph.x.detach().clone()
-        graph.x[on_boundary] = boundary_value[on_boundary]
+
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
         #predicted = config.bc1(config.graph, predicted = predicted)
-        predicted[on_boundary] = boundary_value[on_boundary]
+        #boundary_value = config.bc1(config.graph, predicted = predicted) 
+        #predicted[on_boundary] = boundary_value[on_boundary]
 
         return predicted
 
