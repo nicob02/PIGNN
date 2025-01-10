@@ -18,11 +18,19 @@ class ElectroThermalFunc():
         
         x = graph.pos[:, 0:1]
         y = graph.pos[:, 1:2]
-        freq = self.params
-
-        f = -2*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
-        #f = 4*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
-        graph.x = torch.cat((graph.x,f), dim=-1)    # Append source f(x,y) value to the input
+        #freq = self.params
+        #f = -2*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
+    
+        # f(x,y) = 2π cos(πy) sin(πx)
+        #         + 2π cos(πx) sin(πy)
+        #         + (x+y) sin(πx) sin(πy)
+        #         - 2π² (x+y) sin(πx) sin(πy)
+        f = (
+            2 * math.pi * torch.cos(math.pi * y) * torch.sin(math.pi * x)
+            + 2 * math.pi * torch.cos(math.pi * x) * torch.sin(math.pi * y)
+            + (x + y) * torch.sin(math.pi * x) * torch.sin(math.pi * y)
+            - 2 * (math.pi ** 2) * (x + y) * torch.sin(math.pi * x) * torch.sin(math.pi * y)
+        )
 
         return graph    
 
@@ -52,34 +60,48 @@ class ElectroThermalFunc():
 
     def pde(self, graph, values_last, values_this, **argv):
 
+        """
+        PDE: -Δu + u = f(x,y)
+        with ε=1, k=1, and
+        f(x,y) = 2π cos(πy) sin(πx)
+               + 2π cos(πx) sin(πy)
+               + (x + y) sin(πx) sin(πy)
+               - 2 π² (x + y) sin(πx) sin(πy).
+        """
+    
+        # Extract node positions
         x = graph.pos[:, 0:1]
         y = graph.pos[:, 1:2]
-        freq = self.params        # w = angular frequency
-              
-        volt_last = values_last[:,0:1]
-        volt_this = values_this[:,0:1]
-
+    
+        # "values_this" is our predicted u at the current iteration
+        volt_this = values_this[:, 0:1]
+    
+        # Compute the Laplacian of volt_this
+        lap_value = self.laplacianop(graph, volt_this)
+        lap_volt = lap_value[:, 0:1]
+    
+        # Define the forcing function f(x,y)
+        f = (
+            2 * math.pi * torch.cos(math.pi * y) * torch.sin(math.pi * x)
+            + 2 * math.pi * torch.cos(math.pi * x) * torch.sin(math.pi * y)
+            + (x + y) * torch.sin(math.pi * x) * torch.sin(math.pi * y)
+            - 2 * (math.pi ** 2) * (x + y) * torch.sin(math.pi * x) * torch.sin(math.pi * y)
+        )
+    
+        # PDE residual:  -Δu + u - f = 0
+        # so the "loss" (residual) is
+        loss_volt = -lap_volt + volt_this - f
+    
+        # Optional: print statements for debugging
         print("graph.pos")
         print(graph.pos)
         print("graph.x")
         print(graph.x)
-
-        lap_value = self.laplacianop(graph,volt_this)
-    
-        lap_volt = lap_value[:,0:1]
-
-        f = -2*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
-        #f = 4*freq*freq*torch.sin(freq*x)*torch.sin(freq*y)
-        
-        #-2w^2*sin(w*x)*sin(wy) + ∇ · (∇v) = 0
-        loss_volt = -f - lap_volt
- 
         print("lap_volt")
         print(lap_volt)
-      
         print("losses_volt")
         print(loss_volt)
-            
+                
         return loss_volt
         
 
