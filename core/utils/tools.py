@@ -70,17 +70,18 @@ def modelTrainer(config):
             
     
             value_last = graph.x.detach().clone()
-            boundary_value = config.bc1(config.graph, predicted = None)
+   
             
-            graph.x[on_boundary] = boundary_value[on_boundary]
+            
             config.graph_modify(config.graph, value_last=value_last)
             
             predicted = model(graph)
            
-            # hard enforced boundary         
+            # hard enforced boundary  
+            boundary_value = config.bc1(config.graph, predicted = predicted)
             predicted[on_boundary] = boundary_value[on_boundary] 
 
-     #       predicted = config.bc1(config.graph, predicted = predicted)
+
             loss = config.pde(graph, values_last=value_last, values_this=predicted)
 
             loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
