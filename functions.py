@@ -32,6 +32,8 @@ class ElectroThermalFunc():
             - 2 * (math.pi ** 2) * (x + y) * torch.sin(math.pi * x) * torch.sin(math.pi * y)
         )
 
+        graph.x = torch.cat((graph.x, f), dim=-1)
+
         return graph    
 
     def init_condition(self, pos):
