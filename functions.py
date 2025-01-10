@@ -34,9 +34,9 @@ class ElectroThermalFunc():
 
     def boundary_condition(self, graph, predicted):
         
-        #volt = torch.full_like(pos[:, 0:1], 0)  # Create a tensor filled with 0s for the B.C. voltage
-        #return volt   
-        freq = self.params
+        volt = torch.full_like(graph.pos[:, 0:1], 0)  # Create a tensor filled with 0s for the B.C. voltage
+        return volt   
+     """   freq = self.params
         x = graph.pos[:, 0:1]
         y = graph.pos[:, 1:2]
     
@@ -47,7 +47,7 @@ class ElectroThermalFunc():
                   * torch.tanh(freq * (1.0 - y)))
     
         # Multiply raw network output by ansatz
-        return ansatz * predicted
+        return ansatz * predicted"""
     
 
     def pde(self, graph, values_last, values_this, **argv):
