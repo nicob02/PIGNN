@@ -100,7 +100,7 @@ class ElectroThermalFunc():
     
         # PDE residual:  -Δu + u - f = 0
         # so the "loss" (residual) is
-        loss_volt = lap_volt - volt_this + f
+        loss_volt = -lap_volt + volt_this - f
     
         # Optional: print statements for debugging
         print("graph.pos")
