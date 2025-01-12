@@ -73,7 +73,7 @@ def modelTrainer(config):
             predicted = model(graph)
            
             # hard enforced boundary  
-            #boundary_value = config.bc1(config.graph, predicted = predicted)
+            predicted = config.bc1(config.graph, predicted = predicted)
             #predicted[on_boundary] = boundary_value[on_boundary] 
 
 
@@ -132,7 +132,7 @@ def modelTester(config):
 
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
-        #predicted = config.bc1(config.graph, predicted = predicted)
+        predicted = config.bc1(config.graph, predicted = predicted)
         #boundary_value = config.bc1(config.graph, predicted = predicted) 
         #predicted[on_boundary] = boundary_value[on_boundary]
 
