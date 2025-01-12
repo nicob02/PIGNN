@@ -50,10 +50,10 @@ class ElectroThermalFunc():
         y = graph.pos[:, 1:2]
     
         # Ansatz that is zero on x=0,1 and y=0,1
-        ansatz = (torch.tanh(freq * x)
-                  * torch.tanh(freq * (1.0 - x))
-                  * torch.tanh(freq * y)
-                  * torch.tanh(freq * (1.0 - y)))
+        ansatz = (torch.tanh(np.pi * x)
+                  * torch.tanh(np.pi * (1.0 - x))
+                  * torch.tanh(np.pi * y)
+                  * torch.tanh(np.pi * (1.0 - y)))
     
         # Multiply raw network output by ansatz
         return ansatz * predicted
