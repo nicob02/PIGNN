@@ -58,34 +58,34 @@ setattr(test_config, 'density', dens)
 print('************* model test starts! ***********************')
 predict_results = modelTester(test_config)
 
-#real_results = []
+real_results = []
 # Can also later measure the time taken for this for loop to be completed vs the model predict_results time taken
-#for step in range(1, test_config.test_steps +1):
+for step in range(1, test_config.test_steps +1):
     #t = step * delta_t
-    #v1 = func_main.exact_solution(graph.pos, t)     # This I will surely have to modify the arguments
-    #real_results.append(v1)
-#real_results = torch.stack(real_results, dim=0).cpu().numpy()
+    v1 = func_main.exact_solution(graph)     # This I will surely have to modify the arguments
+    real_results.append(v1)
+real_results = torch.stack(real_results, dim=0).cpu().numpy()
 
 
-#aRMSE = rollout_error_test(predict_results, real_results) 
+aRMSE = rollout_error_test(predict_results, real_results) 
 
 
 #-----------------plotting----------------------------
 
-#results_root = 'NMGNN_%s_Results/'%(test_config.name)
+results_root = 'NMGNN_%s_Results/'%(test_config.name)
 
-#aRMSE_Fig_save_dir = results_root + 'aRMSE_Fig/'
-#os.makedirs(aRMSE_Fig_save_dir, exist_ok = True)
-#print('NMGNN_%s_Parameters[%d]_dens[%d]_Steps[%d]: [loss_mean: %.4e]'%(
+aRMSE_Fig_save_dir = results_root + 'aRMSE_Fig/'
+os.makedirs(aRMSE_Fig_save_dir, exist_ok = True)
+print('NMGNN_%s_Parameters[%d]_dens[%d]_Steps[%d]: [loss_mean: %.4e]'%(
     #test_config.name, test_config.rfa_params, test_config.density, test_config.test_steps, aRMSE[-1]))  # -1 is last value of array containing average error
-#plot_error_curve(aRMSE, 0, test_config, aRMSE_Fig_save_dir)
+plot_error_curve(aRMSE, 0, test_config, aRMSE_Fig_save_dir)
 
 
 
-#testImg_save_dir = results_root + 'testImages_%s_Parameters[%d]_area%s_dens[%d]_Steps[%d]_ALL/'%(\
-    #test_config.name, test_config.rfa_params, test_config.density, test_config.test_steps)
-#RemoveDir(testImg_save_dir)
+testImg_save_dir = results_root + 'testImages_%s_Parameters[%d]_area%s_dens[%d]_Steps[%d]_ALL/'%(\
+    test_config.name, test_config.rfa_params, test_config.density, test_config.test_steps)
+RemoveDir(testImg_save_dir)
 
 render_temperature(predict_results, graph)
 
-#render_results(predict_results, real_results, test_config, testImg_save_dir)
+render_results(predict_results, real_results, test_config, testImg_save_dir)
