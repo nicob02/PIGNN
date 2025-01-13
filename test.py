@@ -74,6 +74,6 @@ print(aRMSE)
 #-----------------plotting----------------------------
 
 
-#render_temperature(predict_results, graph)
-render_temperature(real_results, graph)
+render_temperature(predict_results, graph)
+#render_temperature(real_results, graph)
 render_results(predict_results, real_results, graph)
