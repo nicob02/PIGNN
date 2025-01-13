@@ -159,7 +159,7 @@ def rollout_error_test(predicteds, targets):
     return loss
 
 
-def render_results(predicteds, reals, config, save_dir):
+def render_results(predicteds, reals, config):
 
     if predicteds is None: return
     test_steps = config.test_steps   
