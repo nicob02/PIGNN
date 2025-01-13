@@ -67,7 +67,7 @@ def modelTrainer(config):
             this_time = begin_time + delta_t * step            
             
             value_last = graph.x.detach().clone()
-            graph.x = config.bc1(config.graph, predicted = value_last)
+            #graph.x = config.bc1(config.graph, predicted = value_last)
             
             config.graph_modify(config.graph, value_last=value_last)
             
@@ -131,7 +131,7 @@ def modelTester(config):
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
         value_last = graph.x.detach().clone()
-        graph.x = config.bc1(config.graph, predicted = value_last)
+        #graph.x = config.bc1(config.graph, predicted = value_last)
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
         predicted = config.bc1(config.graph, predicted = predicted)
@@ -205,7 +205,7 @@ def render_results(predicteds, reals, config):
 
         # fig.colorbar(s_r, ax=axes). No shared color bar but unique one for all 3 subplots
         # Creates a file with the temp dist plots for each time step
-        plt.savefig('images2/result%d.png'%(index_+1), bbox_inches = 'tight')   
+        plt.savefig('images/result%d.png'%(index_+1), bbox_inches = 'tight')   
         plt.close()
         
 def render_temperature(predicteds, graph):
