@@ -67,8 +67,10 @@ def modelTrainer(config):
             this_time = begin_time + delta_t * step            
             
             value_last = graph.x.detach().clone()
+            graph.x = config.bc1(config.graph, predicted = value_last)
             
             config.graph_modify(config.graph, value_last=value_last)
+            
             
             predicted = model(graph)
            
@@ -129,7 +131,7 @@ def modelTester(config):
     def predictor(model, graph, step):
         this_time = begin_time + delta_t * step
         value_last = graph.x.detach().clone()
-
+        graph.x = config.bc1(config.graph, predicted = value_last)
         config.graph_modify(config.graph, value_last=value_last)
         predicted = model(graph)
         predicted = config.bc1(config.graph, predicted = predicted)
