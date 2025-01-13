@@ -176,7 +176,7 @@ def render_results(predicteds, reals, graph):
     diff_max = np.max(diffs[:, :, 0])   # Since I'm only interested in temp dist. and not volt this is good
     diff_min = np.min(diffs[:, :, 0]) 
 
-    for index_ in tqdm(range(1, total_test_steps, 9)):
+    for index_ in tqdm(range(5)):
      
         predicted = predicteds[index_]   # Model prediction at time step index_
         real = reals[index_]
@@ -190,17 +190,17 @@ def render_results(predicteds, reals, graph):
             if idx == 0:
                 s_r = ax.scatter(x, y, c=real[:, data_index], alpha=0.95, cmap='seismic', \
                     marker='s', s=5, vmin=real_min, vmax=real_max)
-                ax.set_title('Exact @ step: %d'%(index_+1),fontsize=10)  
+                ax.set_title('Exact',fontsize=10)  
                 plt.colorbar(s_r, ax=ax) 
             elif idx == 1:
                 s_p = ax.scatter(x, y, c=predicted[:, data_index], alpha=0.95, cmap='seismic',\
                      marker='s', s=5, vmin=real_min, vmax=real_max) 
-                ax.set_title('Predicted @ step: %d'%(index_+1),fontsize=10)
+                ax.set_title('Predicted',fontsize=10)
                 plt.colorbar(s_p, ax=ax) 
             elif idx == 2: 
                 s_d = ax.scatter(x, y, c=diff[:, data_index], alpha=0.95, cmap='seismic', \
                     marker='s', s=5, vmin=diff_min, vmax=diff_max)                
-                ax.set_title('Difference @ step: %d'%(index_+1),fontsize=10)   
+                ax.set_title('Difference',fontsize=10)   
                 plt.colorbar(s_d,ax=ax)
 
         # fig.colorbar(s_r, ax=axes). No shared color bar but unique one for all 3 subplots
