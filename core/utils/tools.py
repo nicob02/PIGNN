@@ -159,54 +159,79 @@ def rollout_error_test(predicteds, targets):
     return loss
 
 
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+
 def render_results(predicteds, reals, graph):
-    test_begin_step = 0
-    if predicteds is None: return
-    total_test_steps = predicteds.shape[0]  
+    if predicteds is None:
+        return
+    
+    # Extract node coordinates from the graph
     pos = graph.pos.cpu().numpy()
     x = pos[:, 0]
-    y = pos[:, 1] 
+    y = pos[:, 1]
+    
     os.makedirs('images2', exist_ok=True)
+    
+    # Compute absolute differences
     diffs = np.abs(predicteds - reals)
-    # diffs = np.abs((predicteds - reals)/reals)    # Relative error not used at the end
+    
+    # Set up range for 'Exact' and 'Predicted'
+    # (Assuming your data is physically within [0,1] for Volts)
+    vmin_val, vmax_val = 0.0, 1.0
 
-    real_max  = np.max(reals[:, :, 0])  # Max temp value
-    real_min = np.min(reals[:, :, 0])   # Min temp value, would need a 1 instead of 0 to get volt
+    # Differences might exceed 0‒1, so we derive from the data
+    diff_max = np.max(diffs[:, :, 0])
+    diff_min = np.min(diffs[:, :, 0])
 
-    diff_max = np.max(diffs[:, :, 0])   # Since I'm only interested in temp dist. and not volt this is good
-    diff_min = np.min(diffs[:, :, 0]) 
-
+    # Render results for the first 5 steps (adjust if needed)
     for index_ in tqdm(range(5)):
-     
-        predicted = predicteds[index_]   # Model prediction at time step index_
+        predicted = predicteds[index_]
         real = reals[index_]
-        diff = diffs[index_]        
+        diff = diffs[index_]
 
-        data_index = 0      # Indicates component 0(temp) is being visualized
-        fig, axes = plt.subplots(1, 3, figsize=(16, 5)) 
+        data_index = 0  # Visualizing the 0th component (e.g., temperature/voltage)
+        fig, axes = plt.subplots(1, 3, figsize=(16, 5))
 
-        for idx, ax in enumerate(axes):    
+        for idx, ax in enumerate(axes):
+            # Label the axes for each subplot
+            ax.set_xlabel('x(m)')
+            ax.set_ylabel('y(m)')
 
             if idx == 0:
-                s_r = ax.scatter(x, y, c=real[:, data_index], alpha=0.95, cmap='seismic', \
-                    marker='s', s=5, vmin=real_min, vmax=real_max)
-                ax.set_title('Exact',fontsize=10)  
-                plt.colorbar(s_r, ax=ax) 
+                # Exact
+                s_r = ax.scatter(
+                    x, y, c=real[:, data_index], alpha=0.95, cmap='seismic',
+                    marker='s', s=5, vmin=vmin_val, vmax=vmax_val
+                )
+                ax.set_title('Exact', fontsize=10)
+                cb = plt.colorbar(s_r, ax=ax)
+                cb.set_label('Voltage (V)')
             elif idx == 1:
-                s_p = ax.scatter(x, y, c=predicted[:, data_index], alpha=0.95, cmap='seismic',\
-                     marker='s', s=5, vmin=real_min, vmax=real_max) 
-                ax.set_title('Predicted',fontsize=10)
-                plt.colorbar(s_p, ax=ax) 
-            elif idx == 2: 
-                s_d = ax.scatter(x, y, c=diff[:, data_index], alpha=0.95, cmap='seismic', \
-                    marker='s', s=5, vmin=diff_min, vmax=diff_max)                
-                ax.set_title('Difference',fontsize=10)   
-                plt.colorbar(s_d,ax=ax)
+                # Predicted
+                s_p = ax.scatter(
+                    x, y, c=predicted[:, data_index], alpha=0.95, cmap='seismic',
+                    marker='s', s=5, vmin=vmin_val, vmax=vmax_val
+                )
+                ax.set_title('Predicted', fontsize=10)
+                cb = plt.colorbar(s_p, ax=ax)
+                cb.set_label('Voltage (V)')
+            else:
+                # Difference
+                s_d = ax.scatter(
+                    x, y, c=diff[:, data_index], alpha=0.95, cmap='seismic',
+                    marker='s', s=5, vmin=diff_min, vmax=diff_max
+                )
+                ax.set_title('Difference', fontsize=10)
+                cb = plt.colorbar(s_d, ax=ax)
+                cb.set_label('Voltage (V)')
 
-        # fig.colorbar(s_r, ax=axes). No shared color bar but unique one for all 3 subplots
-        # Creates a file with the temp dist plots for each time step
-        plt.savefig('images2/result%d.png'%(index_+1), bbox_inches = 'tight')   
+        # Save each figure to file
+        plt.savefig(f'images2/result{index_+1}.png', bbox_inches='tight')
         plt.close()
+
         
 def render_temperature(predicteds, graph):
     test_begin_step = 0
