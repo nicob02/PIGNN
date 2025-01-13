@@ -38,7 +38,7 @@ class ElectroThermalFunc():
 
     def init_condition(self, pos):
         
-        volt = torch.full_like(pos[:, 0:1], 1.3)    # Create a tensor filled with 0s for the voltage
+        volt = torch.full_like(pos[:, 0:1], 1.5)    # Create a tensor filled with 0s for the voltage
 
         return volt 
 
