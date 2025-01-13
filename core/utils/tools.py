@@ -205,7 +205,7 @@ def render_results(predicteds, reals, config, save_dir):
 
         # fig.colorbar(s_r, ax=axes). No shared color bar but unique one for all 3 subplots
         # Creates a file with the temp dist plots for each time step
-        plt.savefig(save_dir+'testResults_step_%d.png'%(index_+1), bbox_inches = 'tight')   
+        plt.savefig('images2/result%d.png'%(index_+1), bbox_inches = 'tight')   
         plt.close()
         
 def render_temperature(predicteds, graph):
@@ -256,7 +256,7 @@ def plot_error_curve(error, begin_step, config, save_dir):
     my_x1 = np.linspace(begin_step * delta_t, (begin_step + number_len - 1) * delta_t, 25)  #Check later whether 25 are too many values or too little
     plt.xticks(my_x1)
     plt.title('Error Curve')
-    plt.savefig(save_dir + '%s_rollout_aRMSE_Parameters[%d]_dens[%d]_Steps[%d].png'%(config.name, \
+    plt.savefig(save_dir + '%s_rollout_aRMSE_Parameters[%d]_dens[%d]_Steps[%d].png'%(config.name\
         config.rfa_params, config.density, config.test_steps))
     plt.close()       
         
