@@ -45,7 +45,7 @@ setattr(test_config, 'bc1', bc1)
 setattr(test_config, 'model', model)
 setattr(test_config, 'test_steps', test_steps)
 setattr(test_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref)
-setattr(test_config, 'name', func_name)
+#setattr(test_config, 'name', func_name)
 setattr(test_config, 'ndim', out_ndim)
 setattr(test_config, 'graph_modify', func_main.graph_modify)
 setattr(test_config, 'graph', graph)
@@ -68,24 +68,12 @@ real_results = torch.stack(real_results, dim=0).cpu().numpy()
 
 
 aRMSE = rollout_error_test(predict_results, real_results) 
-
+print("aRMSE")
+print(aRMSE)
 
 #-----------------plotting----------------------------
 
-results_root = 'NMGNN_%s_Results/'%(test_config.name)
-
-aRMSE_Fig_save_dir = results_root + 'aRMSE_Fig/'
-os.makedirs(aRMSE_Fig_save_dir, exist_ok = True)
-print('NMGNN_%s_Parameters[%d]_dens[%d]_Steps[%d]: [loss_mean: %.4e]'%(
-    #test_config.name, test_config.rfa_params, test_config.density, test_config.test_steps, aRMSE[-1]))  # -1 is last value of array containing average error
-plot_error_curve(aRMSE, 0, test_config, aRMSE_Fig_save_dir)
-
-
-
-testImg_save_dir = results_root + 'testImages_%s_Parameters[%d]_area%s_dens[%d]_Steps[%d]_ALL/'%(\
-    test_config.name, test_config.rfa_params, test_config.density, test_config.test_steps)
-RemoveDir(testImg_save_dir)
 
 render_temperature(predict_results, graph)
 
-render_results(predict_results, real_results, test_config, testImg_save_dir)
+render_results(predict_results, real_results, test_config)
