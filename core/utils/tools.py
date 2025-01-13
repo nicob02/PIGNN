@@ -176,7 +176,7 @@ def render_results(predicteds, reals, graph):
     diff_max = np.max(diffs[:, :, 0])   # Since I'm only interested in temp dist. and not volt this is good
     diff_min = np.min(diffs[:, :, 0]) 
 
-    for index_ in tqdm(range(1, test_steps, 9)):
+    for index_ in tqdm(range(1, total_test_steps, 9)):
      
         predicted = predicteds[index_]   # Model prediction at time step index_
         real = reals[index_]
