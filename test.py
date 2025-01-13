@@ -76,4 +76,4 @@ print(aRMSE)
 
 #render_temperature(predict_results, graph)
 
-render_results(predict_results, real_results, test_config)
+render_results(predict_results, real_results, graph)
