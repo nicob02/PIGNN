@@ -87,7 +87,7 @@ setattr(train_config, 'train_steps', 1)    # 1 train step, extend this in the fu
 setattr(train_config, 'epchoes', 25)
 setattr(train_config, 'NodeTypesRef', ElectrodeMesh.node_type_ref) 
 setattr(train_config, 'step_times', 1)
-#setattr(train_config, 'name', func_name)
+setattr(train_config, 'name', func_name)
 setattr(train_config, 'ndim', out_ndim)
 setattr(train_config, 'lrstep', 100) #learning rate decay epchoes
 setattr(train_config, 'writer', writer)
