@@ -240,6 +240,24 @@ def render_temperature(predicteds, graph):
                     (test_begin_step+index_), bbox_inches='tight')
         plt.close()
 
+def plot_error_curve(error, begin_step, config, save_dir):
+
+    delta_t = config.delta_t
+    number_len = error.shape[0]
+    fig, axes = plt.subplots(1, 1, figsize=(8,5))
+    axes.set_yscale("log")
+    axes.plot((begin_step + np.arange(number_len)) * delta_t, error)
+    axes.set_xlim(begin_step * delta_t, (begin_step + number_len) * delta_t)
+    axes.set_ylim(5e-5, 10)
+    axes.set_xlabel('time (s)')
+    axes.set_ylabel('RMSE')
+    
+    my_x1 = np.linspace(begin_step * delta_t, (begin_step + number_len - 1) * delta_t, 11)
+    plt.xticks(my_x1)
+    plt.title('Error Curve')
+    plt.savefig(save_dir + '%s_rollout_aRMSE_Reynold[%d]_area%s_dens[%d]_Steps[%d].png'%(config.name, \
+        config.Reynold, config.area, config.density, config.test_steps))
+    plt.close()       
 
         
 
