@@ -208,7 +208,7 @@ def render_results(predicteds, reals, graph):
                 )
                 ax.set_title('Exact', fontsize=10)
                 cb = plt.colorbar(s_r, ax=ax)
-                cb.set_label('(V)', labelpad=-30, rotation=0, fontsize=10, loc='top')
+                cb.set_label('  (V)', labelpad=-30, rotation=0, fontsize=10, loc='top')
             elif idx == 1:
                 # Predicted
                 s_p = ax.scatter(
@@ -217,7 +217,7 @@ def render_results(predicteds, reals, graph):
                 )
                 ax.set_title('Predicted', fontsize=10)
                 cb = plt.colorbar(s_p, ax=ax)
-                cb.set_label('(V)', labelpad=-30, rotation=0, fontsize=10, loc='top')
+                cb.set_label('  (V)', labelpad=-30, rotation=0, fontsize=10, loc='top')
             else:
                 # Difference
                 s_d = ax.scatter(
@@ -226,7 +226,7 @@ def render_results(predicteds, reals, graph):
                 )
                 ax.set_title('Difference', fontsize=10)
                 cb = plt.colorbar(s_d, ax=ax)
-                cb.set_label('(V)', labelpad=-30, rotation=0, fontsize=10, loc='top')
+                cb.set_label('(  V)', labelpad=-30, rotation=0, fontsize=10, loc='top')
 
         # Save each figure to file
         plt.savefig(f'images2/result{index_+1}.png', bbox_inches='tight')
