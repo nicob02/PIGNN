@@ -69,7 +69,7 @@ class ElectroThermalFunc():
         return u
 
     
-    def laplacian_ad(graph, u):
+    def laplacian_ad(self, graph, u):
         
         pos = graph.pos
         
