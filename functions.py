@@ -68,6 +68,19 @@ class ElectroThermalFunc():
         
         return u
 
+    
+    def laplacian_ad(graph, u):
+        pos = graph.pos
+        if not pos.requires_grad:
+            pos.requires_grad_()
+        grad_u = torch.autograd.grad(u, pos, grad_outputs=torch.ones_like(u), create_graph=True)[0]
+        lap = 0.0
+        for i in range(pos.shape[1]):
+            grad2 = torch.autograd.grad(grad_u[:, i], pos, grad_outputs=torch.ones_like(grad_u[:, i]), create_graph=True)[0][:, i]
+            lap = lap + grad2
+        return lap.unsqueeze(1)
+
+    
     def pde(self, graph, values_last, values_this, **argv):
 
         """
@@ -87,8 +100,9 @@ class ElectroThermalFunc():
         volt_this = values_this[:, 0:1]
     
         # Compute the Laplacian of volt_this
-        lap_value = self.laplacianop(graph, volt_this)
-        lap_volt = lap_value[:, 0:1]
+        lap_volt = laplacian_ad(graph, volt_this)
+        #lap_value = self.laplacianop(graph, volt_this)
+        #lap_volt = lap_value[:, 0:1]
     
         # Define the forcing function f(x,y)
         f = (
