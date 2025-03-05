@@ -59,39 +59,36 @@ def modelTrainer(config):
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
         config.optimizer.zero_grad()
-            
+        config.graph_modify(config.graph, value_last=value_last)
         losses = {}
         for step in range(1, config.train_steps + 1):      # Goes through the whole simulation for that epoch   
 
             
             this_time = begin_time + delta_t * step            
             
-            value_last = graph.x.detach().clone()
+            #value_last = graph.x.detach().clone()
             #graph.x = config.bc1(config.graph, predicted = value_last)
             
-            config.graph_modify(config.graph, value_last=value_last)
             
             
             predicted = model(graph)
            
             # hard enforced boundary Ansatz
-            """
             predicted = config.bc1(config.graph, predicted = predicted)
-            """
+        
             #predicted[on_boundary] = boundary_value[on_boundary] 
 
-
-            loss = config.pde(graph, values_last=value_last, values_this=predicted)
+            loss = config.pde(graph, values_this=predicted)
 
             #loss[on_boundary] = 0        # TAKE THE HARD-ENFORCED OUT LATER TO COMPARE DIFFERENCE
          
             # Aggregate the loss components
             #loss = torch.norm(loss)/loss.numel()
             loss = torch.norm(loss)
-            #loss = torch.sum(loss)
+    
                 
             loss.backward()
-            graph.x = predicted.detach()
+            #graph.x = predicted.detach()
 
         config.optimizer.step()
 
