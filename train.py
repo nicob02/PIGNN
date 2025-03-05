@@ -30,6 +30,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 mesh = ElectrodeMesh(ru=(1, 1), lb=(0, 0), density=65)
 
 graph = mesh.getGraphData().to(device)
+graph.pos.requires_grad_()
 
 print("mesh")
 
