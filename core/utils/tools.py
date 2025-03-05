@@ -59,7 +59,7 @@ def modelTrainer(config):
         total_steps_loss = 0
         on_boundary = torch.squeeze(graph.node_type == config.NodeTypesRef.boundary)  
         config.optimizer.zero_grad()
-        config.graph_modify(config.graph, value_last=value_last)
+        config.graph_modify(config.graph, value_last=graph.x)
         losses = {}
         for step in range(1, config.train_steps + 1):      # Goes through the whole simulation for that epoch   
 
