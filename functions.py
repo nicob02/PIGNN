@@ -58,7 +58,7 @@ class ElectroThermalFunc():
         max_d = d.max()
         
         # Choose a random maximum voltage value. For example, pick uniformly between 0.8 and 1.2.
-        rand_val = torch.rand(1, device=pos.device) * 0.4 + 0.8
+        rand_val = torch.rand(1, device=pos.device) * 0.1 + 1
         
         # The initial voltage is set to zero at the boundaries (d=0) and increases linearly to rand_val at the center (d=max_d)
         volt = rand_val * (d / max_d)
