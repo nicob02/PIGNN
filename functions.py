@@ -85,7 +85,7 @@ class ElectroThermalFunc():
         return lap.unsqueeze(1)
 
     
-    def pde(self, graph, values_this, **argv):
+    def pde(self, graph, values_last==None, values_this, **argv):
 
         """
         PDE: -Δu + u = f(x,y)
