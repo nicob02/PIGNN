@@ -38,30 +38,8 @@ class ElectroThermalFunc():
 
     def init_condition(self, pos):
         
-        # Assume pos is a tensor of shape [N, 2] with (x,y) coordinates.
-        # Compute the boundary extremes:
-        min_x = pos[:, 0].min()
-        max_x = pos[:, 0].max()
-        min_y = pos[:, 1].min()
-        max_y = pos[:, 1].max()
-        
-        # Compute the distances from each node to the four boundaries:
-        d_left   = pos[:, 0:1] - min_x          # distance to left boundary
-        d_right  = max_x - pos[:, 0:1]          # distance to right boundary
-        d_bottom = pos[:, 1:2] - min_y          # distance to bottom boundary
-        d_top    = max_y - pos[:, 1:2]          # distance to top boundary
-        
-        # For each node, the minimal distance to any boundary is used:
-        d = torch.min(torch.cat([d_left, d_right, d_bottom, d_top], dim=1), dim=1)[0].unsqueeze(1)
-        
-        # Determine the maximum distance across all nodes (typically the center)
-        max_d = d.max()
-        
-        # Choose a random maximum voltage value. For example, pick uniformly between 0.8 and 1.2.
-        rand_val = torch.rand(1, device=pos.device) * 0.4 + 0.8
-        
-        # The initial voltage is set to zero at the boundaries (d=0) and increases linearly to rand_val at the center (d=max_d)
-        volt = rand_val * (d / max_d)
+        # Generate random voltage values ~ N(1, 1)
+        volt = torch.randn_like(pos[:, 0:1]) + 1.0
         
         return volt
 
