@@ -38,11 +38,9 @@ class ElectroThermalFunc():
 
     def init_condition(self, pos):
         
-        # Generate random voltage values ~ N(1, 1)
-        volt = torch.randn_like(pos[:, 0:1]) + 1.0
-        
-        return volt
+        volt = torch.full_like(pos[:, 0:1], 1.5)    # Create a tensor filled with 0s for the voltage
 
+        return volt 
 
     def boundary_condition(self, graph, predicted):
         
